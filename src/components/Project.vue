@@ -1,5 +1,5 @@
 <template>
-<div id="interfaceProject">
+<div id="Project">
     <el-row>
         <el-col :span="12"></el-col>
         <el-col :span="12">
@@ -9,10 +9,9 @@
     <el-autocomplete v-model="state4" :fetch-suggestions="querySearchAsync" placeholder="项目名称查询" @select="handleSelect" clearable></el-autocomplete>
     <el-button type="primary" @click="dialogVisible = true">新建项目</el-button>
 
-    <el-card class="box-card" v-for="(project,key) in projects">
+    <el-card class="box-card" v-for="(project,index) in projects" :key="project">
         <div slot="header" class="clearfix">
-            <span>{{project.value}}</span>
-            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+            <router-link :to="'/ProjectDetails/'+index"><span>{{project.projectName}}</span></router-link>
         </div>
         <div v-for="o in 4" :key="o" class="text item">
             {{'列表内容 ' + o }}
@@ -37,13 +36,13 @@
 
 <script>
 export default {
-    name: "interfaceProject",
+    name: "Project",
     data() {
         return {
             projects: [{
-                "value": 1
+                "projectName": 1
             }, {
-                "value": 2
+                "projectName": 2
             }],
             restaurants: [],
             state4: '',
@@ -90,7 +89,7 @@ export default {
         },
         saveNewProject() {
             this.projects.push({
-                "name": this.newProjectName
+                "projectName": this.newProjectName
             })
             this.dialogVisible = false
         }

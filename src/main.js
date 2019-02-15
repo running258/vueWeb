@@ -7,11 +7,15 @@ import VueRouter from 'vue-router'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 
-import InterfaceProject from "./components/InterfaceProject.vue"
+import Project from "./components/Project.vue"
+import ProjectDetail from "./components/ProjectDetail.vue"
+import InterfaceDetail from "./components/InterfaceDetail.vue"
 
 const routes = [
-  {path:'/interfaceProject', component:InterfaceProject},
-  {path:'*', redirect:"/interfaceProject"}
+  {path:'/Project', component:Project},
+  {path:'/ProjectDetail/:aid', component:ProjectDetail},
+  {path:'/InterfaceDetail', component:InterfaceDetail},
+  {path:'*', redirect:"/InterfaceDetail"}
 ]
 
 const router = new VueRouter({
@@ -26,3 +30,4 @@ new Vue({
 })
 
 
+ 
