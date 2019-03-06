@@ -7,6 +7,8 @@ import VueRouter from 'vue-router'
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 
+
+
 import Project from "./components/Project.vue"
 import ProjectDetail from "./components/ProjectDetail.vue"
 import InterfaceDetail from "./components/InterfaceDetail.vue"
@@ -29,5 +31,3 @@ new Vue({
   
 })
 
-
- 
