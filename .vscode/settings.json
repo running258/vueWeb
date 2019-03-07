@@ -1,0 +1,8 @@
+{
+  "files.exclude": {
+    "__error": "Not found",
+    "backEnd\\interfaceFrameWork\\__pycache__": true,
+    ".pytest_cache": true,
+    ".vscode": true
+  }
+}
