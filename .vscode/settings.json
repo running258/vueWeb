@@ -3,6 +3,11 @@
     "__error": "Not found",
     "backEnd\\interfaceFrameWork\\__pycache__": true,
     ".pytest_cache": true,
-    ".vscode": true
+    ".vscode": true,
+    "backEnd\\interfaceFrameWork\\dao\\__pycache__": true,
+    "backEnd\\interfaceFrameWork\\entity\\__pycache__": true,
+    "backEnd\\src\\__pycache__": true,
+    "backEnd\\src\\entity\\__pycache__": true,
+    "backEnd\\src\\dao\\__pycache__": true
   }
 }

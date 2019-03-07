@@ -5,25 +5,22 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 
-Vue.prototype.$http = axios.create({
-  baseURL: "http://127.0.0.1:5000",
-  timeout: 5000,
-  headers: {'Content-Type': 'application/json'}
-});
-
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 
+Vue.prototype.axios = axios
 
 import Project from "./components/Project.vue"
 import ProjectDetail from "./components/ProjectDetail.vue"
 import InterfaceDetail from "./components/InterfaceDetail.vue"
+import Ping from "./components/Ping.vue"
 
 const routes = [
   {path:'/Project', component:Project},
   {path:'/ProjectDetail/:aid', component:ProjectDetail},
   {path:'/InterfaceDetail', component:InterfaceDetail},
-  {path:'*', redirect:"/InterfaceDetail"}
+  {path:'*', redirect:"/InterfaceDetail"},
+  {path:'/ping',component: Ping,}
 ]
 
 const router = new VueRouter({

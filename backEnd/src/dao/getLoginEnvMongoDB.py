@@ -1,4 +1,4 @@
-from interfaceFrameWork.dao.getMongo import mongoConn
+from src.dao.getMongo import mongoConn
 
 class getLoginEnvMongoDB(mongoConn):
 

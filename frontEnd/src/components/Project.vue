@@ -1,5 +1,6 @@
 <template>
 <div id="Project">
+    {{resPre}}
     <el-row>
         <el-col :span="12"></el-col>
         <el-col :span="12">
@@ -49,7 +50,8 @@ export default {
             timeout: null,
             dialogVisible: false,
             accessRadio: 0,
-            newProjectName: ''
+            newProjectName: '',
+            resPre:''
         }
     },
     methods: {
@@ -96,6 +98,11 @@ export default {
     },
     mounted() {
         this.restaurants = this.loadAll();
+        this.axios.get('http://localhost:5000/projects')
+            .then((response) => {
+                console.log(response)
+                this.resPre = response
+            })
     }
 }
 </script>
