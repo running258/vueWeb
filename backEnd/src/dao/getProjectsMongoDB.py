@@ -13,11 +13,12 @@ class getProjectsMongoDB(mongoConn):
         projectsList = []
         results = self.db.projects.find()
         for result in results:
+            result.pop("_id")
             projectsList.append(result)
-        print(projectsList)
+        return projectsList
 
     def getProjectsByProjectName(self,projectName):
         result = self.db.projects.find_one({"projectName":projectName})
+        result.pop("_id")
         return result
-
 

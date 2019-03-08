@@ -18,8 +18,8 @@ import Ping from "./components/Ping.vue"
 const routes = [
   {path:'/Project', component:Project},
   {path:'/ProjectDetail/:aid', component:ProjectDetail},
-  {path:'/InterfaceDetail', component:InterfaceDetail},
-  {path:'*', redirect:"/InterfaceDetail"},
+  {path:'/InterfaceDetail/:interName', component:InterfaceDetail},
+  {path:'*', redirect:"/Project"},
   {path:'/ping',component: Ping,}
 ]
 

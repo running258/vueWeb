@@ -1,8 +1,11 @@
 <template>
 <div id="projectDetails">
+
+    {{interInfo}}
+
     <div style="margin-top: 15px;">
         <!-- <el-input placeholder="请输入接口地址" v-model="url" class="input-with-select" > -->
-        <el-select v-model="select" slot="prepend" placeholder="请选择">
+        <el-select v-model="method" slot="prepend" placeholder="请选择">
             <el-option label="GET" value="GET"></el-option>
             <el-option label="POST" value="POST"></el-option>
             <el-option label="PUT" value="PUT"></el-option>
@@ -18,7 +21,7 @@
         </el-row>
     </div>
 
-    <div v-if="select!='GET' && select!=''">
+    <div v-if="method!='GET' && method!=''">
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="payload" name="payload">payload</el-tab-pane>
             <el-tab-pane label="raw" name="raw">raw</el-tab-pane>
@@ -43,9 +46,12 @@
 export default {
     data() {
         return {
+            interInfo:[],
+            interName:'',
+            description:'',
             activeName: 'payload',
-            url: '',
-            select: '',
+            path: '',
+            method: '',
             headerList: [{
                 'header': '',
                 'value': '',
@@ -84,6 +90,42 @@ export default {
         },
         handleClick(tab, event) {}
 
+    },
+    created() {
+        var interName = this.$route.params.interName
+        if (interName!='') {
+            this.axios.get('http://localhost:5000/interInfo/'+interName)
+            .then((response) => {
+                this.interInfo = response["data"]
+                this.method = this.interInfo["method"]
+                this.path = this.interInfo["path"]
+                this.interName = this.interInfo["interName"]
+                this.description = this.interInfo["description"]
+                var header = this.interInfo["header"]
+                for (var key in header) {
+                    if (this.headerLength==0) {
+                        this.headerList = [{'header':key,'value':header[key]}]
+                    }
+                    else{
+                        this.headerList.push({'header':key,'value':header[key]})
+                    }
+                    this.headerLength++
+                }
+                var params = this.interInfo["params"]
+                for (var key in params) {
+                    if (this.payLoadLength==0) {
+                        this.payloadList = [{'name':key,'value':header[key]}]
+                    }
+                    else{
+                        this.payloadList.push({'name':key,'value':params[key]})
+                    }
+                    this.payLoadLength++
+                }
+
+            })
+        } else {
+            console.log("**********null")
+        }
     },
     mounted() {}
 };
