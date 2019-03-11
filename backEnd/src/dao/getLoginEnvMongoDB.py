@@ -7,4 +7,5 @@ class getLoginEnvMongoDB(mongoConn):
 
     def getLoginEnvCollection(self,sys,env="staging"):
         result = self.db.loginEnv.find_one({"sys":sys,"env":env})
+        result.pop("_id")
         return result

@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
+from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
 
 app = Flask(__name__)
 CORS(app)
@@ -23,9 +24,13 @@ def getProjects():
 def getInterInfo(interName):
     interInfo = getInterfacesMongoDB().getInterfacesCollection("5c7e21b2a76ccc33d0dde741",interName)
     # interInfo = getInterfacesMongoDB().getInterfacesCollection(interfaceId,interName)
-    print(interInfo)
     return json.dumps(interInfo)
 
+@app.route('/loginEnv/<sys>', methods=['GET'])
+def getLoginEnv(sys):
+    loginEnv = getLoginEnvMongoDB().getLoginEnvCollection(sys)
+    return json.dumps(loginEnv)
+
 if __name__ == '__main__':
-    # getInterInfo("5c7e21b2a76ccc33d0dde741","addRole")
+    # getLoginEnv("supply")
     app.run()

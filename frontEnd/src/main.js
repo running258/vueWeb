@@ -13,14 +13,12 @@ Vue.prototype.axios = axios
 import Project from "./components/Project.vue"
 import ProjectDetail from "./components/ProjectDetail.vue"
 import InterfaceDetail from "./components/InterfaceDetail.vue"
-import Ping from "./components/Ping.vue"
 
 const routes = [
+  {path:'*', redirect:"/Project"},
   {path:'/Project', component:Project},
   {path:'/ProjectDetail/:aid', component:ProjectDetail},
-  {path:'/InterfaceDetail/:interName', component:InterfaceDetail},
-  {path:'*', redirect:"/Project"},
-  {path:'/ping',component: Ping,}
+  {path:'/InterfaceDetail/:interName', component:InterfaceDetail}
 ]
 
 const router = new VueRouter({

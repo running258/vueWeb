@@ -8,6 +8,7 @@
     "backEnd\\interfaceFrameWork\\entity\\__pycache__": true,
     "backEnd\\src\\__pycache__": true,
     "backEnd\\src\\entity\\__pycache__": true,
-    "backEnd\\src\\dao\\__pycache__": true
+    "backEnd\\src\\dao\\__pycache__": true,
+    "frontEnd\\node_modules": true
   }
 }

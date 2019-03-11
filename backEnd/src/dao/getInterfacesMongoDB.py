@@ -13,10 +13,4 @@ class getInterfacesMongoDB(mongoConn):
     def getInterfacesCollection(self,interfaceId,interName):
         result = self.db.interfaces.find_one({"_id":ObjectId(interfaceId),"interName":interName})
         result.pop("_id")
-
-        # print(result)
-        # print(type(result))
-
         return result
-
-# getInterfacesMongoDB().getInterfacesCollection("5c7e21b2a76ccc33d0dde741","addRole")
