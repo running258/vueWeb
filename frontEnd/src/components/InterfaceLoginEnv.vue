@@ -5,7 +5,12 @@
         <el-option label="test" value="test"></el-option>
         <el-option label="demo" value="demo"></el-option>
     </el-select>
+    <el-select v-model="sys" slot="prepend" placeholder="请选择">
+        <el-option label="supply" value="supply"></el-option>
+        <el-option label="hosp" value="hosp"></el-option>
+    </el-select>
     <el-input v-model="loginUrl"></el-input>
+
 </div>
 </template>
 

@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify,request
 from flask_cors import CORS
 
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
@@ -30,6 +30,13 @@ def getInterInfo(interName):
 def getLoginEnv(sys):
     loginEnv = getLoginEnvMongoDB().getLoginEnvCollection(sys)
     return json.dumps(loginEnv)
+    
+@app.route('/runSingleInter', methods=['POST'])
+def runSingleInter():
+    print(json.loads(request.get_data(as_text=True)))
+    # loginEnv = getLoginEnvMongoDB().getLoginEnvCollection(sys)
+    # return json.dumps(loginEnv)
+    return ('hello')
 
 if __name__ == '__main__':
     # getLoginEnv("supply")

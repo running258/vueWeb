@@ -2,12 +2,12 @@
 <div id="InterfaceDetailForm">
 
     <div style="margin-top: 15px;">
-        <el-input placeholder="请输入接口地址" v-model="path" class="input-with-select" >
-        <el-select v-model="method" slot="prepend" placeholder="请选择">
-            <el-option label="GET" value="GET"></el-option>
-            <el-option label="POST" value="POST"></el-option>
-            <el-option label="PUT" value="PUT"></el-option>
-        </el-select>
+        <el-input placeholder="请输入接口地址" v-model="path" class="input-with-select">
+            <el-select v-model="method" slot="prepend" placeholder="请选择">
+                <el-option label="GET" value="GET"></el-option>
+                <el-option label="POST" value="POST"></el-option>
+                <el-option label="PUT" value="PUT"></el-option>
+            </el-select>
         </el-input>
     </div>
     <div>
@@ -37,6 +37,9 @@
             </el-input>
         </div>
     </div>
+
+    <el-button type="primary" icon="el-icon-caret-right" @click="run()">运行</el-button>
+
 </div>
 </template>
 
@@ -44,9 +47,9 @@
 export default {
     data() {
         return {
-            interInfo:[],
-            interName:'',
-            description:'',
+            interInfo: [],
+            interName: '',
+            description: '',
             activeName: 'payload',
             path: '',
             method: '',
@@ -54,7 +57,7 @@ export default {
                 'header': '',
                 'value': '',
             }],
-            payloadList: [{ 
+            payloadList: [{
                 'name': '',
                 'value': ''
             }],
@@ -62,6 +65,29 @@ export default {
         };
     },
     methods: {
+        run() {
+            this.axios.post('http://localhost:5000/runSingleInter',{
+                    "addRole": {
+                        "path": "/api1/api/account/role/create",
+                        "method": "post",
+                        "header": {
+                            "content-type": "application/json"
+                        },
+                        "params": {
+                            "resIdList": [0, 3, 6, 12, 63, 15, 18, 24, 60, 27, 21, 30, 33, 66, 62, 69, 161, 164, 167, 170, 173, 72, 75, 102],
+                            "roleVo": {
+                                "name": "interfaceRole",
+                                "description": "",
+                                "builtIn": 2
+                            }
+                        }
+                    }
+                })
+                .then(res => {
+                    console.log(res)
+                })
+
+        },
         addHeader() {
             this.headerList.push({
                 'header': '',
@@ -85,38 +111,48 @@ export default {
     },
     created() {
         var interName = this.$route.params.interName
-        if (interName!='') {
-            this.axios.get('http://localhost:5000/interInfo/'+interName)
-            .then((response) => {
-                this.interInfo = response["data"]
-                this.method = this.interInfo["method"]
-                this.path = this.interInfo["path"]
-                this.interName = this.interInfo["interName"]
-                this.description = this.interInfo["description"]
-                var header = this.interInfo["header"]
-                var headerInitFlag = true
-                var paramInitFlag = true
-                for (var key in header) {
-                    if (headerInitFlag) {
-                        this.headerList = [{'header':key,'value':JSON.stringify(header[key])}]
-                        headerInitFlag = false
+        if (interName != '') {
+            this.axios.get('http://localhost:5000/interInfo/' + interName)
+                .then((response) => {
+                    this.interInfo = response["data"]
+                    this.method = this.interInfo["method"]
+                    this.path = this.interInfo["path"]
+                    this.interName = this.interInfo["interName"]
+                    this.description = this.interInfo["description"]
+                    var header = this.interInfo["header"]
+                    var headerInitFlag = true
+                    var paramInitFlag = true
+                    for (var key in header) {
+                        if (headerInitFlag) {
+                            this.headerList = [{
+                                'header': key,
+                                'value': JSON.stringify(header[key])
+                            }]
+                            headerInitFlag = false
+                        } else {
+                            this.headerList.push({
+                                'header': key,
+                                'value': JSON.stringify(header[key])
+                            })
+                        }
                     }
-                    else{
-                        this.headerList.push({'header':key,'value':JSON.stringify(header[key])})
+                    var params = this.interInfo["params"]
+                    for (var key in params) {
+                        if (paramInitFlag) {
+                            this.payloadList = [{
+                                'name': key,
+                                'value': JSON.stringify(params[key])
+                            }]
+                            paramInitFlag = false
+                        } else {
+                            this.payloadList.push({
+                                'name': key,
+                                'value': JSON.stringify(params[key])
+                            })
+                        }
                     }
-                }
-                var params = this.interInfo["params"]
-                for (var key in params) {
-                    if (paramInitFlag) {
-                        this.payloadList = [{'name':key,'value':JSON.stringify(params[key])}]
-                        paramInitFlag = false
-                    }
-                    else{
-                        this.payloadList.push({'name':key,'value':JSON.stringify(params[key])})
-                    }
-                }
 
-            })
+                })
         }
     },
     mounted() {}
