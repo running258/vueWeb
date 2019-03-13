@@ -13,12 +13,15 @@ Vue.prototype.axios = axios
 import Project from "./components/Project.vue"
 import ProjectDetail from "./components/ProjectDetail.vue"
 import InterfaceDetail from "./components/InterfaceDetail.vue"
+import VAView from "./components/VAView.vue"
 
 const routes = [
   {path:'*', redirect:"/Project"},
   {path:'/Project', component:Project},
   {path:'/ProjectDetail/:aid', component:ProjectDetail},
-  {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail}
+  {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail},
+  {path:'/VAView/:VAName', component:VAView}
+
 ]
 
 const router = new VueRouter({

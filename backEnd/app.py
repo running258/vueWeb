@@ -5,6 +5,7 @@ from flask_cors import CORS
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
+from src.dao.getVAMongoDB import getVAMongoDB
 from src.requestsTemp import requestsTemp
 
 app = Flask(__name__)
@@ -49,6 +50,12 @@ def saveInterAndUpdateProject():
     print(interId)
     getProjectsMongoDB().updateProjectInter(projectName,interId,interName)
     return "done"
+
+#get VA env
+@app.route('/getVA/<vaName>', methods=['GET'])
+def getVA(vaName):
+    vaRes = getVAMongoDB().getVAByName(vaName)
+    return json.dumps(vaRes)
 
 if __name__ == '__main__':
     # getLoginEnv("supply")
