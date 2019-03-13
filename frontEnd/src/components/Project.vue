@@ -22,7 +22,7 @@
         <div slot="header" class="clearfix">
             <router-link :to="'/ProjectDetails/'+index"><span>{{project.projectName}}</span></router-link>  <span>{{project.author}}/{{project.description}}</span>
         </div>
-        <div v-for="(inter,index) in project.interfaces" :key="index"><router-link :to="'/InterfaceDetail/'+inter.interName">{{inter.interName}}</router-link></div>
+        <div v-for="(inter,index) in project.interfaces" :key="index"><router-link :to="'/project/'+project.projectName+'/InterfaceDetail/'+inter.interId">{{inter.interName}}</router-link></div>
     </el-card>
 
     <!-- <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
@@ -100,7 +100,7 @@ export default {
     created() {
         // this.restaurants = this.loadAll();
         // 加载所有项目
-        this.axios.get('http://localhost:5000/projects')
+        this.axios.get('http://localhost:5000/getProjects')
             .then((response) => {
                 this.allProjects = response["data"]
             })

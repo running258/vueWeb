@@ -5,38 +5,50 @@ from flask_cors import CORS
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
+from src.requestsTemp import requestsTemp
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('Hello World!')     
-
-
-@app.route('/projects', methods=['GET'])
+#get all projects 
+@app.route('/getProjects', methods=['GET'])
 def getProjects():
     projectsList = getProjectsMongoDB().getAllProjects()
+    print(projectsList)
     return json.dumps(projectsList)
 
-@app.route('/interInfo/<interName>', methods=['GET'])
-# def getInterInfo(interfaceId,interName):
-def getInterInfo(interName):
-    interInfo = getInterfacesMongoDB().getInterfacesCollection("5c7e21b2a76ccc33d0dde741",interName)
-    # interInfo = getInterfacesMongoDB().getInterfacesCollection(interfaceId,interName)
+#get all interface by interName
+@app.route('/interInfo/<interId>', methods=['GET'])
+def getInterInfoWithID(interId):
+    interInfo = getInterfacesMongoDB().getInterfacesCollectionWithInterID(interId)
     return json.dumps(interInfo)
 
+#get sys env
 @app.route('/loginEnv/<sys>', methods=['GET'])
 def getLoginEnv(sys):
     loginEnv = getLoginEnvMongoDB().getLoginEnvCollection(sys)
     return json.dumps(loginEnv)
     
+#call interface
 @app.route('/runSingleInter', methods=['POST'])
 def runSingleInter():
-    print(json.loads(request.get_data(as_text=True)))
+    singleInterJson = json.loads(request.get_data(as_text=True))
+    # res = requestsTemp("supply").supplyRequestsMongo("demoTest","addRole")
+    res = requestsTemp("supply").supplyRequests(singleInterJson)
     # loginEnv = getLoginEnvMongoDB().getLoginEnvCollection(sys)
     # return json.dumps(loginEnv)
-    return ('hello')
+    return json.dumps(res)
+
+#save interface and update project
+@app.route('/saveInterAndUpdateProject', methods=['POST'])
+def saveInterAndUpdateProject():
+    interJson = json.loads(request.get_data(as_text=True))
+    projectName = interJson["projectName"]
+    interName = interJson["interName"]
+    interId = getInterfacesMongoDB().insertInterfacesCollection(interJson)
+    print(interId)
+    getProjectsMongoDB().updateProjectInter(projectName,interId,interName)
+    return "done"
 
 if __name__ == '__main__':
     # getLoginEnv("supply")

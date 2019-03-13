@@ -22,3 +22,11 @@ class getProjectsMongoDB(mongoConn):
         result.pop("_id")
         return result
 
+    def updateProjectInter(self,projectName,interId,interName):
+        updateInter = {'interId':str(interId),'interName':interName}
+        projectRes = self.getProjectsByProjectName(projectName)
+        interfaces = projectRes["interfaces"]
+        interfaces.append(updateInter)
+        projectRes["interfaces"] = interfaces
+        result = self.db.projects.update({"projectName":projectName},projectRes)
+        return result

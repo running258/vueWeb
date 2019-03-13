@@ -10,7 +10,23 @@ class getInterfacesMongoDB(mongoConn):
     def __init__(self):
         self.db = mongoConn().getConnection()
 
-    def getInterfacesCollection(self,interfaceId,interName):
+    def getInterfacesCollectionWithInterName(interName):
+        result = self.db.interfaces.find({"interName":interName})
+        result.pop("_id")
+        return result
+
+    def getInterfacesCollectionWithInterID(self,interfaceId):
+        result = self.db.interfaces.find_one({"_id":ObjectId(interfaceId)})
+        result.pop("_id")
+        return result
+    
+    def getInterfacesCollectionWithInterIDAndName(self,interfaceId,interName):
         result = self.db.interfaces.find_one({"_id":ObjectId(interfaceId),"interName":interName})
         result.pop("_id")
         return result
+
+    def insertInterfacesCollection(self,interData):
+        interData.pop("projectName")
+        result = self.db.interfaces.insert(interData)
+        return result
+

@@ -18,7 +18,7 @@ const routes = [
   {path:'*', redirect:"/Project"},
   {path:'/Project', component:Project},
   {path:'/ProjectDetail/:aid', component:ProjectDetail},
-  {path:'/InterfaceDetail/:interName', component:InterfaceDetail}
+  {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail}
 ]
 
 const router = new VueRouter({

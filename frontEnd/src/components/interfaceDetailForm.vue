@@ -1,6 +1,8 @@
 <template>
 <div id="InterfaceDetailForm">
 
+    {{this.$route.params}}
+    <el-input placeholder="接口名称" class="interName" v-model="interName"></el-input>
     <div style="margin-top: 15px;">
         <el-input placeholder="请输入接口地址" v-model="path" class="input-with-select">
             <el-select v-model="method" slot="prepend" placeholder="请选择">
@@ -37,8 +39,10 @@
             </el-input>
         </div>
     </div>
+    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="运行结果" v-model="runResult"></el-input>
 
-    <el-button type="primary" icon="el-icon-caret-right" @click="run()">运行</el-button>
+    <el-button type="primary" icon="el-icon-caret-right" @click="run(projectName)">运行</el-button>
+    <el-button type="primary" icon="el-icon-caret-right" @click="save(projectName)">保存</el-button>
 
 </div>
 </template>
@@ -47,6 +51,7 @@
 export default {
     data() {
         return {
+            projectName: this.$route.params.projectName,
             interInfo: [],
             interName: '',
             description: '',
@@ -61,32 +66,68 @@ export default {
                 'name': '',
                 'value': ''
             }],
-            rawarea: ''
+            rawarea: '',
+            runResult: '',
+            interJson: {}
         };
     },
     methods: {
-        run() {
-            this.axios.post('http://localhost:5000/runSingleInter',{
-                    "addRole": {
-                        "path": "/api1/api/account/role/create",
-                        "method": "post",
-                        "header": {
-                            "content-type": "application/json"
-                        },
-                        "params": {
-                            "resIdList": [0, 3, 6, 12, 63, 15, 18, 24, 60, 27, 21, 30, 33, 66, 62, 69, 161, 164, 167, 170, 173, 72, 75, 102],
-                            "roleVo": {
-                                "name": "interfaceRole",
-                                "description": "",
-                                "builtIn": 2
-                            }
-                        }
-                    }
-                })
-                .then(res => {
-                    console.log(res)
+        run(projectName) {
+            this.getInterJson(projectName)
+            this.axios.post('http://localhost:5000/runSingleInter', this.interJson)
+                .then(response => {
+                    this.runResult = JSON.stringify(response["data"])
                 })
 
+        },
+        save(projectName) {
+            this.getInterJson(projectName)
+            console.log(this.interJson)
+            this.axios.post('http://localhost:5000/saveInterAndUpdateProject', this.interJson)
+                .then(response => {
+                    this.runResult = JSON.stringify(response["data"])
+                })
+
+        },
+        getInterJson(projectName) {
+            var headerList = this.headerList
+            var paramList = this.payloadList
+            var headerStr = ""
+            var paramStr = ""
+            headerList.forEach(element => {
+                var header = element["header"]
+                var value = element["value"]
+                if (header != '' && value != '') {
+                    if (headerStr.length == 0) {
+                        headerStr = "\"" + header + "\":" + value
+                    } else {
+                        headerStr = headerStr + ",\"" + header + "\":" + value
+                    }
+                }
+            });
+            headerStr = "{" + headerStr + "}"
+            paramList.forEach(element => {
+                var header = element["name"]
+                var value = element["value"]
+                if (header != '' && value != '') {
+                    if (paramStr.length == 0) {
+                        paramStr = "\"" + header + "\":" + value
+                    } else {
+                        paramStr = paramStr + ",\"" + header + "\":" + value
+                    }
+                }
+            });
+            paramStr = "{" + paramStr + "}"
+            var headerJson = JSON.parse(headerStr)
+            var paramJson = JSON.parse(paramStr)
+            this.interJson = {
+                "interName": this.interName,
+                "path": this.path,
+                "method": this.method,
+                "header": headerJson,
+                "params": paramJson,
+                "projectName": projectName
+            }
         },
         addHeader() {
             this.headerList.push({
@@ -110,9 +151,9 @@ export default {
 
     },
     created() {
-        var interName = this.$route.params.interName
-        if (interName != '') {
-            this.axios.get('http://localhost:5000/interInfo/' + interName)
+        var interId = this.$route.params.interId
+        if (interId != '') {
+            this.axios.get('http://localhost:5000/interInfo/' + interId)
                 .then((response) => {
                     this.interInfo = response["data"]
                     this.method = this.interInfo["method"]
