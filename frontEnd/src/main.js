@@ -18,9 +18,9 @@ import VAView from "./components/VAView.vue"
 const routes = [
   {path:'*', redirect:"/Project"},
   {path:'/Project', component:Project},
-  {path:'/ProjectDetail/:aid', component:ProjectDetail},
+  {path:'/ProjectDetail/:projectName', component:ProjectDetail},
   {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail},
-  {path:'/VAView/:VAName', component:VAView}
+  {path:'/VAView/:VAName', component:VAView},
 
 ]
 

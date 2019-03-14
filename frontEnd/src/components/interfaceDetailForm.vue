@@ -1,7 +1,6 @@
 <template>
 <div id="InterfaceDetailForm">
 
-    {{this.$route.params}}
     <el-input placeholder="接口名称" class="interName" v-model="interName"></el-input>
     <div style="margin-top: 15px;">
         <el-input placeholder="请输入接口地址" v-model="path" class="input-with-select">
@@ -152,7 +151,7 @@ export default {
     },
     created() {
         var interId = this.$route.params.interId
-        if (interId != '') {
+        if (interId != '' && interId != 'NULL') {
             this.axios.get('http://localhost:5000/interInfo/' + interId)
                 .then((response) => {
                     this.interInfo = response["data"]

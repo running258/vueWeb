@@ -19,13 +19,14 @@ export default {
     data() {
         return {
             env:"",
-            loginUrl:""
+            loginUrl:"",
+            sys:""
         }
     },
     created() {
         var interName = this.$route.params.interName
         if (interName != '') {
-            this.axios.get('http://localhost:5000/loginEnv/' + sys)
+            this.axios.get('http://localhost:5000/loginEnv/' + this.sys)
                 .then((response) => {
                     this.interInfo = response["data"]
                     this.method = this.interInfo["method"]

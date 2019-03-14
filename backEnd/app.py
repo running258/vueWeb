@@ -15,8 +15,30 @@ CORS(app)
 @app.route('/getProjects', methods=['GET'])
 def getProjects():
     projectsList = getProjectsMongoDB().getAllProjects()
-    print(projectsList)
     return json.dumps(projectsList)
+
+@app.route('/getProjectAndIntersByProjectName/<projectName>', methods=['GET'])
+def getProjectAndIntersByProjectName(projectName):
+    projectInfo = getProjectsMongoDB().getProjectsByProjectName(projectName)
+    interList = projectInfo["interfaces"]
+    interQueryList = []    
+    for inter in interList:
+        interId = inter["interId"]
+        interName = inter["interName"]
+        interInfo = getInterfacesMongoDB().getInterfacesCollectionWithInterIDAndName(interId,interName)
+        interInfo["interId"] = interId
+        interQueryList.append(interInfo)
+    projectInfo["interfaces"] = interQueryList
+    return json.dumps(projectInfo)
+
+
+@app.route('/insertNewProject', methods=['POST'])
+def insertNewProject():
+    newProjectJson = json.loads(request.get_data(as_text=True))
+    newProject = getProjectsMongoDB().insertNewProject(newProjectJson)
+    return "done"
+    # return json.dumps(newProject)
+
 
 #get all interface by interName
 @app.route('/interInfo/<interId>', methods=['GET'])
@@ -34,10 +56,7 @@ def getLoginEnv(sys):
 @app.route('/runSingleInter', methods=['POST'])
 def runSingleInter():
     singleInterJson = json.loads(request.get_data(as_text=True))
-    # res = requestsTemp("supply").supplyRequestsMongo("demoTest","addRole")
     res = requestsTemp("supply").supplyRequests(singleInterJson)
-    # loginEnv = getLoginEnvMongoDB().getLoginEnvCollection(sys)
-    # return json.dumps(loginEnv)
     return json.dumps(res)
 
 #save interface and update project
@@ -47,7 +66,6 @@ def saveInterAndUpdateProject():
     projectName = interJson["projectName"]
     interName = interJson["interName"]
     interId = getInterfacesMongoDB().insertInterfacesCollection(interJson)
-    print(interId)
     getProjectsMongoDB().updateProjectInter(projectName,interId,interName)
     return "done"
 
@@ -58,5 +76,4 @@ def getVA(vaName):
     return json.dumps(vaRes)
 
 if __name__ == '__main__':
-    # getLoginEnv("supply")
     app.run()

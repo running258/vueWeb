@@ -1,8 +1,11 @@
-import os,sys
+import os
+import sys
 curPath = os.path.abspath(os.path.realpath(__file__))
 prePath = os.path.split(curPath)[0]
 sys.path.append(prePath)
 from getMongo import mongoConn
+
+
 
 class getProjectsMongoDB(mongoConn):
 
@@ -17,16 +20,21 @@ class getProjectsMongoDB(mongoConn):
             projectsList.append(result)
         return projectsList
 
-    def getProjectsByProjectName(self,projectName):
-        result = self.db.projects.find_one({"projectName":projectName})
+    def insertNewProject(self, newProjectJson):
+        result = self.db.projects.insert(newProjectJson)
+        return result
+
+    def getProjectsByProjectName(self, projectName):
+        result = self.db.projects.find_one({"projectName": projectName})
         result.pop("_id")
         return result
 
-    def updateProjectInter(self,projectName,interId,interName):
-        updateInter = {'interId':str(interId),'interName':interName}
+    def updateProjectInter(self, projectName, interId, interName):
+        updateInter = {'interId': str(interId), 'interName': interName}
         projectRes = self.getProjectsByProjectName(projectName)
         interfaces = projectRes["interfaces"]
         interfaces.append(updateInter)
         projectRes["interfaces"] = interfaces
-        result = self.db.projects.update({"projectName":projectName},projectRes)
+        result = self.db.projects.update(
+            {"projectName": projectName}, projectRes)
         return result
