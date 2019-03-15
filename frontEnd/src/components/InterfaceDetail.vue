@@ -1,9 +1,6 @@
 <template>
 <div id="interfaceDetail">
     <el-container>
-        <el-header>
-            <loginEnv></loginEnv>
-        </el-header>
         <el-main>
             <interForm></interForm>
         </el-main>
@@ -13,13 +10,11 @@
 
 <script>
 import InterfaceDetailForm from "./InterfaceDetailForm.vue"
-import InterfaceLoginEnv from "./InterfaceLoginEnv.vue"
 
 export default {
     name:"interfaceDetail",
     components:{
-        'interForm':InterfaceDetailForm,
-        'loginEnv':InterfaceLoginEnv
+        'interForm':InterfaceDetailForm
     }
 }
 </script>

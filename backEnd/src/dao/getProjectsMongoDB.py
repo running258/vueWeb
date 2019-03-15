@@ -35,6 +35,5 @@ class getProjectsMongoDB(mongoConn):
         interfaces = projectRes["interfaces"]
         interfaces.append(updateInter)
         projectRes["interfaces"] = interfaces
-        result = self.db.projects.update(
-            {"projectName": projectName}, projectRes)
+        result = self.db.projects.update({"projectName": projectName}, projectRes)
         return result

@@ -13,6 +13,7 @@ Vue.prototype.axios = axios
 import Project from "./components/Project.vue"
 import ProjectDetail from "./components/ProjectDetail.vue"
 import InterfaceDetail from "./components/InterfaceDetail.vue"
+import InterFaceLoginEnv from "./components/InterFaceLoginEnv.vue"
 import VAView from "./components/VAView.vue"
 
 const routes = [
@@ -20,8 +21,8 @@ const routes = [
   {path:'/Project', component:Project},
   {path:'/ProjectDetail/:projectName', component:ProjectDetail},
   {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail},
-  {path:'/VAView/:VAName', component:VAView},
-
+  {path:'/InterFaceLoginEnv/', component:InterFaceLoginEnv},
+  {path:'/VAView/:VAName', component:VAView}
 ]
 
 const router = new VueRouter({

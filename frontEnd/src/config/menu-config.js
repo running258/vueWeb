@@ -4,6 +4,10 @@ module.exports = [{
     sub: [{
       name: '工程目录',
       componentName: 'Project'
+    },
+    {
+      name: '环境管理',
+      componentName: 'LoginEnv'
     }]
   }, {
     name: 'VirtualAsset',

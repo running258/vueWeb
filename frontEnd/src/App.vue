@@ -15,7 +15,6 @@
 
 <script>
 import MenuBar from './components/MenuBar'
-import Project from './components/Project'
 
 export default {
     name: 'app',
@@ -23,8 +22,7 @@ export default {
         return {}
     },
     components:{
-        'MenuBar':MenuBar,
-        'Project':Project
+        'MenuBar':MenuBar
     }
 }
 </script>

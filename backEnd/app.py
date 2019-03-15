@@ -31,6 +31,23 @@ def getProjectAndIntersByProjectName(projectName):
     projectInfo["interfaces"] = interQueryList
     return json.dumps(projectInfo)
 
+@app.route('/getAllLoginEnv', methods=['GET'])
+def getAllLoginEnv():
+    loginEnv = getLoginEnvMongoDB().getAllLoginEnv()
+    return json.dumps(loginEnv)
+
+@app.route('/updateLoginEnv', methods=['POST'])
+def updateLoginEnv():
+    loginEnvJson = json.loads(request.get_data(as_text=True))
+    if loginEnvJson["_id"]!='':
+        _id = loginEnvJson["_id"]
+        loginEnvJson.pop("_id")
+        updateResult = getLoginEnvMongoDB().updateLoginEnv(_id,loginEnvJson)
+    else:
+        loginEnvJson.pop("_id")
+        insertResult = getLoginEnvMongoDB().insertLoginEnvCollection(loginEnvJson)
+    return "done"
+
 
 @app.route('/insertNewProject', methods=['POST'])
 def insertNewProject():
@@ -39,19 +56,12 @@ def insertNewProject():
     return "done"
     # return json.dumps(newProject)
 
-
 #get all interface by interName
 @app.route('/interInfo/<interId>', methods=['GET'])
 def getInterInfoWithID(interId):
     interInfo = getInterfacesMongoDB().getInterfacesCollectionWithInterID(interId)
     return json.dumps(interInfo)
 
-#get sys env
-@app.route('/loginEnv/<sys>', methods=['GET'])
-def getLoginEnv(sys):
-    loginEnv = getLoginEnvMongoDB().getLoginEnvCollection(sys)
-    return json.dumps(loginEnv)
-    
 #call interface
 @app.route('/runSingleInter', methods=['POST'])
 def runSingleInter():

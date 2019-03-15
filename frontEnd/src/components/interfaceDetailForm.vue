@@ -81,7 +81,6 @@ export default {
         },
         save(projectName) {
             this.getInterJson(projectName)
-            console.log(this.interJson)
             this.axios.post('http://localhost:5000/saveInterAndUpdateProject', this.interJson)
                 .then(response => {
                     this.runResult = JSON.stringify(response["data"])
