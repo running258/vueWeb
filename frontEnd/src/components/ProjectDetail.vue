@@ -33,7 +33,8 @@ export default {
        
     },
     created() {
-        this.axios.get("http://localhost:5000/getProjectAndIntersByProjectName/" + this.$route.params.projectName)
+        console.log(this.$route.query)
+        this.axios.get("http://localhost:5000/getProjectAndIntersByProjectName/" + this.$route.query.projectName)
             .then((res) => {
                 this.projectName = res["data"]["projectName"]
                 this.author = res["data"]["author"]

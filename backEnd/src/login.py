@@ -4,7 +4,7 @@ from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
 
 class LoginWithMongo(object):
     
-    def __init__(self, sys,env="staging"):
+    def __init__(self,sys,env):
         result = getLoginEnvMongoDB().getLoginEnvCollection(sys,env)
         self.url = result["url"]
         self.path = result["path"]

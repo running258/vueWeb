@@ -19,7 +19,7 @@ import VAView from "./components/VAView.vue"
 const routes = [
   {path:'*', redirect:"/Project"},
   {path:'/Project', component:Project},
-  {path:'/ProjectDetail/:projectName', component:ProjectDetail},
+  {path:'/ProjectDetail', component:ProjectDetail},
   {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail},
   {path:'/InterFaceLoginEnv/', component:InterFaceLoginEnv},
   {path:'/VAView/:VAName', component:VAView}

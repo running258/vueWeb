@@ -1,0 +1,15 @@
+{
+  "_id": {
+    "$oid": "5c7dcfefbcbdff1128716518"
+  },
+  "projectName": "demotest01",
+  "author": "ZLY",
+  "description": "demo test01",
+  "env": "staging",
+  "interfaces": [
+    {
+      "interId": "5c7e21b2a76ccc33d0dde741",
+      "interName": "addRole"
+    }
+  ]
+}

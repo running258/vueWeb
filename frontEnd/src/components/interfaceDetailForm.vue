@@ -1,7 +1,8 @@
 <template>
 <div id="InterfaceDetailForm">
-
     <el-input placeholder="接口名称" class="interName" v-model="interName"></el-input>
+    <el-radio v-model="sys" label="supply">供端</el-radio>
+    <el-radio v-model="sys" label="hosp">院端</el-radio>
     <div style="margin-top: 15px;">
         <el-input placeholder="请输入接口地址" v-model="path" class="input-with-select">
             <el-select v-model="method" slot="prepend" placeholder="请选择">
@@ -52,6 +53,7 @@ export default {
         return {
             projectName: this.$route.params.projectName,
             interInfo: [],
+            sys:'',
             interName: '',
             description: '',
             activeName: 'payload',
@@ -119,6 +121,7 @@ export default {
             var headerJson = JSON.parse(headerStr)
             var paramJson = JSON.parse(paramStr)
             this.interJson = {
+                "sys":this.sys,
                 "interName": this.interName,
                 "path": this.path,
                 "method": this.method,

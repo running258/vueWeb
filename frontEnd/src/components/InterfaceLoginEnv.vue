@@ -50,7 +50,6 @@ export default {
         saveLoginEnv(index,_id) {
             var loginInfo = JSON.stringify(this.loginEnvList[index])
             loginInfo = JSON.parse(loginInfo)
-            // this.axios.post("http://localhost:5000/updateLoginEnv/",loginInfo)
             this.axios.post("http://localhost:5000/updateLoginEnv",this.loginEnvList[index])
             .then((res)=>{
                 console.log(res)

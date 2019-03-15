@@ -10,7 +10,8 @@
     <el-button type="primary" @click="dialogVisible = true">新建项目</el-button>
     <el-card class="box-card" v-for="(project,index) in allProjects" :key="index">
         <div slot="header" class="clearfix">
-            <router-link :to="'/ProjectDetail/'+project.projectName"><span>{{project.projectName}}</span></router-link> <span class="authorAndDes">{{project.author}}/{{project.description}}</span>
+            <!-- <router-link :to="'/ProjectDetail/'+project.projectName"><span>{{project.projectName}}</span></router-link> <span class="authorAndDes">{{project.author}}/{{project.description}}</span> -->
+            <router-link :to="{path:'/ProjectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link> <span class="authorAndDes">{{project.author}}/{{project.description}}</span>
         </div>
         <div v-for="(inter,index) in project.interfaces" :key="index">
             <router-link :to="'/project/'+project.projectName+'/InterfaceDetail/'+inter.interId">{{inter.interName}}</router-link>

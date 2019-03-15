@@ -14,9 +14,10 @@ from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 class requestsTemp(LoginWithMongo):
 
     def supplyRequests(self, jsonData, returnType = "json", extraParams={},  extraPath=""):
-        authorization = LoginWithMongo("supply").supplyLogin()
-        # authorization = Login().supplyLogin()
         data = jsonData
+        sys = jsonData["sys"]
+        env = jsonData["env"]
+        authorization = LoginWithMongo(sys,env).supplyLogin()
         method = data["method"]
         path = data["path"]+extraPath
         header = data["header"]

@@ -48,13 +48,11 @@ def updateLoginEnv():
         insertResult = getLoginEnvMongoDB().insertLoginEnvCollection(loginEnvJson)
     return "done"
 
-
 @app.route('/insertNewProject', methods=['POST'])
 def insertNewProject():
     newProjectJson = json.loads(request.get_data(as_text=True))
     newProject = getProjectsMongoDB().insertNewProject(newProjectJson)
     return "done"
-    # return json.dumps(newProject)
 
 #get all interface by interName
 @app.route('/interInfo/<interId>', methods=['GET'])
@@ -66,7 +64,9 @@ def getInterInfoWithID(interId):
 @app.route('/runSingleInter', methods=['POST'])
 def runSingleInter():
     singleInterJson = json.loads(request.get_data(as_text=True))
-    res = requestsTemp("supply").supplyRequests(singleInterJson)
+    sys = singleInterJson["sys"]
+    env = singleInterJson["env"]
+    res = requestsTemp(sys,env).supplyRequests(singleInterJson)
     return json.dumps(res)
 
 #save interface and update project

@@ -15,6 +15,10 @@ class getLoginEnvMongoDB(mongoConn):
             loginList.append(result)
         return loginList
 
+    def getLoginEnvCollection(self,sys,env="staging"):
+        result = self.db.loginEnv.find_one({"sys":sys,"env":env})
+        result.pop("_id")
+        return result
         
     def insertLoginEnvCollection(self,loginInfo):
         result = self.db.loginEnv.insert(loginInfo)
