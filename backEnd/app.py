@@ -6,6 +6,7 @@ from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
 from src.dao.getVAMongoDB import getVAMongoDB
+from record.record import record
 from src.requestsTemp import requestsTemp
 
 app = Flask(__name__)
@@ -84,6 +85,14 @@ def saveInterAndUpdateProject():
 def getVA(vaName):
     vaRes = getVAMongoDB().getVAByName(vaName)
     return json.dumps(vaRes)
+
+#get VA env
+@app.route('/Record', methods=['POST'])
+def Record():
+    runEnv = json.loads(request.get_data(as_text=True))
+    vaRes = record().setUP(runEnv)
+    return "done"
+
 
 if __name__ == '__main__':
     app.run()

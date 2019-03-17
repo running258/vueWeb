@@ -15,6 +15,7 @@ import ProjectDetail from "./components/ProjectDetail.vue"
 import InterfaceDetail from "./components/InterfaceDetail.vue"
 import InterFaceLoginEnv from "./components/InterFaceLoginEnv.vue"
 import VAView from "./components/VAView.vue"
+import Record from "./components/Record.vue"
 
 const routes = [
   {path:'*', redirect:"/Project"},
@@ -22,7 +23,8 @@ const routes = [
   {path:'/ProjectDetail', component:ProjectDetail},
   {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail},
   {path:'/InterFaceLoginEnv/', component:InterFaceLoginEnv},
-  {path:'/VAView/:VAName', component:VAView}
+  {path:'/VAView/:VAName', component:VAView},
+  {path:'/Record', component:Record}
 ]
 
 const router = new VueRouter({

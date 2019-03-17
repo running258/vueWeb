@@ -8,4 +8,7 @@ https://www.cnblogs.com/rosestudy/p/4857433.html   open local allure report in c
 https://www.cnblogs.com/jiyukai/p/6980104.html
 
 
-magnet:?xt=urn:btih:9889415B5BCD6837F6FEB89C2DCC15746F76C252
+https://www.cnblogs.com/guanfuchang/p/6921336.html
+https://www.jianshu.com/p/304f4dfae0bb
+https://cuiqingcai.com/5391.html
+https://blog.csdn.net/qq_29493353/article/details/82019372

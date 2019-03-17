@@ -9,7 +9,10 @@
     "backEnd\\src\\__pycache__": true,
     "backEnd\\src\\entity\\__pycache__": true,
     "backEnd\\src\\dao\\__pycache__": true,
-    "frontEnd\\node_modules": true,
-    "backEnd\\__pycache__": true
+    "backEnd\\__pycache__": true,
+    "backEnd\\sproxy\\__pycache__": true,
+    "backEnd\\sproxy\\utils\\__pycache__": true,
+    "backEnd\\record\\__pycache__": true,
+    "frontEnd\\node_modules": true
   }
 }
