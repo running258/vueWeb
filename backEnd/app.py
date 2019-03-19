@@ -6,7 +6,7 @@ from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
 from src.dao.getVAMongoDB import getVAMongoDB
-from record.record import record
+# from record.record import record
 from src.requestsTemp import requestsTemp
 
 app = Flask(__name__)

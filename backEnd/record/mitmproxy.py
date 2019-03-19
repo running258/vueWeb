@@ -1,8 +1,8 @@
 
 
-        flow.request.headers['User-Agent'] = 'MitmProxy'
+        # flow.request.headers['User-Agent'] = 'MitmProxy'
 
-        ctx.log.info(str(flow.request.headers))
+        # ctx.log.info(str(flow.request.headers))
 
 
-        print(str(flow.request))
+        # print(str(flow.request))

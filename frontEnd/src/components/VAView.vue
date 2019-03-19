@@ -1,6 +1,6 @@
 <template>
     <div id="VAView">
-    {{this.$route.params}}
+    {{VAResponse}}
         
     </div>
 </template>
@@ -9,13 +9,13 @@
     export default {
         data(){
             return{
-                
+                VAResponse:''
             }
         },
         created() {
             this.axios.get("http://localhost:5000/getVA/"+this.$route.params.VAName)
             .then((res)=>{
-                console.log(res)
+                this.VAResponse = res["data"]
             })
         },
     }
