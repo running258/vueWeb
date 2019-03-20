@@ -67,8 +67,12 @@ def runSingleInter():
     singleInterJson = json.loads(request.get_data(as_text=True))
     sys = singleInterJson["sys"]
     env = singleInterJson["env"]
-    res = requestsTemp(sys,env).supplyRequests(singleInterJson)
-    return json.dumps(res)
+    username = singleInterJson["newUsername"]
+    password = singleInterJson["newPassword"]
+    if sys == "supply":
+        res = requestsTemp(env,username,password).supplyRequests(singleInterJson)
+        print(res)
+        return json.dumps(res)
 
 #save interface and update project
 @app.route('/saveInterAndUpdateProject', methods=['POST'])
@@ -76,6 +80,12 @@ def saveInterAndUpdateProject():
     interJson = json.loads(request.get_data(as_text=True))
     projectName = interJson["projectName"]
     interName = interJson["interName"]
+    if interJson["newUsername"] != '':
+       interJson["username"] = interJson["newUsername"]
+       interJson.pop("newUsername")
+    if interJson["newPassword"] != '':
+       interJson["password"] = interJson["newPassword"]
+       interJson.pop("newPassword")
     interId = getInterfacesMongoDB().insertInterfacesCollection(interJson)
     getProjectsMongoDB().updateProjectInter(projectName,interId,interName)
     return "done"

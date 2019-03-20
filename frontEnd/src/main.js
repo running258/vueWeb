@@ -21,7 +21,7 @@ const routes = [
   {path:'*', redirect:"/Project"},
   {path:'/Project', component:Project},
   {path:'/ProjectDetail', component:ProjectDetail},
-  {path:'/Project/:projectName/InterfaceDetail/:interId', component:InterfaceDetail},
+  {path:'/Project/:projectName/:env/InterfaceDetail/:interId', component:InterfaceDetail},
   {path:'/InterFaceLoginEnv/', component:InterFaceLoginEnv},
   {path:'/VAView/:VAName', component:VAView},
   {path:'/Record', component:Record}

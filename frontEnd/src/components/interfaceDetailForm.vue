@@ -26,6 +26,12 @@
             <el-tab-pane label="payload" name="payload">payload</el-tab-pane>
             <el-tab-pane label="raw" name="raw">raw</el-tab-pane>
         </el-tabs>
+
+        <div>
+            <el-input placeholder="使用指定用户名登录" v-model="newUsername"></el-input>
+            <el-input placeholder="使用指定密码登录" v-model="newPassword"></el-input>
+        </div>
+        
         <div v-if="activeName=='payload'">
             <el-row v-for="(payload, index) in payloadList" :key="index">
                 <el-input placeholder="name" class="payloadName" v-model="payload.name"></el-input>
@@ -69,7 +75,9 @@ export default {
             }],
             rawarea: '',
             runResult: '',
-            interJson: {}
+            interJson: {},
+            newUsername:'',
+            newPassword:''
         };
     },
     methods: {
@@ -127,7 +135,10 @@ export default {
                 "method": this.method,
                 "header": headerJson,
                 "params": paramJson,
-                "projectName": projectName
+                "projectName": projectName,
+                "env": this.$route.params.env,   
+                "newUsername": this.newUsername,
+                "newPassword": this.newPassword
             }
         },
         addHeader() {
@@ -158,9 +169,12 @@ export default {
                 .then((response) => {
                     this.interInfo = response["data"]
                     this.method = this.interInfo["method"]
+                    this.sys = this.interInfo["sys"]
                     this.path = this.interInfo["path"]
                     this.interName = this.interInfo["interName"]
                     this.description = this.interInfo["description"]
+                    this.newUsername = this.interInfo["username"]
+                    this.newPassword = this.interInfo["password"]
                     var header = this.interInfo["header"]
                     var headerInitFlag = true
                     var paramInitFlag = true

@@ -27,6 +27,7 @@ class getInterfacesMongoDB(mongoConn):
 
     def insertInterfacesCollection(self,interData):
         interData.pop("projectName")
+        interData.pop("env")
         result = self.db.interfaces.insert(interData)
         return result
 

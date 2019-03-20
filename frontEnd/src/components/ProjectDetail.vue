@@ -1,19 +1,18 @@
 <template>
 <div id="projectDetail">
     <div class="projectInfoArea">
-        <span>{{projectName}}{{author}}{{description}}</span>
+        <span>{{projectName}}/{{author}}/{{description}}/{{env}}</span>
     </div>
     <router-link :to="'/project/'+projectName+'/InterfaceDetail/'+'NULL'"><span class="el-icon-plus" id="addNewInter"></span></router-link>
     <el-card class="box-card" v-for="(interInfo,index) in interList" :key="index">
-        <router-link :to="'/project/'+projectName+'/InterfaceDetail/'+interInfo.interId">{{interInfo.interName}}
-        <div class="interName">{{interInfo.interName}}</div>
-        <div>
-            <span>path:{{interInfo.path}}</span>
-            <span>method:{{interInfo.method}}</span><br>
-            <span>header:{{interInfo.header}}</span><br>
-            <span>params:{{interInfo.params}}</span><br>
-        </div>
-        </router-link>
+        <router-link :to="'/project/'+projectName+'/'+env+'/InterfaceDetail/'+interInfo.interId">{{interInfo.interName}}</router-link>
+            <div class="interName">{{interInfo.interName}}</div>
+            <div>
+                <span>path:{{interInfo.path}}</span>
+                <span>method:{{interInfo.method}}</span><br>
+                <span>header:{{interInfo.header}}</span><br>
+                <span>params:{{interInfo.params}}</span><br>
+            </div>
     </el-card>
 </div>
 </template>
@@ -24,6 +23,7 @@ export default {
         return {
             projectName: '',
             author: '',
+            env: '',
             description: '',
             interList: []
         }
@@ -38,6 +38,7 @@ export default {
             .then((res) => {
                 this.projectName = res["data"]["projectName"]
                 this.author = res["data"]["author"]
+                this.env = res["data"]["env"]
                 this.description = res["data"]["description"]
                 this.interList = res["data"]["interfaces"]
             })

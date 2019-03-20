@@ -15,9 +15,8 @@ class requestsTemp(LoginWithMongo):
 
     def supplyRequests(self, jsonData, returnType = "json", extraParams={},  extraPath=""):
         data = jsonData
-        sys = jsonData["sys"]
         env = jsonData["env"]
-        authorization = LoginWithMongo(sys,env).supplyLogin()
+        authorization = LoginWithMongo(env).supplyLogin()
         method = data["method"]
         path = data["path"]+extraPath
         header = data["header"]
@@ -28,12 +27,12 @@ class requestsTemp(LoginWithMongo):
 
         if method.lower() == "post":
             params = json.dumps(params)
-            res = requests.post(self.url+path, data=params,headers=header)
+            res = requests.post(self.supplyUrl+path, data=params,headers=header)
         elif method.lower() == "get":
-            res = requests.get(self.url+path, params=params,headers=header)
+            res = requests.get(self.supplyUrl+path, params=params,headers=header)
         elif method.lower() == "put":
             params = json.dumps(params)
-            res = requests.put(self.url+path, data=params,headers=header)
+            res = requests.put(self.supplyUrl+path, data=params,headers=header)
         else:
             raise Exception("no requests named %s"% (method))
 
@@ -58,12 +57,12 @@ class requestsTemp(LoginWithMongo):
         params = {**params, **extraParams}  # merge and update params with extraParams 
         if method.lower() == "post":
             params = json.dumps(params)
-            res = requests.post(self.url+path, data=params,headers=header)
+            res = requests.post(self.supplyUrl+path, data=params,headers=header)
         elif method.lower() == "get":
-            res = requests.get(self.url+path, params=params,headers=header)
+            res = requests.get(self.supplyUrl+path, params=params,headers=header)
         elif method.lower() == "put":
             params = json.dumps(params)
-            res = requests.put(self.url+path, data=params,headers=header)
+            res = requests.put(self.supplyUrl+path, data=params,headers=header)
         else:
             raise Exception("no requests named %s"% (method))
         # return different type of response with returnType
