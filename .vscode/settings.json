@@ -13,6 +13,7 @@
     "backEnd\\sproxy\\__pycache__": true,
     "backEnd\\sproxy\\utils\\__pycache__": true,
     "backEnd\\record\\__pycache__": true,
-    "frontEnd\\node_modules": true
+    "frontEnd\\node_modules": true,
+    "frontend\\node_modules": true
   }
 }

@@ -16,7 +16,7 @@ class requestsTemp(LoginWithMongo):
     def supplyRequests(self, jsonData, returnType = "json", extraParams={},  extraPath=""):
         data = jsonData
         env = jsonData["env"]
-        authorization = LoginWithMongo(env).supplyLogin()
+        authorization = LoginWithMongo(env,jsonData["runUsername"],jsonData["runPassword"]).supplyLogin()
         method = data["method"]
         path = data["path"]+extraPath
         header = data["header"]

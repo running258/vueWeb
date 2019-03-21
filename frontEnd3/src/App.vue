@@ -2,26 +2,31 @@
 <div id="app">
     <el-container>
         <el-aside width="200px" height="100%">
-            <MenuBar></MenuBar>
+          <MenuBar></MenuBar>
         </el-aside>
         <el-main>
             <router-view></router-view>
         </el-main>
     </el-container>
+    
+    
 </div>
 </template>
 
 <script>
-import MenuBar from './components/MenuBar.vue'
+import MenuBar from './components/MenuBar'
 
 export default {
     name: 'app',
-    components: {
-        MenuBar
+    data() {
+        return {}
+    },
+    components:{
+        'MenuBar':MenuBar
     }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+ 
 </style>

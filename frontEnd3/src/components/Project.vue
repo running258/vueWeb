@@ -10,7 +10,6 @@
     <el-button type="primary" @click="dialogVisible = true">新建项目</el-button>
     <el-card class="box-card" v-for="(project,index) in allProjects" :key="index">
         <div slot="header" class="clearfix">
-            <!-- <router-link :to="'/ProjectDetail/'+project.projectName"><span>{{project.projectName}}</span></router-link> <span class="authorAndDes">{{project.author}}/{{project.description}}</span> -->
             <router-link :to="{path:'/ProjectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link> <span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
         </div>
         <div v-for="(inter,index) in project.interfaces" :key="index">
@@ -26,7 +25,9 @@
             <el-option v-for="(loginEnv, index) in loginEnvList" :key="index" :label="loginEnv.env" :value="index"></el-option>
         </el-select>
         <div>供端地址：<el-input v-model="supplyUrl"></el-input>登录Path：<el-input v-model="supplyPath"></el-input></div>
+        <div>供端用户名：<el-input v-model="supplyUsername"></el-input>供端密码：<el-input v-model="supplyPassword"></el-input></div>
         <div>院端地址：<el-input v-model="hospUrl"></el-input>登录Path：<el-input v-model="hospPath"></el-input></div>
+        <div>院端用户名：<el-input v-model="hospUsername"></el-input>院端密码：<el-input v-model="hospPassword"></el-input></div>
         <el-input type="textarea" v-model="description" placeholder="描述"></el-input>
         <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -55,7 +56,11 @@ export default {
             supplyUrl:'',
             supplyPath:'',
             hospUrl:'',
-            hospPath:''
+            hospPath:'',
+            supplyUsername:'',
+            supplyPassword:'',
+            hospUsername:'',
+            hospPassword:''
         }
     },
     methods: {
@@ -79,6 +84,10 @@ export default {
                 "projectName": this.newProjectName,
                 "author": this.author,
                 "env":this.env,
+                "supplyUsername":this.supplyUsername,
+                "supplyPassword":this.supplyPassword,
+                "hospUsername":this.hospUsername,
+                "hospPassword":this.hospPassword,
                 "description": this.description,
                 "interfaces": []
             }

@@ -67,11 +67,10 @@ def runSingleInter():
     singleInterJson = json.loads(request.get_data(as_text=True))
     sys = singleInterJson["sys"]
     env = singleInterJson["env"]
-    username = singleInterJson["newUsername"]
-    password = singleInterJson["newPassword"]
+    username = singleInterJson["runUsername"]
+    password = singleInterJson["runPassword"]
     if sys == "supply":
         res = requestsTemp(env,username,password).supplyRequests(singleInterJson)
-        print(res)
         return json.dumps(res)
 
 #save interface and update project
@@ -80,12 +79,12 @@ def saveInterAndUpdateProject():
     interJson = json.loads(request.get_data(as_text=True))
     projectName = interJson["projectName"]
     interName = interJson["interName"]
-    if interJson["newUsername"] != '':
-       interJson["username"] = interJson["newUsername"]
-       interJson.pop("newUsername")
-    if interJson["newPassword"] != '':
-       interJson["password"] = interJson["newPassword"]
-       interJson.pop("newPassword")
+    if interJson["runUsername"] != '':
+       interJson["username"] = interJson["runUsername"]
+    if interJson["runPassword"] != '':
+       interJson["password"] = interJson["runPassword"]
+    interJson.pop("runUsername")
+    interJson.pop("runPassword")
     interId = getInterfacesMongoDB().insertInterfacesCollection(interJson)
     getProjectsMongoDB().updateProjectInter(projectName,interId,interName)
     return "done"
