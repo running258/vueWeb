@@ -2,7 +2,7 @@
 <div class="ProjectView">
     <ProjectList />
     {{dialogVisible}}
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" @showProjectWindow="showWindow">
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" @showWin="showWindow">
         <ProjectWindow />
     </el-dialog>
 
@@ -34,5 +34,6 @@ export default {
 }
 
 // https://segmentfault.com/a/1190000011744210?utm_source=tuicool&utm_medium=referral
+// https://www.cnblogs.com/peko/p/7465191.html
 
 </script>

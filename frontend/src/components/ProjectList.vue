@@ -7,7 +7,7 @@
             <div class="grid-content bg-purple-light"></div>
         </el-col>
     </el-row>
-    <el-button type="primary" @click="showProjectWindow('new')">新建项目</el-button>
+    <el-button type="primary" @click="showProjectWindow">新建项目</el-button>
     <el-card class="box-card" v-for="(project,index) in allProjects" :key="index">
         <div slot="header" class="clearfix">
             <router-link :to="{path:'/ProjectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link> <span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
@@ -35,10 +35,9 @@ export default {
     },
     methods: {
         // showProjectWindow(type){
-        showProjectWindow:function(type){
+        showProjectWindow:function(){
             // eventBus.$emit('showProjectWindow',type)
-            this.$emit('showProjectWindow',type)
-            console.log(type)
+            this.$emit('showWin',"new")
         }
     },
     created() {
