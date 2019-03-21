@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import menu from '../config/menu-config'
+import global from '@/config/global'
 
 export default {
     data() {
         return {
-            menu: menu
+            menu: global.menuBarList
         }
     },
     methods: {

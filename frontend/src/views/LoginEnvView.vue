@@ -4,14 +4,15 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import loginEnv from '@/components/LoginEnv.vue'; // @ is an alias to /src
+<script>
+import loginEnv from '@/components/LoginEnv.vue'; 
 
-@Component({
-  components: {
-    loginEnv
-  },
-})
-export default class LoginEnvView extends Vue {}
+
+export default {
+    name: 'LoginEnvView',
+    components: {
+        loginEnv
+    }
+}
+
 </script>

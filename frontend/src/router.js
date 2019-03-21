@@ -1,12 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// import ProjectDetail from "./components/ProjectDetail.vue"
-// import InterfaceDetail from "./components/InterfaceDetail.vue"
-// import InterFaceLoginEnv from "./components/InterFaceLoginEnv.vue"
-// import VAView from "./components/VAView.vue"
-// import Record from "./components/Record.vue"
-
 Vue.use(Router)
 
 export default new Router({
@@ -32,6 +26,13 @@ export default new Router({
 })
 
 
+// import ProjectDetail from "./components/ProjectDetail.vue"
+// import InterfaceDetail from "./components/InterfaceDetail.vue"
+// import InterFaceLoginEnv from "./components/InterFaceLoginEnv.vue"
+// import VAView from "./components/VAView.vue"
+// import Record from "./components/Record.vue"
+
+
 // const routes = [
 //   {path:'/ProjectDetail', component:ProjectDetail},
 //   {path:'/Project/:projectName/:env/InterfaceDetail/:interId', component:InterfaceDetail},
@@ -39,4 +40,3 @@ export default new Router({
 //   {path:'/VAView/:VAName', component:VAView},
 //   {path:'/Record', component:Record}
 // ]
-

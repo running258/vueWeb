@@ -1,23 +1,6 @@
 <template>
-<div id="Project">
-
-    <el-row>
-        <el-col :span="12"></el-col>
-        <el-col :span="12">
-            <div class="grid-content bg-purple-light"></div>
-        </el-col>
-    </el-row>
-    <el-button type="primary" @click="dialogVisible = true">新建项目</el-button>
-    <el-card class="box-card" v-for="(project,index) in allProjects" :key="index">
-        <div slot="header" class="clearfix">
-            <router-link :to="{path:'/ProjectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link> <span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
-        </div>
-        <div v-for="(inter,index) in project.interfaces" :key="index">
-            <router-link :to="'/project/'+project.projectName+'/'+project.env+'/InterfaceDetail/'+inter.interId">{{inter.interName}}</router-link>
-        </div>
-    </el-card>
-
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+<div id="ProjectWindow">
+    <div >
         <span>项目名称</span>
         <el-input v-model="newProjectName" placeholder="项目名称"></el-input>
         <el-input v-model="author" placeholder="项目名称"></el-input>
@@ -33,16 +16,19 @@
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="saveNewProject()">确 定</el-button>
         </span>
-    </el-dialog>
+    </div>
 
 </div>
 </template>
 
 <script>
+import eventBus from '@/js/eventBus'
+
 export default {
     name: "Project",
     data() {
         return {
+            windowShow: false,
             author: "",
             env: "",
             loginIndex:"",
@@ -64,13 +50,6 @@ export default {
         }
     },
     methods: {
-        handleClose(done) {
-            this.$confirm('确认关闭？')
-                .then(_ => {
-                    done();
-                })
-                .catch(_ => {});
-        },
         saveNewProject() {
             this.formatProjectJson()
             console.log(this.projectJson)
@@ -94,25 +73,19 @@ export default {
         },
         changeEnv() {
             var loginInfo = this.loginEnvList[this.loginIndex]
-            console.log(this.loginEnvList)
-            console.log(loginInfo)
             this.env = loginInfo["env"]
             this.supplyUrl = loginInfo["supply"]["url"]
             this.supplyPath = loginInfo["supply"]["path"]
             this.hospUrl = loginInfo["hosp"]["url"]
             this.hospPath = loginInfo["hosp"]["path"]
-        }
+        },
     },
-    created() {
-        // 加载所有项目
-        this.axios.get('http://localhost:5000/getProjects')
-            .then((response) => {
-                this.allProjects = response["data"]
-            })
-        this.axios.get("http://localhost:5000/getAllLoginEnv")
-            .then((res) => {
-                this.loginEnvList = res["data"]
-            })
+    mounted(){
+        eventBus.$on('showProjectWindow',function(type){
+            console.log(type)
+            this.windowShow = true
+            console.log(this.windowShow)
+        })
     }
 }
 </script>
