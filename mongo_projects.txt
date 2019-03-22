@@ -6,6 +6,10 @@
   "author": "ZLY",
   "description": "demo test01",
   "env": "staging",
+  "supplyUsername": "",
+  "supplyPassword": "",
+  "hospUsername": "",
+  "hospPassword": "",
   "interfaces": [
     {
       "interId": "5c7e21b2a76ccc33d0dde741",

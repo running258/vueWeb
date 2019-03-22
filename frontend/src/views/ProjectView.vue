@@ -1,11 +1,9 @@
 <template>
 <div class="ProjectView">
-    <ProjectList />
-    {{dialogVisible}}
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" @showWin="showWindow">
-        <ProjectWindow />
+    <ProjectList @showWin="changeWin" />
+    <el-dialog :title="titleName" :visible.sync="dialogVisible" width="50%">
+        <ProjectWindow :type="windowType"/>
     </el-dialog>
-
 </div>
 </template>
 
@@ -21,19 +19,21 @@ export default {
     },
     data() {
         return {
-            dialogVisible: false
+            dialogVisible: false,
+            windowType: '',
+            titleName:''
         }
     },
     methods: {
-        showWindow:function(data) {
-            console.log(data)
+        changeWin: function (type) {
             this.dialogVisible = true
-            console.log("11111111")
+            this.windowType = type
+            if(type == "new"){
+                this.titleName = "新建项目"
+            }else if(type == "edit"){
+                this.titleName = "编辑项目"
+            }
         }
-    },
+    }
 }
-
-// https://segmentfault.com/a/1190000011744210?utm_source=tuicool&utm_medium=referral
-// https://www.cnblogs.com/peko/p/7465191.html
-
 </script>

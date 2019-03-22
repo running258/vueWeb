@@ -41,5 +41,7 @@
       "description": "",
       "builtIn": 2
     }
-  }
+  },
+  "username": "",
+  "password": ""
 }

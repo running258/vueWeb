@@ -14,6 +14,10 @@
     "backEnd\\sproxy\\utils\\__pycache__": true,
     "backEnd\\record\\__pycache__": true,
     "frontEnd\\node_modules": true,
+    "backEnd\\__init__.py": true,
+    "backEnd\\src\\__init__.py": true,
+    "backEnd\\src\\entity\\__init__.py": true,
+    "backEnd\\src\\dao\\__init__.py": true,
     "frontend\\node_modules": true
   }
 }

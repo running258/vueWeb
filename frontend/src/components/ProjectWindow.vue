@@ -1,97 +1,178 @@
 <template>
 <div id="ProjectWindow">
-    <div >
-        <span>项目名称</span>
-        <el-input v-model="newProjectName" placeholder="项目名称"></el-input>
-        <el-input v-model="author" placeholder="项目名称"></el-input>
-        <el-select v-model="loginIndex" placeholder="环境选择" @change="changeEnv">
-            <el-option v-for="(loginEnv, index) in loginEnvList" :key="index" :label="loginEnv.env" :value="index"></el-option>
-        </el-select>
-        <div>供端地址：<el-input v-model="supplyUrl"></el-input>登录Path：<el-input v-model="supplyPath"></el-input></div>
-        <div>供端用户名：<el-input v-model="supplyUsername"></el-input>供端密码：<el-input v-model="supplyPassword"></el-input></div>
-        <div>院端地址：<el-input v-model="hospUrl"></el-input>登录Path：<el-input v-model="hospPath"></el-input></div>
-        <div>院端用户名：<el-input v-model="hospUsername"></el-input>院端密码：<el-input v-model="hospPassword"></el-input></div>
-        <el-input type="textarea" v-model="description" placeholder="描述"></el-input>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="saveNewProject()">确 定</el-button>
-        </span>
-    </div>
+    <el-form :model="projectInfoForm" :rules="rules" ref="projectInfoForm" label-width="110px" class="projectInfoForm">
+        <el-row>
+            <el-col :span="11">
+                <el-form-item label="项目名称" prop="projectName">
+                    <el-input v-model="projectInfoForm.projectName"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="11">
+                <el-form-item label="创建人" prop="author">
+                    <el-input v-model="projectInfoForm.author"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-form-item label="环境选择" prop="loginIndex">
+            <el-select v-model="projectInfoForm.loginIndex" placeholder="请选择系统环境" @change="changeEnv">
+                <el-option v-for="(loginEnv, index) in loginEnvList" :key="index" :label="loginEnv.env" :value="index"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="供端地址">
+            <el-col :span="11">
+                <el-form-item prop="supplyUrl">
+                    <el-input v-model="projectInfoForm.supplyUrl" :disabled="true"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="11">
+                <el-form-item prop="supplyPath">
+                    <el-input v-model="projectInfoForm.supplyPath" :disabled="true"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-form-item>
+        <el-row>
+            <el-form-item label="供端用户/密码">
+                <el-col :span="11">
+                    <el-form-item prop="supplyUsername">
+                        <el-input v-model="projectInfoForm.supplyUsername"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="11">
+                    <el-form-item prop="supplyPassword">
+                        <el-input v-model="projectInfoForm.supplyPassword"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-form-item>
+        </el-row>
+        <el-form-item label="院端地址">
+            <el-col :span="11">
+                <el-form-item prop="hospUrl">
+                    <el-input v-model="projectInfoForm.hospUrl" :disabled="true"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="11">
+                <el-form-item prop="hospPath">
+                    <el-input v-model="projectInfoForm.hospPath" :disabled="true"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-form-item>
+        <el-row>
+            <el-form-item label="院端用户/密码" prop>
+                <el-col :span="11">
+                    <el-form-item prop="hospUsername">
+                        <el-input v-model="projectInfoForm.hospUsername"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="11">
+                    <el-form-item prop="hospPassword">
+                        <el-input v-model="projectInfoForm.hospPassword"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-form-item>
+        </el-row>
+        <el-form-item label="描述" prop="description">
+            <el-input type="textarea" v-model="projectInfoForm.description"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="submitForm('projectInfoForm',type)">确定</el-button>
+            <el-button @click="resetForm('projectInfoForm')">重置</el-button>
+        </el-form-item>
+    </el-form>
 
 </div>
 </template>
 
 <script>
-import eventBus from '@/js/eventBus'
+import global from '@/config/global'
 
 export default {
-    name: "Project",
+    props: ["type"],
     data() {
         return {
-            windowShow: false,
-            author: "",
-            env: "",
-            loginIndex:"",
-            description: "",
-            allProjects: [],
-            dialogVisible: false,
-            accessRadio: 0,
-            newProjectName: '',
-            projectJson: {},
             loginEnvList: [],
-            supplyUrl:'',
-            supplyPath:'',
-            hospUrl:'',
-            hospPath:'',
-            supplyUsername:'',
-            supplyPassword:'',
-            hospUsername:'',
-            hospPassword:''
+            projectJson: {},
+            projectInfoForm: {
+                projectName: '',
+                author: '',
+                loginIndex: '',
+                env: '',
+                supplyUrl: '',
+                supplyPath: '',
+                hospUrl: '',
+                hospPath: '',
+                supplyUsername: '',
+                supplyPassword: '',
+                hospUsername: '',
+                hospPassword: '',
+                description: "",
+            },
+            rules: {
+                projectName: [{
+                    required: true,
+                    message: '请输入项目名称',
+                    trigger: 'blur'
+                }],
+                author: [{
+                    required: true,
+                    message: '请输入创建人',
+                    trigger: 'blur'
+                }],
+                loginIndex: [{
+                    required: true,
+                    message: '请选择系统环境',
+                    trigger: 'change'
+                }]
+            }
         }
     },
     methods: {
-        saveNewProject() {
-            this.formatProjectJson()
-            console.log(this.projectJson)
-            this.axios.post("http://localhost:5000/insertNewProject", this.projectJson)
-                .then((res) => {
-                    console.log(res)
-                })
-        },
         formatProjectJson() {
             this.projectJson = {
-                "projectName": this.newProjectName,
-                "author": this.author,
-                "env":this.env,
-                "supplyUsername":this.supplyUsername,
-                "supplyPassword":this.supplyPassword,
-                "hospUsername":this.hospUsername,
-                "hospPassword":this.hospPassword,
-                "description": this.description,
+                "projectName": this.projectInfoForm.projectName,
+                "author": this.projectInfoForm.author,
+                "env": this.projectInfoForm.env,
+                "supplyUsername": this.projectInfoForm.supplyUsername,
+                "supplyPassword": this.projectInfoForm.supplyPassword,
+                "hospUsername": this.projectInfoForm.hospUsername,
+                "hospPassword": this.projectInfoForm.hospPassword,
+                "description": this.projectInfoForm.description,
                 "interfaces": []
             }
         },
         changeEnv() {
-            var loginInfo = this.loginEnvList[this.loginIndex]
-            this.env = loginInfo["env"]
-            this.supplyUrl = loginInfo["supply"]["url"]
-            this.supplyPath = loginInfo["supply"]["path"]
-            this.hospUrl = loginInfo["hosp"]["url"]
-            this.hospPath = loginInfo["hosp"]["path"]
+            var loginInfo = this.loginEnvList[this.projectInfoForm.loginIndex]
+            this.projectInfoForm.env = loginInfo["env"]
+            this.projectInfoForm.supplyUrl = loginInfo["supply"]["url"]
+            this.projectInfoForm.supplyPath = loginInfo["supply"]["path"]
+            this.projectInfoForm.hospUrl = loginInfo["hosp"]["url"]
+            this.projectInfoForm.hospPath = loginInfo["hosp"]["path"]
         },
+        submitForm(formName, type) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    if (type == "new") {
+                        this.formatProjectJson()
+                        this.axios.post(global.backEndUrl + global.backEndPath["insertNewProject"], this.projectJson)
+                            .then((res) => {
+                                console.log(res)
+                            })
+                    }
+                } else {
+                    console.log('oops! there something wrong while submit, try again later!');
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        }
     },
-    mounted(){
-        eventBus.$on('showProjectWindow',function(type){
-            console.log(type)
-            this.windowShow = true
-            console.log(this.windowShow)
-        })
+    created() {
+        // 加载所有系统环境
+        this.axios.get(global.backEndUrl + global.backEndPath["getAllLoginEnv"])
+            .then((res) => {
+                this.loginEnvList = res["data"]
+            })
     }
 }
 </script>
-
-<style lang="scss">
-    .authorAndDes{
-        font-style: italic,
-    }
-</style>
