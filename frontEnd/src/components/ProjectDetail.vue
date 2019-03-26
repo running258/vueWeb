@@ -4,7 +4,6 @@
         <span>{{projectName}}/{{author}}/{{description}}/{{env}}</span>
     </div>
     <el-button @click="interWindow('',projectName)">新添</el-button>
-    <router-link :to="'/project/'+projectName+'/InterfaceDetail/'+'NULL'"><span class="el-icon-plus" id="addNewInter"></span></router-link>
     <el-card class="box-card" v-for="(interInfo,index) in interList" :key="index">
         <div>
             <el-button @click="interWindow(interInfo.interId,projectName)">编辑</el-button>

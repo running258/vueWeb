@@ -1,7 +1,7 @@
 <template>
 <div class="ProjectDetailView">
     <ProjectDetail @interWindow="interShowFun" />
-    <el-dialog :title="interType" :visible.sync="interShow" width="50%">
+    <el-dialog :title="interType" :visible.sync="interShow" :before-close="reloadPage" width="50%">
         <InterDetailWindow :interId="interId" :projectName="projectName" @closeInterWindow="interHideFun"/>
     </el-dialog>
 </div>
@@ -27,6 +27,9 @@ export default {
         }
     },
     methods: {
+        reloadPage: function () {
+            this.reload()
+        },
         interShowFun: function (interId, projectName) {
             this.interShow = true
             if (interId != "") {

@@ -18,6 +18,7 @@
     "backEnd\\src\\__init__.py": true,
     "backEnd\\src\\entity\\__init__.py": true,
     "backEnd\\src\\dao\\__init__.py": true,
-    "frontend\\node_modules": true
+    "frontend\\node_modules": true,
+    "backEnd\\src\\scripts\\__pycache__": true
   }
 }

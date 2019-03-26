@@ -26,6 +26,11 @@ export default new Router({
       path: '/projectDetail',
       name: 'projectDetail',
       component: () => import('./views/ProjectDetailView.vue')
-    }
+    },
+    {
+      path: '/VAView',
+      name: 'VAView',
+      component: () => import('./views/VAView.vue')
+    },
   ]
 })

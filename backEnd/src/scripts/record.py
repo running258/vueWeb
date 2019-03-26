@@ -49,13 +49,12 @@ class Counter:
                     paramsList[KeyParam] = ValueParam
                     if "_t" in paramsList:
                         paramsList.pop("_t")
-                jsonInfo = {"sys":sys,"interName": interName,"path": path,"method": method,"header": headerList,"params": paramsList,"projectName":'',"username":'',"password":''}
+                jsonInfo = {"sys":sys,"interName": interName,"path": path,"method": method,"header": headerList,"params": paramsList,"projectName":'',"username":'',"password":'',"env":''}
                 interId = getInterfacesMongoDB().insertInterfacesCollection(jsonInfo)
                 getProjectsMongoDB().updateProjectInter(projectName, interId, interName)
 
 # https://vhsupply.staging.viewchain.net/#/login
-   
-
+# mitmdump -s record.py
 
 addons = [
     Counter()

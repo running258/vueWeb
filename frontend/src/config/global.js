@@ -1,4 +1,3 @@
-
 const menuBarList = [{
   name: '接口',
   id: 'interface',
@@ -29,6 +28,10 @@ const backEndPath = {
   saveInterAndUpdateProject:"saveInterAndUpdateProject",  //项目内保存接口
   updateLoginEnv:"updateLoginEnv",  //环境保存
   getAllLoginEnv:"getAllLoginEnv",  //获取所有环境
+  VAList:"VAList",  //获取所有mockup service
+  insertVA:"insertVA",  //插入VA
+  getVA:"getVA",  //查看VA
+  deleteVA:"deleteVA",  //删除VA
 }
 
   export default

@@ -1,10 +1,10 @@
 <template>
 <div class="ProjectView">
     <ProjectList @showWin="changeWin" @interWindow="interShowFun"/>
-    <el-dialog :title="titleName" :visible.sync="projectShow" width="50%">
+    <el-dialog :title="titleName" :visible.sync="projectShow" :before-close="reloadPage" width="50%">
         <ProjectWindow :type="windowType" @closeProjectWin="projectWinHide"/>
     </el-dialog>
-    <el-dialog :title="interType" :visible.sync="interShow" width="50%">
+    <el-dialog :title="interType" :visible.sync="interShow" :before-close="reloadPage" width="50%">
         <InterDetailWindow :interId="interId" :projectName="projectName" :interType="interType"/>
     </el-dialog>
 </div>
@@ -35,6 +35,9 @@ export default {
         }
     },
     methods: {
+        reloadPage: function () {
+            this.reload()
+        },
         changeWin: function (type) {
             this.projectShow = true
             this.windowType = type
