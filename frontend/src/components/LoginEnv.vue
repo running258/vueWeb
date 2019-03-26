@@ -25,7 +25,10 @@
 </template>
 
 <script>
+import global from '@/config/global'
+
 export default {
+    inject: ['reload'],
     data() {
         return {
             loginEnvList: []
@@ -50,9 +53,10 @@ export default {
         saveLoginEnv(index,_id) {
             var loginInfo = JSON.stringify(this.loginEnvList[index])
             loginInfo = JSON.parse(loginInfo)
-            this.axios.post("http://localhost:5000/updateLoginEnv",this.loginEnvList[index])
+            this.axios.get(global.backEndUrl + global.backEndPath["updateLoginEnv"],this.loginEnvList[index])
             .then((res)=>{
                 console.log(res)
+                this.reload()
             })
         },
         removeLoginEnv(index,_id) {
@@ -65,7 +69,7 @@ export default {
         },
     },
     created() {
-        this.axios.get("http://localhost:5000/getAllLoginEnv")
+        this.axios.get(global.backEndUrl + global.backEndPath["getAllLoginEnv"])
             .then((res) => {
                 this.loginEnvList = res["data"]
             })

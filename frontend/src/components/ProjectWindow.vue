@@ -154,7 +154,7 @@ export default {
                         this.formatProjectJson()
                         this.axios.post(global.backEndUrl + global.backEndPath["insertNewProject"], this.projectJson)
                             .then((res) => {
-                                console.log(res)
+                                this.$emit('closeProjectWin')
                             })
                     }
                 } else {
@@ -162,9 +162,13 @@ export default {
                     return false;
                 }
             });
+            
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+        },
+        refresh() {
+            this.reload()
         }
     },
     created() {

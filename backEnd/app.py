@@ -56,7 +56,7 @@ def insertNewProject():
     return "done"
 
 #get all interface by interName
-@app.route('/interInfo/<interId>', methods=['GET'])
+@app.route('/interInfoById/<interId>', methods=['GET'])
 def getInterInfoWithID(interId):
     interInfo = getInterfacesMongoDB().getInterfacesCollectionWithInterID(interId)
     return json.dumps(interInfo)
@@ -79,10 +79,13 @@ def saveInterAndUpdateProject():
     interJson = json.loads(request.get_data(as_text=True))
     projectName = interJson["projectName"]
     interName = interJson["interName"]
-    if interJson["runUsername"] != '':
-       interJson["username"] = interJson["runUsername"]
-    if interJson["runPassword"] != '':
-       interJson["password"] = interJson["runPassword"]
+    if interJson["isNewUser"]:
+        interJson["username"] = interJson["runUsername"]
+        interJson["password"] = interJson["runPassword"]
+    else:
+        interJson["username"] = ""
+        interJson["password"] = ""
+    interJson.pop("isNewUser")
     interJson.pop("runUsername")
     interJson.pop("runPassword")
     interId = getInterfacesMongoDB().insertInterfacesCollection(interJson)

@@ -9,10 +9,10 @@
     <el-button type="primary" @click="showProjectWindow('new')">新建项目</el-button>
     <el-card class="box-card" v-for="(project,index) in allProjects" :key="index">
         <div slot="header" class="clearfix">
-            <router-link :to="{path:'/ProjectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link><span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
+            <router-link :to="{path:'/projectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link><span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
         </div>
         <div v-for="(inter,index) in project.interfaces" :key="index">
-            <router-link :to="'/project/'+project.projectName+'/'+project.env+'/InterfaceDetail/'+inter.interId">{{inter.interName}}</router-link>
+            <span>{{inter.interName}}</span><el-button @click="interWindow(inter.interId,project.projectName)">查看</el-button>
         </div>
     </el-card>
 </div>
@@ -27,19 +27,39 @@ export default {
         return {
             author: "",
             env: "",
-            loginIndex:"",
+            loginIndex: "",
             description: "",
             allProjects: []
         }
     },
     methods: {
-        showProjectWindow:function(type){
-            this.$emit('showWin',type)
+        showProjectWindow: function (type) {
+            this.$emit('showWin', type)
+        },
+        projectDetail: function (projectName,env) {
+            this.$router.push({
+                name: 'projectDetail',
+                query: {
+                    projectName: projectName,
+                    env: env
+                }
+            })
+        },
+        interShowFun:function(interId,projectName){
+            this.interShow = true
+            if(interId!=""){
+                this.interType = "编辑"
+                this.interId = interId
+                this.projectName = projectName
+            }
+        },
+        interWindow:function(interId,projectName) {
+            this.$emit("interWindow",interId,projectName)
         }
     },
     created() {
         // 加载所有项目
-        this.axios.get(global.backEndUrl+global.backEndPath["getProject"])
+        this.axios.get(global.backEndUrl + global.backEndPath["getProject"])
             .then((response) => {
                 this.allProjects = response["data"]
             })
@@ -48,7 +68,7 @@ export default {
 </script>
 
 <style lang="scss">
-    .authorAndDes{
-        font-style: italic,
-    }
+.authorAndDes {
+    font-style: italic,
+}
 </style>
