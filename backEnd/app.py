@@ -125,6 +125,10 @@ def Record():
     vaRes = record().setUP(runEnv)
     return "done"
 
+@app.route('/testPage')
+def testPage():
+    return "test page"
+
 
 if __name__ == '__main__':
     app.run()
