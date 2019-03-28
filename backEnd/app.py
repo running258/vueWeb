@@ -110,13 +110,27 @@ def insertVA():
     VA_ID = getVAMongoDB().insertVA(VAInfo)
     return str(VA_ID)
 
+@app.route('/updateVA', methods=['POST'])
+def updateVA():
+    VAInfo = json.loads(request.get_data(as_text=True))
+    VA_ID = VAInfo["VA_ID"]
+    VAInfo.pop("VA_ID")
+    updateRes = getVAMongoDB().updateVA(VA_ID,VAInfo)
+    return str(updateRes)
+
 #delete VA by id
 @app.route('/deleteVA', methods=['POST'])
 def deleteVA():
     VA_ID = request.get_data(as_text=True)
-    print(VA_ID)
     deleteRes = getVAMongoDB().deleteVA(VA_ID)
     return "done"
+
+#get VA env
+@app.route('/getVAResponse/<vaName>', methods=['GET'])
+def getVAResponse(vaName):
+    vaRes = getVAMongoDB().getVAByName(vaName)
+    res = vaRes["response"]
+    return json.dumps(res)
 
 #get VA env
 @app.route('/Record', methods=['POST'])

@@ -40,6 +40,7 @@ export default {
                 description: '',
                 response: '',
             },
+            VAInfo:{}
         };
     },
     methods: {
@@ -47,18 +48,22 @@ export default {
             this.$emit('closeDialog')
         },
         save: function () {
-            var VAInfo = {
+            this.VAInfo = {
                 "VAName": this.VAFrom.VAName,
                 "description": this.VAFrom.description,
-                "response": this.VAFrom.response,
+                "response": JSON.parse(this.VAFrom.response),
             }
             if (this.VA_ID == '' || this.VA_ID == null) {
-                this.axios.post(global.backEndUrl + global.backEndPath["insertVA"], VAInfo)
+                this.axios.post(global.backEndUrl + global.backEndPath["insertVA"], this.VAInfo)
                     .then((res) => {
                         this.closeDialog()
                     })
             } else {
-
+                this.VAInfo["VA_ID"] = this.VA_ID
+                this.axios.post(global.backEndUrl + global.backEndPath["updateVA"],this.VAInfo)
+                    .then((res) => {
+                        this.closeDialog()
+                    })
             }
         },
     },
@@ -66,10 +71,10 @@ export default {
         if (this.VAName != '' && this.VAName != null) {
             this.axios.get(global.backEndUrl + global.backEndPath["getVA"] + "/" + this.VAName)
                 .then((res) => {
-                    var VAinfo = res["data"]
-                    this.VAFrom.VAName = VAinfo["VAName"]
-                    this.VAFrom.description = VAinfo["description"]
-                    this.VAFrom.response = JSON.stringify(VAinfo["response"])
+                    this.VAinfo = res["data"]
+                    this.VAFrom.VAName = this.VAinfo["VAName"]
+                    this.VAFrom.description = this.VAinfo["description"]
+                    this.VAFrom.response = JSON.stringify(this.VAinfo["response"])
                 })
         }
     },

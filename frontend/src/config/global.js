@@ -18,7 +18,10 @@ const menuBarList = [{
   }]
 }]
 
-const backEndUrl = "http://localhost:5000/"
+
+
+// const backEndUrl = "http://localhost:5000/"
+const backEndUrl = "http://192.168.96.23:90/"
 const backEndPath = {
   getProject:"getProjects",   //获取所有项目
   insertNewProject:"insertNewProject",  //新建项目
@@ -30,6 +33,7 @@ const backEndPath = {
   getAllLoginEnv:"getAllLoginEnv",  //获取所有环境
   VAList:"VAList",  //获取所有mockup service
   insertVA:"insertVA",  //插入VA
+  updateVA:"updateVA",  //更新VA
   getVA:"getVA",  //查看VA
   deleteVA:"deleteVA",  //删除VA
 }

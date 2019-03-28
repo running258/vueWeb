@@ -118,9 +118,6 @@ export default {
     methods: {
         run(projectName) {
             this.getInterJson(projectName)
-
-            console.log(this.interJson)
-
             this.axios.post(global.backEndUrl + global.backEndPath["runSingleInter"], this.interJson)
                 .then(response => {
                     this.runResult = JSON.stringify(response["data"])
