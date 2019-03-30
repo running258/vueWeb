@@ -2,7 +2,7 @@
 <div class="VAView">
     <VAList @showVADialog="showVADialog"/>
     <el-dialog :title="vaDialogTitle" :visible.sync="vaDialogShow" :before-close="reloadPage" width="50%">
-        <VAWindow :VA_ID="VA_ID" :VAName="VAName" @closeDialog="reloadPage"/>
+        <VAWindow :VA_ID="VA_ID" :VAName="VAName" :vaProjectName="vaProjectName" @closeDialog="reloadPage"/>
     </el-dialog>
 </div>
 </template>
@@ -24,6 +24,7 @@ export default {
             type:'',
             VA_ID: '',
             VAName: '',
+            vaProjectName: '',
             vaDialogShow: false,
         }
     },
@@ -32,7 +33,7 @@ export default {
             this.vaDialogShow=false
             this.reload()
         },
-        showVADialog: function (type,VA_ID,VAName) {
+        showVADialog: function (type,VA_ID,VAName,vaProjectName) {
             this.vaDialogShow = true
             if(type==='new'){
                 this.vaDialogTitle = '新建'
@@ -41,6 +42,7 @@ export default {
             }
             this.VA_ID=VA_ID
             this.VAName=VAName
+            this.vaProjectName=vaProjectName
         },
     }
 }

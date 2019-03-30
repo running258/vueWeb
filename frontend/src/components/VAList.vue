@@ -1,7 +1,8 @@
 <template>
 <div id="VAList">
-    <el-button type="primary" @click="showVADialog('new','','')">新建VA</el-button>
-    <span>使用说明：调用VA时请使用  “http://192.168.96.23:90/getVAResponse/” +VA名称 </span>
+    <div>{{vaProjectName}}/{{projectAuthor}}/{{projectDescription}}</div>
+    <el-button type="primary" @click="showVADialog('new','','',vaProjectName)">新建VA</el-button>
+    <span>使用说明：调用VA时请使用  “http://192.168.96.28:90/getVAResponse/” +VA名称 </span>
     <el-card class="box-card" v-for="(va,index) in VAList" :key="index">
         <div>
             <span>VA名称：</span>
@@ -17,7 +18,7 @@
             <span>{{va.response}}</span>
         </div>
         <el-button @click="showVADialog('edit',va._id,va.VAName)">编辑</el-button>
-        <el-button @click="deleteVA(va._id)">删除</el-button>
+        <el-button @click="deleteVA(va._id,vaProjectName)">删除</el-button>
     </el-card>
 </div>
 </template>
@@ -30,17 +31,20 @@ export default {
     inject: ['reload'],
     data() {
         return {
+            vaProjectName: '',
+            projectAuthor: '',
+            projectDescription: '',
             VAList: []
         }
     },
     methods: {
-        showVADialog: function (type,VA_ID,VAName) {
-            this.$emit('showVADialog',type,VA_ID,VAName)
+        showVADialog: function (type, VA_ID, VAName, vaProjectName) {
+            this.$emit('showVADialog', type, VA_ID, VAName, vaProjectName)
         },
-        deleteVA: function (VA_ID) {
+        deleteVA: function (VA_ID,vaProjectName) {
             this.$confirm('删除为不可逆操作，确认删除吗')
                 .then(_ => {
-                    this.axios.post(global.backEndUrl + global.backEndPath["deleteVA"], VA_ID)
+                    this.axios.post(global.backEndUrl + global.backEndPath["deleteVA"], VA_ID,vaProjectName)
                         .then((res) => {
                             this.reload()
                         })
@@ -52,7 +56,22 @@ export default {
         },
     },
     created() {
-        this.axios.get(global.backEndUrl + global.backEndPath["VAList"])
+        this.axios.get(global.backEndUrl + global.backEndPath["getVAProjectsByProjectName"], {
+                params: {
+                    vaProjectName: this.$route.query.vaProjectName
+                }
+            })
+            .then((response) => {
+                var projectInfo = response["data"]
+                this.vaProjectName = projectInfo["vaProjectName"]
+                this.projectAuthor = projectInfo["author"]
+                this.projectDescription = projectInfo["description"]
+            })
+        this.axios.get(global.backEndUrl + global.backEndPath["getProjectVAList"], {
+                params: {
+                    vaProjectName: this.$route.query.vaProjectName
+                }
+            })
             .then((res) => {
                 this.VAList = res["data"]
             })

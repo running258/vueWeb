@@ -9,8 +9,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'project',
-      component: () => import('./views/ProjectView.vue')
+      // name: 'project',
+      // component: () => import('./views/ProjectView.vue')
+      component: () => import('./views/VAProjectView.vue')
     },
     {
       path: '/project',
@@ -31,6 +32,11 @@ export default new Router({
       path: '/VAView',
       name: 'VAView',
       component: () => import('./views/VAView.vue')
+    },
+    {
+      path: '/VAProject',
+      name: 'VAProject',
+      component: () => import('./views/VAProjectView.vue')
     },
   ]
 })

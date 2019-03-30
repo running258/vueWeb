@@ -19,6 +19,8 @@
     "backEnd\\src\\entity\\__init__.py": true,
     "backEnd\\src\\dao\\__init__.py": true,
     "frontend\\node_modules": true,
-    "backEnd\\src\\scripts\\__pycache__": true
+    "backEnd\\src\\scripts\\__pycache__": true,
+    "backEnd\\src\\controller\\__init__.py": true,
+    "backEnd\\src\\controller\\__pycache__": true
   }
 }

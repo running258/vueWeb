@@ -3,6 +3,7 @@ curPath = os.path.abspath(os.path.realpath(__file__))
 prePath = os.path.split(curPath)[0]
 sys.path.append(prePath)
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 class getConfIni(object):
 

@@ -32,6 +32,7 @@ export default {
     props: {
         VA_ID: String,
         VAName: String,
+        vaProjectName: String,
     },
     data() {
         return {
@@ -54,6 +55,7 @@ export default {
                 "response": JSON.parse(this.VAFrom.response),
             }
             if (this.VA_ID == '' || this.VA_ID == null) {
+                this.VAInfo["vaProjectName"] = this.vaProjectName
                 this.axios.post(global.backEndUrl + global.backEndPath["insertVA"], this.VAInfo)
                     .then((res) => {
                         this.closeDialog()

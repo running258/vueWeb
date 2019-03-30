@@ -1,18 +1,19 @@
-import os,sys
-curPath = os.path.abspath(os.path.realpath(__file__))
-prePath = os.path.split(curPath)[0]
-sys.path.append(prePath)
-from getMongo import mongoConn
 from bson.objectid import ObjectId
+from src.dao.getMongo import mongoConn
 
 class getVAMongoDB(mongoConn):
 
     def __init__(self):
         self.db = mongoConn().getConnection()
 
+    def getVAId(self,VA_ID):
+        result = self.db.virtualAssert.find_one({"_id":ObjectId(VA_ID)})
+        result["_id"] = str(result["_id"])
+        return result
+
     def getVAByName(self,VAName):
         result = self.db.virtualAssert.find_one({"VAName":VAName})
-        result.pop("_id")
+        result["_id"] = str(result["_id"])
         return result
 
     def getVAList(self):
