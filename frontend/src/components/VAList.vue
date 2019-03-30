@@ -2,7 +2,7 @@
 <div id="VAList">
     <div>{{vaProjectName}}/{{projectAuthor}}/{{projectDescription}}</div>
     <el-button type="primary" @click="showVADialog('new','','',vaProjectName)">新建VA</el-button>
-    <span>使用说明：调用VA时请使用  “http://192.168.96.28:90/getVAResponse/” +VA名称 </span>
+    <span>使用说明：调用VA时请使用  “http://192.168.96.28:90/+项目名称+/getVAResponse/+VA名称 </span>
     <el-card class="box-card" v-for="(va,index) in VAList" :key="index">
         <div>
             <span>VA名称：</span>
