@@ -50,6 +50,7 @@ export default {
         },
         save: function () {
             this.VAInfo = {
+                "VA_ID": this.VA_ID,
                 "VAName": this.VAFrom.VAName,
                 "description": this.VAFrom.description,
                 "response": JSON.parse(this.VAFrom.response),
@@ -62,7 +63,7 @@ export default {
                     })
             } else {
                 this.VAInfo["VA_ID"] = this.VA_ID
-                this.axios.post(global.backEndUrl + global.backEndPath["updateVA"],this.VAInfo)
+                this.axios.post(global.backEndUrl + global.backEndPath["updateProjectVA"],this.VAInfo)
                     .then((res) => {
                         this.closeDialog()
                     })
@@ -70,8 +71,8 @@ export default {
         },
     },
     created() {
-        if (this.VAName != '' && this.VAName != null) {
-            this.axios.get(global.backEndUrl + global.backEndPath["getVA"] + "/" + this.VAName)
+        if (this.VA_ID != '' && this.VA_ID != null) {
+            this.axios.get(global.backEndUrl + global.backEndPath["getProjectVA"] + "/" + this.VA_ID)
                 .then((res) => {
                     this.VAinfo = res["data"]
                     this.VAFrom.VAName = this.VAinfo["VAName"]

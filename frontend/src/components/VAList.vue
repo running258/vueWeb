@@ -41,10 +41,15 @@ export default {
         showVADialog: function (type, VA_ID, VAName, vaProjectName) {
             this.$emit('showVADialog', type, VA_ID, VAName, vaProjectName)
         },
-        deleteVA: function (VA_ID,vaProjectName) {
+        deleteVA: function (VA_ID, vaProjectName) {
             this.$confirm('删除为不可逆操作，确认删除吗')
                 .then(_ => {
-                    this.axios.post(global.backEndUrl + global.backEndPath["deleteVA"], VA_ID,vaProjectName)
+                    this.axios.get(global.backEndUrl + global.backEndPath["deleteProjectVA"], {
+                            params: {
+                                VA_ID: VA_ID,
+                                vaProjectName: vaProjectName,
+                            }
+                        })
                         .then((res) => {
                             this.reload()
                         })

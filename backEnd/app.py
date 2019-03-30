@@ -130,40 +130,34 @@ def getProjectVAList():
     projectVAList = vaController().getProjectVAList(vaProjectName)
     return json.dumps(projectVAList)
 
+#查看项目下VA
+@app.route('/getProjectVA/<VA_ID>', methods=['GET'])
+def getProjectVA(VA_ID):
+    VAInfo = vaController().getProjectVA(VA_ID)
+    return json.dumps(VAInfo)
+
 #delete VA by id
-@app.route('/deleteVA', methods=['POST'])
-def deleteVA():
-    VA_ID = request.form.getlist('VA_ID')
-    vaProjectName = request.form.getlist('vaProjectName')
-    VAInfo = request.get_data(as_text=True)
-    print(VA_ID)
-    print(vaProjectName)
-    print(VAInfo)
-    # deleteRes = getVAMongoDB().deleteVA(VA_ID)
-    # deleteRes = getVAMongoDB().deleteVA(VA_ID)
+@app.route('/deleteProjectVA', methods=['GET'])
+def deleteProjectVA():
+    vaProjectName = request.args.get('vaProjectName')
+    VA_ID = request.args.get('VA_ID')
+    deleteRes = vaController().deleteProjectVA(vaProjectName,VA_ID)
     return "done"
 
-#
+#更新项目下VA
+@app.route('/updateProjectVA', methods=['POST'])
+def updateProjectVA():
+    VAInfo = json.loads(request.get_data(as_text=True))
+    updateRes = vaController().updateProjectVA(VAInfo)
+    return str(updateRes)
+
+#获取response
 @app.route('/<vaProjectName>/getVAResponse/<vaName>', methods=['GET'])
 def getVAResponse(vaProjectName,vaName):
     vaRes = vaController().getVAResponse(vaProjectName,vaName)
     return json.dumps(vaRes)
-
 # ---------------------------------
 
-
-#get VA env
-@app.route('/getVA/<vaName>', methods=['GET'])
-def getVA(vaName):
-    vaRes = getVAMongoDB().getVAByName(vaName)
-    return json.dumps(vaRes)
-
-def updateVA():
-    VAInfo = json.loads(request.get_data(as_text=True))
-    VA_ID = VAInfo["VA_ID"]
-    VAInfo.pop("VA_ID")
-    updateRes = getVAMongoDB().updateVA(VA_ID,VAInfo)
-    return str(updateRes)
 
 #get VA env
 @app.route('/Record', methods=['POST'])

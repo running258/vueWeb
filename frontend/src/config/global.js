@@ -37,10 +37,9 @@ const backEndPath = {
   getVAProjectsByProjectName:"getVAProjectsByProjectName",//根据项目名查看
   getProjectVAList:"getProjectVAList",  //取得项目下所有VA
   insertVA:"insertVA",  //插入VA
-
-  updateVA:"updateVA",  //更新VA
-  getVA:"getVA",  //查看VA
-  deleteVA:"deleteVA",  //删除VA
+  getProjectVA:"getProjectVA",  //查看项目下VA详情
+  deleteProjectVA:"deleteProjectVA",  //删除项目下VA
+  updateProjectVA:"updateProjectVA",  //更新项目下VA
 }
 
   export default
