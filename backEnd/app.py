@@ -102,6 +102,13 @@ def insertVAProject():
     res = vaController().insertVAProject(vaProjectInfo)
     return json.dumps(res)
 
+#更新VA项目
+@app.route('/updateVAProject', methods=['POST'])
+def updateVAProject():
+    vaProjectInfo = json.loads(request.get_data(as_text=True))
+    res = vaController().updateVAProject(vaProjectInfo)
+    return json.dumps(res)
+
 #查看VAProjectList
 @app.route('/getVAProjectList', methods=['GET'])
 def getVAProjectList():
@@ -109,11 +116,18 @@ def getVAProjectList():
     res = vaController().getVAProjectList(vaProjectName)
     return json.dumps(res)
 
-#根据项目名查看VA
+#根据项目名查看项目
 @app.route('/getVAProjectsByProjectName', methods=['GET'])
 def getVAProjectsByProjectName():
     vaProjectName = request.args.get('vaProjectName')
     res = vaController().getVAProjectsByProjectName(vaProjectName)
+    return json.dumps(res)
+
+#根据项目ID查看项目
+@app.route('/getVAProjectsByProjectId', methods=['GET'])
+def getVAProjectsByProjectId():
+    vaProjectId = request.args.get('vaProjectId')
+    res = vaController().getVAProjectsByProjectId(vaProjectId)
     return json.dumps(res)
 
 #插入VA

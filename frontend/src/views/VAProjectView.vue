@@ -2,7 +2,7 @@
 <div class="VAProjectView">
     <VAProjectList @showWin="changeWin"/>
     <el-dialog :title="titleName" :visible.sync="projectShow" :before-close="reloadPage" width="50%">
-        <VAProjectWindow :type="windowType" @closeProjectWin="projectWinHide"/>
+        <VAProjectWindow :type="windowType" :projectId="projectId" @closeProjectWin="projectWinHide"/>
     </el-dialog>
 </div>
 </template>
@@ -21,6 +21,7 @@ export default {
     data() {
         return {
             projectShow: false,
+            projectId: '',
             windowType: '',
             titleName:'',
             interShow: false,
@@ -32,13 +33,14 @@ export default {
         reloadPage: function () {
             this.reload()
         },
-        changeWin: function (type) {
+        changeWin: function (type,projectId) {
             this.projectShow = true
             this.windowType = type
             if(type == "new"){
                 this.titleName = "新建VA项目"
             }else if(type == "edit"){
                 this.titleName = "编辑VA项目"
+                this.projectId = projectId
             }
         },
         projectWinHide:function(){

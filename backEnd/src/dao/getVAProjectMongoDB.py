@@ -23,8 +23,17 @@ class getVAProjectMongoDB(mongoConn):
     def updateProjectVAList(self, vaProjectName,newRes):
         result = self.collection.update({"vaProjectName": vaProjectName}, newRes)
         return result
+
+    #根据ID更新项目
+    def updateVAProjectById(self, vaProjectId,vaProjectInfo):
+        result = self.collection.update({"_id":ObjectId(vaProjectId)}, vaProjectInfo)
+        return result
         
     def getVAProjectsByProjectName(self, vaProjectName):
         result = self.collection.find_one({"vaProjectName": vaProjectName})
+        return result
+
+    def getVAProjectsByProjectId(self, _id):
+        result = self.collection.find_one({"_id":ObjectId(_id)})
         return result
 

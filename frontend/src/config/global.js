@@ -25,6 +25,7 @@ const backEndUrl = "http://localhost:5000/"
 const backEndPath = {
   getProject:"getProjects",   //获取所有项目
   insertNewProject:"insertNewProject",  //新建项目
+  updateVAProject:"updateVAProject",  //编辑项目
   getProjectAndIntersByProjectName:"getProjectAndIntersByProjectName",  //项目中添加新接口
   interInfoById:"interInfoById",  //根据id查看接口详情
   runSingleInter:"runSingleInter",  //单接口执行
@@ -35,6 +36,7 @@ const backEndPath = {
   insertVAProject:"insertVAProject",//新建
   getVAProjectList:"getVAProjectList",//查看VAList/查询
   getVAProjectsByProjectName:"getVAProjectsByProjectName",//根据项目名查看
+  getVAProjectsByProjectId:"getVAProjectsByProjectId",//根据id查看VA项目详情
   getProjectVAList:"getProjectVAList",  //取得项目下所有VA
   insertVA:"insertVA",  //插入VA
   getProjectVA:"getProjectVA",  //查看项目下VA详情

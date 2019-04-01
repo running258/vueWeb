@@ -1,5 +1,6 @@
 <template>
 <div id="ProjectWindow">
+    {{projectId}}
     <el-form :model="vaProjectInfoForm" :rules="rules" ref="vaProjectInfoForm" label-width="110px" class="vaProjectInfoForm">
         <el-row>
             <el-col :span="11">
@@ -19,6 +20,7 @@
         <el-form-item>
             <el-button type="primary" @click="submitForm('vaProjectInfoForm',type)">确定</el-button>
             <el-button @click="resetForm('vaProjectInfoForm')">重置</el-button>
+            <el-button @click="close">取消</el-button>
         </el-form-item>
     </el-form>
 
@@ -29,7 +31,7 @@
 import global from '@/config/global'
 
 export default {
-    props: ["type"],
+    props: ["type", "projectId"],
     data() {
         return {
             vaProjectJson: {},
@@ -38,7 +40,7 @@ export default {
                 author: '',
                 description: "",
             },
-            vaList:[],
+            vaList: [],
             rules: {
                 vaProjectName: [{
                     required: true,
@@ -54,7 +56,7 @@ export default {
         }
     },
     methods: {
-        formatVAProjectJson() {
+        formatVAProjectJson:function() {
             this.vaProjectJson = {
                 "vaProjectName": this.vaProjectInfoForm.vaProjectName,
                 "author": this.vaProjectInfoForm.author,
@@ -62,13 +64,19 @@ export default {
                 "vaList": this.vaList
             }
         },
-        submitForm(formName, type) {
+        submitForm:function(formName, type) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     if (type == "new") {
                         this.formatVAProjectJson()
-                        console.log(this.vaProjectJson)
                         this.axios.post(global.backEndUrl + global.backEndPath["insertVAProject"], this.vaProjectJson)
+                            .then((res) => {
+                                this.$emit('closeProjectWin')
+                            })
+                    } else if (type == 'edit') {
+                        this.formatVAProjectJson()
+                        this.vaProjectJson["_id"] = this.projectId
+                        this.axios.post(global.backEndUrl + global.backEndPath["updateVAProject"], this.vaProjectJson)
                             .then((res) => {
                                 this.$emit('closeProjectWin')
                             })
@@ -79,9 +87,27 @@ export default {
                 }
             });
         },
-        resetForm(formName) {
+        close: function () {
+            this.$emit('closeProjectWin')
+        },
+        resetForm:function(formName) {
             this.$refs[formName].resetFields();
         }
-    }
+    },
+    created() {
+        if (this.type == 'edit') {
+            this.axios.get(global.backEndUrl + global.backEndPath["getVAProjectsByProjectId"], {
+                params: {
+                    vaProjectId: this.projectId
+                }
+            })
+            .then((res)=>{
+                var info = res["data"]
+                this.vaProjectInfoForm.vaProjectName = info["vaProjectName"]
+                this.vaProjectInfoForm.author = info["author"]
+                this.vaProjectInfoForm.description = info["description"]
+            })
+        }
+    },
 }
 </script>

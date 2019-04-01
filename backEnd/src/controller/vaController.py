@@ -6,19 +6,36 @@ class vaController(controllerIndex):
         self.vaProject = controllerIndex().getVAProjectMongoDB()
         self.va = controllerIndex().getVAMongoDB()
 
+    #新建VA项目
     def insertVAProject(self,vaProjectInfo):
         res = self.vaProject.insertNewVAProject(vaProjectInfo)
         return  res
 
+    #更新VA项目
+    def updateVAProject(self,vaProjectInfo):
+        vaProjectId = vaProjectInfo["_id"]
+        vaProjectInfo.pop("_id")
+        res = self.vaProject.updateVAProjectById(vaProjectId,vaProjectInfo)
+        return  res
+
+    #获取项目下所有VA
     def getVAProjectList(self,vaProjectName):
         res = self.vaProject.getVAProjectList(vaProjectName)
         return  res
 
+    #查看项目信息
     def getVAProjectsByProjectName(self,vaProjectName):
         res = self.vaProject.getVAProjectsByProjectName(vaProjectName)
         res["_id"] = str(res["_id"])
         return  res
 
+    #根据id查看项目信息
+    def getVAProjectsByProjectId(self,_id):
+        res = self.vaProject.getVAProjectsByProjectId(_id)
+        res["_id"] = str(res["_id"])
+        return res
+
+    #项目下新建VA
     def insertVAInProject(self,VAInfo):
         vaProjectName = VAInfo["vaProjectName"]
         VAName = VAInfo["VAName"]
@@ -72,5 +89,3 @@ class vaController(controllerIndex):
         VAInfo.pop("VA_ID")
         VADelRes = self.va.updateVA(VA_ID,VAInfo)
         return VADelRes
-
-
