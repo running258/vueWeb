@@ -109,6 +109,13 @@ def updateVAProject():
     res = vaController().updateVAProject(vaProjectInfo)
     return json.dumps(res)
 
+#删除VA项目
+@app.route('/deleteVAProject', methods=['POST'])
+def deleteVAProject():
+    projectId = request.get_data(as_text=True)
+    deleteRes = vaController().deleteVAProject(projectId)
+    return "done"
+
 #查看VAProjectList
 @app.route('/getVAProjectList', methods=['GET'])
 def getVAProjectList():
@@ -140,8 +147,8 @@ def insertVA():
 #get all project VA
 @app.route('/getProjectVAList', methods=['GET'])
 def getProjectVAList():
-    vaProjectName = request.args.get('vaProjectName')
-    projectVAList = vaController().getProjectVAList(vaProjectName)
+    vaProjectId = request.args.get('vaProjectId')
+    projectVAList = vaController().getProjectVAList(vaProjectId)
     return json.dumps(projectVAList)
 
 #查看项目下VA

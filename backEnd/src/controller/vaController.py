@@ -18,6 +18,16 @@ class vaController(controllerIndex):
         res = self.vaProject.updateVAProjectById(vaProjectId,vaProjectInfo)
         return  res
 
+    #删除VA项目
+    def deleteVAProject(self,projectId):
+        res = self.vaProject.getVAProjectsByProjectId(projectId)
+        VAList = res["vaList"]
+        self.vaProject.deleteProjectById(projectId)
+        for va in VAList:
+            VA_ID = va["VA_ID"]
+            self.va.deleteVA(VA_ID)
+        return "done"
+
     #获取项目下所有VA
     def getVAProjectList(self,vaProjectName):
         res = self.vaProject.getVAProjectList(vaProjectName)
@@ -50,8 +60,8 @@ class vaController(controllerIndex):
         return  result
 
     #查看项目下所有VA
-    def getProjectVAList(self,vaProjectName):
-        res = self.vaProject.getVAProjectsByProjectName(vaProjectName)
+    def getProjectVAList(self,vaProjectId):
+        res = self.vaProject.getVAProjectsByProjectId(vaProjectId)
         VAList = res["vaList"]
         VAListInfo = []
         for vaInfo in VAList:

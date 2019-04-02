@@ -61,9 +61,9 @@ export default {
         },
     },
     created() {
-        this.axios.get(global.backEndUrl + global.backEndPath["getVAProjectsByProjectName"], {
+        this.axios.get(global.backEndUrl + global.backEndPath["getVAProjectsByProjectId"], {
                 params: {
-                    vaProjectName: this.$route.query.vaProjectName
+                    vaProjectId: this.$route.query.vaProjectId
                 }
             })
             .then((response) => {
@@ -74,7 +74,7 @@ export default {
             })
         this.axios.get(global.backEndUrl + global.backEndPath["getProjectVAList"], {
                 params: {
-                    vaProjectName: this.$route.query.vaProjectName
+                    vaProjectId: this.$route.query.vaProjectId
                 }
             })
             .then((res) => {

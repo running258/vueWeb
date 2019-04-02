@@ -28,6 +28,11 @@ class getVAProjectMongoDB(mongoConn):
     def updateVAProjectById(self, vaProjectId,vaProjectInfo):
         result = self.collection.update({"_id":ObjectId(vaProjectId)}, vaProjectInfo)
         return result
+
+    #根据ID删除项目
+    def deleteProjectById(self, vaProjectId):
+        result = self.collection.remove({"_id":ObjectId(vaProjectId)})
+        return result
         
     def getVAProjectsByProjectName(self, vaProjectName):
         result = self.collection.find_one({"vaProjectName": vaProjectName})

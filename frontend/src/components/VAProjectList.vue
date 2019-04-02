@@ -8,9 +8,9 @@
     </div>
     <el-card class="box-card" v-for="(vaProject,index) in allProjects" :key="index">
         <div>
-            <router-link :to="{path:'/VAView',query:{vaProjectName:vaProject.vaProjectName}}"><span>{{vaProject.vaProjectName}}</span></router-link><span class="authorAndDes">{{vaProject.author}}/{{vaProject.description}}</span>
+            <router-link :to="{path:'/VAView',query:{vaProjectId:vaProject._id}}"><span>{{vaProject.vaProjectName}}</span></router-link><span class="authorAndDes">{{vaProject.author}}/{{vaProject.description}}</span>
             <el-button @click="showProjectWindow('edit',vaProject._id)">编辑</el-button>
-            <el-button @click="projectDelete()">删除</el-button>
+            <el-button @click="projectDelete(vaProject._id)">删除</el-button>
         </div>
     </el-card>
 </div>
@@ -31,8 +31,8 @@ export default {
         }
     },
     methods: {
-        showProjectWindow: function (type,projectId) {
-            this.$emit('showWin', type,projectId)
+        showProjectWindow: function (type, projectId) {
+            this.$emit('showWin', type, projectId)
         },
         search: function () {
             this.axios.get(global.backEndUrl + global.backEndPath["getVAProjectList"], {
@@ -44,6 +44,20 @@ export default {
                     this.allProjects = response["data"]
                 })
         },
+        projectDelete: function (projectId) {
+            this.$confirm('删除项目同时会删除项目下所有VA，确认该操作吗')
+                .then(_ => {
+                    this.axios.post(global.backEndUrl + global.backEndPath["deleteVAProject"], projectId)
+                        .then((res) => {
+                            this.reload()
+                        })
+                    done();
+                })
+                .catch(_ => {
+
+                });
+        },
+
     },
     created() {
         // 加载所有项目
