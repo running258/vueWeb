@@ -2,9 +2,10 @@ import json
 from flask import Flask, jsonify,request
 from flask_cors import CORS
 
+from src.controller.oesController import oesController
 from src.controller.vaController import vaController
 from src.controller.envController import envController
-
+from src.controller.interProjectController import interProjectController
 
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
@@ -33,12 +34,19 @@ def deleteLoginEnv():
     deleteRes = envController().deleteLoginEnv(loginEnvId)
     return "done"
 
-#-----------接口相关API
-#get all projects 
-@app.route('/getProjects', methods=['GET'])
-def getProjects():
-    projectsList = getProjectsMongoDB().getAllProjects()
-    return json.dumps(projectsList)
+#-----------接口相关API-----------------
+#查看所有接口项目
+@app.route('/getInterProject', methods=['GET'])
+def getInterProject():
+    projectList = interProjectController().getInterProject()
+    return json.dumps(projectList)
+
+@app.route('/insertInterProject', methods=['POST'])
+def insertNewProject():
+    newProjectJson = json.loads(request.get_data(as_text=True))
+    newProject = getProjectsMongoDB().insertNewProject(newProjectJson)
+    return "done"
+
 
 @app.route('/getProjectAndIntersByProjectName/<projectName>', methods=['GET'])
 def getProjectAndIntersByProjectName(projectName):
@@ -53,12 +61,6 @@ def getProjectAndIntersByProjectName(projectName):
         interQueryList.append(interInfo)
     projectInfo["interfaces"] = interQueryList
     return json.dumps(projectInfo)
-
-@app.route('/insertNewProject', methods=['POST'])
-def insertNewProject():
-    newProjectJson = json.loads(request.get_data(as_text=True))
-    newProject = getProjectsMongoDB().insertNewProject(newProjectJson)
-    return "done"
 
 #get all interface by interName
 @app.route('/interInfoById/<interId>', methods=['GET'])
@@ -96,6 +98,69 @@ def saveInterAndUpdateProject():
     interId = getInterfacesMongoDB().insertInterfacesCollection(interJson)
     getProjectsMongoDB().updateProjectInter(projectName,interId,interName)
     return "done"
+# -------------------------------OES相关API-------------
+#新建OES项目
+@app.route('/saveOESProject', methods=['POST'])
+def saveOESProject():
+    oesProjectInfo = json.loads(request.get_data(as_text=True))
+    res = oesController().saveOESProject(oesProjectInfo)
+    return json.dumps(res)
+
+#查看OES项目列表
+@app.route('/getOESProjectList', methods=['GET'])
+def getOESProjectList():
+    res = oesController().getOESProjectList()
+    return json.dumps(res)
+
+#根据项目ID查看项目
+@app.route('/getOESProjectById', methods=['GET'])
+def getOESProjectById():
+    oesProjectId = request.args.get('oesProjectId')
+    res = oesController().getOESProjectById(oesProjectId)
+    return json.dumps(res)
+
+#删除VA项目
+@app.route('/deleteOESProjectById', methods=['POST'])
+def deleteOESProjectById():
+    oesProjectId = request.get_data(as_text=True)
+    deleteRes = oesController().deleteOESProjectById(oesProjectId)
+    return "done"
+
+#保存OES接口
+@app.route('/saveOESInter', methods=['POST'])
+def saveOESInter():
+    OESInterInfo = json.loads(request.get_data(as_text=True))
+    OESInterId = oesController().saveOESInter(OESInterInfo)
+    return str(OESInterId)
+
+#查看项目下所有OES接口
+@app.route('/getOESProjectInterList', methods=['GET'])
+def getOESProjectInterList():
+    oesProjectId = request.args.get('oesProjectId')
+    OESInterList = oesController().getOESProjectInterList(oesProjectId)
+    return json.dumps(OESInterList)
+
+#根据ID查看项目下指定OES接口
+@app.route('/getOESInterById', methods=['GET'])
+def getOESInterById():
+    oesInterId = request.args.get('oesInterId')
+    OESInterInfo = oesController().getOESInterById(oesInterId)
+    return json.dumps(OESInterInfo)
+
+#根据ID删除VA
+@app.route('/deleteOESProjectInter', methods=['POST'])
+def deleteOESProjectInter():
+    oesProjectId = request.args.get('oesProjectId')
+    oesInterId = request.args.get('oesInterId')
+    deleteRes = oesController().deleteOESProjectInter(oesProjectId,oesInterId)
+    return "done"
+
+#运行oes接口
+@app.route('/runOESInter', methods=['POST'])
+def runOESInter():
+    oesInterId = request.args.get('oesInterId')
+    runRes = oesController().runOESInter(oesInterId)
+    return str(runRes)
 
 # -------------------------------VA相关API-------------
 #新建VA项目

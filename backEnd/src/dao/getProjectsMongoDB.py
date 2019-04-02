@@ -1,11 +1,5 @@
-import os
-import sys
-curPath = os.path.abspath(os.path.realpath(__file__))
-prePath = os.path.split(curPath)[0]
-sys.path.append(prePath)
-from getMongo import mongoConn
-
-
+from src.dao.getMongo import mongoConn
+from bson.objectid import ObjectId
 
 class getProjectsMongoDB(mongoConn):
 
@@ -16,7 +10,7 @@ class getProjectsMongoDB(mongoConn):
         projectsList = []
         results = self.db.projects.find()
         for result in results:
-            result.pop("_id")
+            result["_id"] = str(result["_id"])
             projectsList.append(result)
         return projectsList
 
@@ -26,7 +20,7 @@ class getProjectsMongoDB(mongoConn):
 
     def getProjectsByProjectName(self, projectName):
         result = self.db.projects.find_one({"projectName": projectName})
-        result.pop("_id")
+        result["_id"] = str(result["_id"])
         return result
 
     def updateProjectInter(self, projectName, interId, interName):

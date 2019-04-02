@@ -9,7 +9,14 @@ const menuBarList = [{
     name: '环境管理',
     componentName: 'LoginEnv'
   }]
-}, {
+},  {
+  name: 'OES',
+  id: 'OES',
+  sub: [{
+    name: 'OES项目',
+    componentName: 'OESProject'
+  }]
+},{
   name: 'VirtualAsset',
   id: 'VA',
   sub: [{
@@ -25,12 +32,22 @@ const backEndPath = {
   getAllLoginEnv:"getAllLoginEnv",  //获取所有环境
   deleteLoginEnv:"deleteLoginEnv",  //删除环境
 // ------------------接口相关
-  getProject:"getProjects",   //获取所有项目
+  getInterProject:"getInterProject",   //获取所有项目
   insertNewProject:"insertNewProject",  //新建项目
   getProjectAndIntersByProjectName:"getProjectAndIntersByProjectName",  //项目中添加新接口
   interInfoById:"interInfoById",  //根据id查看接口详情
   runSingleInter:"runSingleInter",  //单接口执行
   saveInterAndUpdateProject:"saveInterAndUpdateProject",  //项目内保存接口
+// ----------------------OES相关
+  saveOESProject:"saveOESProject",  //新建/保存OES项目
+  getOESProjectList:"getOESProjectList",  //OES项目列表
+  getOESProjectById:"getOESProjectById",  //查看OES项目详情
+  deleteOESProjectById:"deleteOESProjectById",  //删除OES项目
+  saveOESInter:"saveOESInter", //保存OES接口
+  getOESProjectInterList:"getOESProjectInterList", //获取项目下OES接口List
+  getOESInterById:"getOESInterById", //根据ID查看OES接口
+  deleteOESProjectInter:"deleteOESProjectInter", //删除OES接口
+  runOESInter:"runOESInter", //运行OES接口
 // ----------------------VA工具相关
   insertVAProject:"insertVAProject",//新建
   getVAProjectList:"getVAProjectList",//查看VAList/查询
