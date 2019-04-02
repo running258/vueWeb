@@ -3,17 +3,37 @@ from flask import Flask, jsonify,request
 from flask_cors import CORS
 
 from src.controller.vaController import vaController
+from src.controller.envController import envController
+
 
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
-from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
-from src.dao.getVAMongoDB import getVAMongoDB
-# from record.record import record
 from src.requestsTemp import requestsTemp
 
 app = Flask(__name__)
 CORS(app)
 
+#获取所有环境地址
+@app.route('/getAllLoginEnv', methods=['GET'])
+def getAllLoginEnv():
+    loginEnv = envController().getAllLoginEnv()
+    return json.dumps(loginEnv)
+
+#保存/更新环境信息
+@app.route('/updateLoginEnv', methods=['POST'])
+def updateLoginEnv():
+    loginEnvJson = json.loads(request.get_data(as_text=True))
+    updateRes = envController().updateLoginEnv(loginEnvJson)
+    return "done"
+
+#保存/更新环境信息
+@app.route('/deleteLoginEnv', methods=['POST'])
+def deleteLoginEnv():
+    loginEnvId = request.get_data(as_text=True)
+    deleteRes = envController().deleteLoginEnv(loginEnvId)
+    return "done"
+
+#-----------接口相关API
 #get all projects 
 @app.route('/getProjects', methods=['GET'])
 def getProjects():
@@ -33,23 +53,6 @@ def getProjectAndIntersByProjectName(projectName):
         interQueryList.append(interInfo)
     projectInfo["interfaces"] = interQueryList
     return json.dumps(projectInfo)
-
-@app.route('/getAllLoginEnv', methods=['GET'])
-def getAllLoginEnv():
-    loginEnv = getLoginEnvMongoDB().getAllLoginEnv()
-    return json.dumps(loginEnv)
-
-@app.route('/updateLoginEnv', methods=['POST'])
-def updateLoginEnv():
-    loginEnvJson = json.loads(request.get_data(as_text=True))
-    if loginEnvJson["_id"]!='':
-        _id = loginEnvJson["_id"]
-        loginEnvJson.pop("_id")
-        updateResult = getLoginEnvMongoDB().updateLoginEnv(_id,loginEnvJson)
-    else:
-        loginEnvJson.pop("_id")
-        insertResult = getLoginEnvMongoDB().insertLoginEnvCollection(loginEnvJson)
-    return "done"
 
 @app.route('/insertNewProject', methods=['POST'])
 def insertNewProject():
@@ -144,20 +147,20 @@ def insertVA():
     VA_ID = vaController().insertVAInProject(VAInfo)
     return str(VA_ID)
 
-#get all project VA
+#查看项目下所有VA
 @app.route('/getProjectVAList', methods=['GET'])
 def getProjectVAList():
     vaProjectId = request.args.get('vaProjectId')
     projectVAList = vaController().getProjectVAList(vaProjectId)
     return json.dumps(projectVAList)
 
-#查看项目下VA
+#根据ID查看项目下指定VA
 @app.route('/getProjectVA/<VA_ID>', methods=['GET'])
 def getProjectVA(VA_ID):
     VAInfo = vaController().getProjectVA(VA_ID)
     return json.dumps(VAInfo)
 
-#delete VA by id
+#根据ID删除VA
 @app.route('/deleteProjectVA', methods=['GET'])
 def deleteProjectVA():
     vaProjectName = request.args.get('vaProjectName')
@@ -178,14 +181,6 @@ def getVAResponse(vaProjectName,vaName):
     vaRes = vaController().getVAResponse(vaProjectName,vaName)
     return json.dumps(vaRes)
 # ---------------------------------
-
-
-#get VA env
-@app.route('/Record', methods=['POST'])
-def Record(): 
-    runEnv = json.loads(request.get_data(as_text=True))
-    vaRes = record().setUP(runEnv)
-    return "done"
 
 @app.route('/testPage')
 def testPage():

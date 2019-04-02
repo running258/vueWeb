@@ -18,19 +18,19 @@ const menuBarList = [{
   }]
 }]
 
-
-
 const backEndUrl = "http://localhost:5000/"
 // const backEndUrl = "http://192.168.96.28:90/"
 const backEndPath = {
+  updateLoginEnv:"updateLoginEnv",  //环境保存/更新
+  getAllLoginEnv:"getAllLoginEnv",  //获取所有环境
+  deleteLoginEnv:"deleteLoginEnv",  //删除环境
+// ------------------接口相关
   getProject:"getProjects",   //获取所有项目
   insertNewProject:"insertNewProject",  //新建项目
   getProjectAndIntersByProjectName:"getProjectAndIntersByProjectName",  //项目中添加新接口
   interInfoById:"interInfoById",  //根据id查看接口详情
   runSingleInter:"runSingleInter",  //单接口执行
   saveInterAndUpdateProject:"saveInterAndUpdateProject",  //项目内保存接口
-  updateLoginEnv:"updateLoginEnv",  //环境保存
-  getAllLoginEnv:"getAllLoginEnv",  //获取所有环境
 // ----------------------VA工具相关
   insertVAProject:"insertVAProject",//新建
   getVAProjectList:"getVAProjectList",//查看VAList/查询

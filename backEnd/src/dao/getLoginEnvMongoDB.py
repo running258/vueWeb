@@ -6,25 +6,30 @@ class getLoginEnvMongoDB(mongoConn):
 
     def __init__(self):
         self.db = mongoConn().getConnection()
+        self.collection = self.db['loginEnv']
 
     def getAllLoginEnv(self):
         loginList = []
-        results = self.db.loginEnv.find()
+        results = self.collection.find()
         for result in results:
             result["_id"] = str(result["_id"])
             loginList.append(result)
         return loginList
 
     def getLoginEnvCollection(self,env):
-        result = self.db.loginEnv.find_one({"env":env})
-        result.pop("_id")
+        result = self.collection.find_one({"env":env})
+        result["_id"] = str(result["_id"])
         return result
         
     def insertLoginEnvCollection(self,loginInfo):
-        result = self.db.loginEnv.insert(loginInfo)
+        result = self.collection.insert(loginInfo)
         return result
 
     def updateLoginEnv(self, loginId, loginInfo):
-        result = self.db.loginEnv.update({"_id":ObjectId(loginId)}, loginInfo)
+        result = self.collection.update({"_id":ObjectId(loginId)}, loginInfo)
+        return result
+
+    def removeLoginEnv(self,loginEnvId):
+        result = self.collection.remove({"_id":ObjectId(loginEnvId)})
         return result
 
