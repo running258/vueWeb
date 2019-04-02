@@ -14,7 +14,7 @@ const menuBarList = [{
   id: 'OES',
   sub: [{
     name: 'OES项目',
-    componentName: 'OESProject'
+    componentName: 'OESProjectView'
   }]
 },{
   name: 'VirtualAsset',

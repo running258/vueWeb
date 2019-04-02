@@ -29,6 +29,16 @@ export default new Router({
       component: () => import('./views/ProjectDetailView.vue')
     },
     {
+      path: '/OESProjectView',
+      name: 'OESProjectView',
+      component: () => import('./views/OESProjectView.vue')
+    },
+    {
+      path: '/OESProjectDetailView',
+      name: 'OESProjectDetailView',
+      component: () => import('./views/OESProjectDetailView.vue')
+    },
+    {
       path: '/VAView',
       name: 'VAView',
       component: () => import('./views/VAView.vue')
