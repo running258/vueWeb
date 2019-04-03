@@ -1,48 +1,42 @@
 <template>
-<div class="OESProjectDetailView">
-    <VAList @showVADialog="showVADialog"/>
-    <el-dialog :title="vaDialogTitle" :visible.sync="vaDialogShow" :before-close="reloadPage" width="50%">
-        <VAWindow :VA_ID="VA_ID" :VAName="VAName" :vaProjectName="vaProjectName" @closeDialog="reloadPage"/>
+<div class="VAView">
+    <OESProjectDetail @showDialog="showDialog"/>
+    <el-dialog :visible.sync="dialogShow" :before-close="reloadPage" width="50%">
+        <OESInterWindow :Inter_ID="Inter_ID" :InterName="InterName" :oesProjectId="oesProjectId" @closeDialog="reloadPage"/>
     </el-dialog>
 </div>
 </template>
 
 <script>
-import VAList from '@/components/VAList.vue';
-import VAWindow from '@/components/VAWindow.vue';
+import OESProjectDetail from '@/components/OESProjectDetail.vue';
+import OESInterWindow from '@/components/OESInterWindow.vue';
 
 export default {
-    name: 'OESProjectDetailView',
+    name: 'VAView',
     inject: ['reload'],
     components: {
-        VAList,
-        VAWindow,
+        OESProjectDetail,
+        OESInterWindow,
     },
     data() {
         return {
-            vaDialogTitle:'',
-            type:'',
-            VA_ID: '',
-            VAName: '',
-            vaProjectName: '',
-            vaDialogShow: false,
+            dialogTitle:'',
+            Inter_ID: '',
+            InterName:'',
+            oesProjectId: '',
+            dialogShow: false,
         }
     },
     methods: {
         reloadPage: function () {
-            this.vaDialogShow=false
+            this.dialogShow=false
             this.reload()
         },
-        showVADialog: function (type,VA_ID,VAName,vaProjectName) {
-            this.vaDialogShow = true
-            if(type==='new'){
-                this.vaDialogTitle = '新建'
-            }else if(type==='edit'){
-                this.vaDialogTitle = '编辑'
-            }
-            this.VA_ID=VA_ID
-            this.VAName=VAName
-            this.vaProjectName=vaProjectName
+        showDialog: function (Inter_ID,InterName,oesProjectId) {
+            this.dialogShow = true
+            this.Inter_ID=Inter_ID
+            this.InterName=InterName
+            this.oesProjectId=oesProjectId
         },
     }
 }

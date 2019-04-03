@@ -1,49 +1,50 @@
 <template>
-<div class="OESProjectView">
-    <VAList @showVADialog="showVADialog"/>
-    <el-dialog :title="vaDialogTitle" :visible.sync="vaDialogShow" :before-close="reloadPage" width="50%">
-        <VAWindow :VA_ID="VA_ID" :VAName="VAName" :vaProjectName="vaProjectName" @closeDialog="reloadPage"/>
+<div class="VAProjectView">
+    <OESProjectList @showWin="changeWin"/>
+    <el-dialog :title="titleName" :visible.sync="projectShow" :before-close="reloadPage" width="50%">
+        <OESProjectWindow :type="windowType" :projectId="projectId" @closeProjectWin="projectWinHide"/>
     </el-dialog>
 </div>
 </template>
 
 <script>
-import VAList from '@/components/VAList.vue';
-import VAWindow from '@/components/VAWindow.vue';
+import OESProjectList from '@/components/OESProjectList.vue';
+import OESProjectWindow from '@/components/OESProjectWindow.vue';
 
 export default {
-    name: 'OESProjectView',
+    name: 'VAProjectView',
     inject: ['reload'],
     components: {
-        VAList,
-        VAWindow,
+        OESProjectList,
+        OESProjectWindow,
     },
     data() {
         return {
-            vaDialogTitle:'',
-            type:'',
-            VA_ID: '',
-            VAName: '',
-            vaProjectName: '',
-            vaDialogShow: false,
+            projectShow: false,
+            projectId: '',
+            windowType: '',
+            titleName:'',
         }
     },
     methods: {
         reloadPage: function () {
-            this.vaDialogShow=false
             this.reload()
         },
-        showVADialog: function (type,VA_ID,VAName,vaProjectName) {
-            this.vaDialogShow = true
-            if(type==='new'){
-                this.vaDialogTitle = '新建'
-            }else if(type==='edit'){
-                this.vaDialogTitle = '编辑'
+        changeWin: function (type,projectId) {
+            this.projectShow = true
+            this.windowType = type
+            if(type == "new"){
+                this.titleName = "新建项目"
+            }else if(type == "edit"){
+                this.titleName = "编辑项目"
+                this.projectId = projectId
             }
-            this.VA_ID=VA_ID
-            this.VAName=VAName
-            this.vaProjectName=vaProjectName
         },
+        projectWinHide:function(){
+            this.projectShow = false
+            this.reload()
+        },
+        
     }
 }
 </script>

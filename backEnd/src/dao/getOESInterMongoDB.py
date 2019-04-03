@@ -11,8 +11,8 @@ class getOESInterMongoDB(mongoConn):
         result = self.collection.insert(OESInterInfo)
         return result
 
-    def getOESInterById(self,OES_ID):
-        result = self.collection.find_one({"_id":ObjectId(oesProjectId)})
+    def getOESInterById(self,Inter_ID):
+        result = self.collection.find_one({"_id":ObjectId(Inter_ID)})
         result["_id"] = str(result["_id"])
         return result
 

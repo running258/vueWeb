@@ -7,9 +7,9 @@ class getOESProjectMongoDB(mongoConn):
         self.db = mongoConn().getConnection()
         self.collection = self.db['OESProject']
 
-    def getOESProjectList(self):
+    def getOESProjectList(self,projectName):
         projectList = []
-        results = self.collection.find()
+        results = self.collection.find({'projectName': {'$regex': '.?'+projectName+'.?'}})
         for result in results:
             result["_id"] = str(result["_id"])
             projectList.append(result)
@@ -25,6 +25,7 @@ class getOESProjectMongoDB(mongoConn):
         return result
 
     def updateOESProjectById(self, oesProjectId,oesProjectInfo):
+        oesProjectInfo["_id"] = ObjectId(oesProjectInfo["_id"])
         result = self.collection.update({"_id": ObjectId(oesProjectId)}, oesProjectInfo)
         return result
 

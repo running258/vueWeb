@@ -109,7 +109,8 @@ def saveOESProject():
 #查看OES项目列表
 @app.route('/getOESProjectList', methods=['GET'])
 def getOESProjectList():
-    res = oesController().getOESProjectList()
+    projectName = request.args.get('projectName')
+    res = oesController().getOESProjectList(projectName)
     return json.dumps(res)
 
 #根据项目ID查看项目
@@ -119,7 +120,7 @@ def getOESProjectById():
     res = oesController().getOESProjectById(oesProjectId)
     return json.dumps(res)
 
-#删除VA项目
+#删除OES项目
 @app.route('/deleteOESProjectById', methods=['POST'])
 def deleteOESProjectById():
     oesProjectId = request.get_data(as_text=True)
@@ -130,8 +131,8 @@ def deleteOESProjectById():
 @app.route('/saveOESInter', methods=['POST'])
 def saveOESInter():
     OESInterInfo = json.loads(request.get_data(as_text=True))
-    OESInterId = oesController().saveOESInter(OESInterInfo)
-    return str(OESInterId)
+    saveRes = oesController().saveOESInter(OESInterInfo)
+    return str(saveRes)
 
 #查看项目下所有OES接口
 @app.route('/getOESProjectInterList', methods=['GET'])
@@ -148,7 +149,7 @@ def getOESInterById():
     return json.dumps(OESInterInfo)
 
 #根据ID删除VA
-@app.route('/deleteOESProjectInter', methods=['POST'])
+@app.route('/deleteOESProjectInter', methods=['GET'])
 def deleteOESProjectInter():
     oesProjectId = request.args.get('oesProjectId')
     oesInterId = request.args.get('oesInterId')

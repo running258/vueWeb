@@ -1,5 +1,6 @@
 <template>
-<div id="ProjectWindow">
+<div id="OESProjectWindow">
+    {{projectId}}
     <el-form :model="projectInfoForm" :rules="rules" ref="projectInfoForm" label-width="110px" class="projectInfoForm">
         <el-row>
             <el-col :span="11">
@@ -13,19 +14,16 @@
                 </el-form-item>
             </el-col>
         </el-row>
-        <el-form-item label="网关地址">
-            <el-col :span="11">
-                <el-form-item prop="url">
-                    <el-input v-model="projectInfoForm.url" :disabled="true"></el-input>
-                </el-form-item>
-            </el-col>
+        <el-form-item label="url" prop="url">
+            <el-input type="textarea" v-model="projectInfoForm.url"></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
+        <el-form-item label="项目描述" prop="description">
             <el-input type="textarea" v-model="projectInfoForm.description"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm('projectInfoForm',type)">确定</el-button>
             <el-button @click="resetForm('projectInfoForm')">重置</el-button>
+            <el-button @click="close">取消</el-button>
         </el-form-item>
     </el-form>
 
@@ -36,26 +34,17 @@
 import global from '@/config/global'
 
 export default {
-    props: ["type"],
+    props: ["type", "projectId"],
     data() {
         return {
-            loginEnvList: [],
             projectJson: {},
             projectInfoForm: {
                 projectName: '',
                 author: '',
-                loginIndex: '',
-                env: '',
-                supplyUrl: '',
-                supplyPath: '',
-                hospUrl: '',
-                hospPath: '',
-                supplyUsername: '',
-                supplyPassword: '',
-                hospUsername: '',
-                hospPassword: '',
+                url: '',
                 description: "",
             },
+            OESInterList: [],
             rules: {
                 projectName: [{
                     required: true,
@@ -67,66 +56,62 @@ export default {
                     message: '请输入创建人',
                     trigger: 'blur'
                 }],
-                loginIndex: [{
+                url: [{
                     required: true,
-                    message: '请选择系统环境',
-                    trigger: 'change'
+                    message: '请输入环境地址',
+                    trigger: 'blur'
                 }]
             }
         }
     },
     methods: {
-        formatProjectJson() {
+        formatProjectJson: function () {
             this.projectJson = {
                 "projectName": this.projectInfoForm.projectName,
                 "author": this.projectInfoForm.author,
-                "env": this.projectInfoForm.env,
-                "supplyUsername": this.projectInfoForm.supplyUsername,
-                "supplyPassword": this.projectInfoForm.supplyPassword,
-                "hospUsername": this.projectInfoForm.hospUsername,
-                "hospPassword": this.projectInfoForm.hospPassword,
+                "url": this.projectInfoForm.url,
                 "description": this.projectInfoForm.description,
-                "interfaces": []
+                "OESInterList": this.OESInterList,
+                "OES_ID": this.projectId,
             }
         },
-        changeEnv() {
-            var loginInfo = this.loginEnvList[this.projectInfoForm.loginIndex]
-            this.projectInfoForm.env = loginInfo["env"]
-            this.projectInfoForm.supplyUrl = loginInfo["supply"]["url"]
-            this.projectInfoForm.supplyPath = loginInfo["supply"]["path"]
-            this.projectInfoForm.hospUrl = loginInfo["hosp"]["url"]
-            this.projectInfoForm.hospPath = loginInfo["hosp"]["path"]
-        },
-        submitForm(formName, type) {
+        submitForm: function (formName, type) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    if (type == "new") {
-                        this.formatProjectJson()
-                        this.axios.post(global.backEndUrl + global.backEndPath["insertNewProject"], this.projectJson)
-                            .then((res) => {
-                                this.$emit('closeProjectWin')
-                            })
-                    }
+                    this.formatProjectJson()
+                    this.axios.post(global.backEndUrl + global.backEndPath["saveOESProject"], this.projectJson)
+                        .then((res) => {
+                            this.$emit('closeProjectWin')
+                        })
+
                 } else {
                     console.log('oops! there something wrong while submit, try again later!');
                     return false;
                 }
             });
-            
         },
-        resetForm(formName) {
+        close: function () {
+            this.$emit('closeProjectWin')
+        },
+        resetForm: function (formName) {
             this.$refs[formName].resetFields();
-        },
-        refresh() {
-            this.reload()
         }
     },
     created() {
-        // 加载所有系统环境
-        this.axios.get(global.backEndUrl + global.backEndPath["getAllLoginEnv"])
-            .then((res) => {
-                this.loginEnvList = res["data"]
-            })
-    }
+        if (this.type == 'edit') {
+            this.axios.get(global.backEndUrl + global.backEndPath["getOESProjectById"], {
+                    params: {
+                        oesProjectId: this.projectId
+                    }
+                })
+                .then((res) => {
+                    var info = res["data"]
+                    this.projectInfoForm.projectName = info["projectName"]
+                    this.projectInfoForm.author = info["author"]
+                    this.projectInfoForm.url = info["url"]
+                    this.projectInfoForm.description = info["description"]
+                })
+        }
+    },
 }
 </script>
