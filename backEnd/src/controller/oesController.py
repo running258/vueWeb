@@ -1,4 +1,6 @@
 from src.controller.controllerIndex import controllerIndex
+from bson.objectid import ObjectId
+
 
 class oesController(controllerIndex):
 
@@ -56,6 +58,7 @@ class oesController(controllerIndex):
             OESInterList = res["OESInterList"]
             OESInterList.append(interJson)
             res["OESInterList"] = OESInterList
+            res["_id"] = ObjectId(res["_id"])
             result = self.OESProject.updateOESProjectById(oesProjectId,res)
             return result
 
@@ -83,6 +86,7 @@ class oesController(controllerIndex):
         indexI = (i for i in OESInterList if i["Inter_ID"] == oesInterId).__next__()
         OESInterList.remove(indexI)
         projectInfo["OESInterList"] = OESInterList
+        projectInfo["_id"] = ObjectId(projectInfo["_id"])
         updateProject = self.OESProject.updateOESProjectById(oesProjectId,projectInfo)
         deleteRes = self.OESInter.deleteOESInter(oesInterId)
         return updateProject

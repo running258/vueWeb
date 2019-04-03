@@ -17,6 +17,18 @@
         <el-form-item label="url" prop="url">
             <el-input type="textarea" v-model="projectInfoForm.url"></el-input>
         </el-form-item>
+        <el-row>
+            <el-col :span="11">
+                <el-form-item label="signature" prop="signature">
+                    <el-input v-model="projectInfoForm.signature"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="11">
+                <el-form-item label="hospId" prop="hospId">
+                    <el-input v-model="projectInfoForm.hospId"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
         <el-form-item label="项目描述" prop="description">
             <el-input type="textarea" v-model="projectInfoForm.description"></el-input>
         </el-form-item>
@@ -42,6 +54,8 @@ export default {
                 projectName: '',
                 author: '',
                 url: '',
+                signature: '',
+                hospId: '',
                 description: "",
             },
             OESInterList: [],
@@ -60,6 +74,16 @@ export default {
                     required: true,
                     message: '请输入环境地址',
                     trigger: 'blur'
+                }],
+                signature: [{
+                    required: true,
+                    message: '请输入医院签名',
+                    trigger: 'blur'
+                }],
+                hospId: [{
+                    required: true,
+                    message: '请输入医院ID',
+                    trigger: 'blur'
                 }]
             }
         }
@@ -70,6 +94,8 @@ export default {
                 "projectName": this.projectInfoForm.projectName,
                 "author": this.projectInfoForm.author,
                 "url": this.projectInfoForm.url,
+                "signature": this.projectInfoForm.signature,
+                "hospId": this.projectInfoForm.hospId,
                 "description": this.projectInfoForm.description,
                 "OESInterList": this.OESInterList,
                 "OES_ID": this.projectId,
@@ -109,7 +135,10 @@ export default {
                     this.projectInfoForm.projectName = info["projectName"]
                     this.projectInfoForm.author = info["author"]
                     this.projectInfoForm.url = info["url"]
+                    this.projectInfoForm.signature = info["signature"]
+                    this.projectInfoForm.hospId = info["hospId"]
                     this.projectInfoForm.description = info["description"]
+                    this.OESInterList = info["OESInterList"]
                 })
         }
     },

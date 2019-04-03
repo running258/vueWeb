@@ -1,6 +1,7 @@
 import os
 import json
 import time,datetime
+import hashlib
 
 class jsonLoad(object):
 
@@ -26,4 +27,10 @@ class getTime(object):
         return int(time.mktime(time_structure.timetuple()))*1000
 
 
-getTime().getYYYYMMDDTimestamp()
+class mask(object):
+
+    def sha256(self,stringBuffer):
+        sha256 = hashlib.sha256()
+        sha256.update(stringBuffer.encode('utf-8'))
+        res = sha256.hexdigest()
+        return res

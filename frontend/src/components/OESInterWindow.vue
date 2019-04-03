@@ -30,7 +30,7 @@
         </el-row>
         <el-form-item>
             <el-button type="primary" @click="save('interForm')">保存</el-button>
-            <el-button type="primary" @click="run">运行</el-button>
+            <el-button type="primary" @click="run(oesProjectId,Inter_ID)">运行</el-button>
             <el-button @click="resetForm('interForm')">重置</el-button>
             <el-button @click="closeDialog">取消</el-button>
         </el-form-item>
@@ -89,8 +89,9 @@ export default {
                         "description": this.interForm.description,
                         "path": this.interForm.path,
                         "raw": JSON.parse(this.interForm.raw),
-                        "oesProjectId": this.oesProjectId
+                        "oesProjectId": this.oesProjectId,
                     }
+                    console.log(this.interInfo)
                     this.axios.post(global.backEndUrl + global.backEndPath["saveOESInter"], this.interInfo)
                         .then((res) => {
                             this.closeDialog()
@@ -105,8 +106,17 @@ export default {
         resetForm: function (formName) {
             this.$refs[formName].resetFields();
         },
-        run: function () {
-
+        run: function (oesProjectId,Inter_ID) {
+            this.axios.get(global.backEndUrl + global.backEndPath["runOESInter"], {
+                    params: {
+                        oesInterId: this.Inter_ID,
+                        oesProjectId: this.oesProjectId
+                    }
+                })
+                .then((res) => {
+                    console.log(res)
+                    this.interForm.response = res["data"]
+                })
         },
     },
     created() {

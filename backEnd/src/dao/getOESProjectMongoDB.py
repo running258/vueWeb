@@ -1,6 +1,5 @@
 from src.dao.getMongo import mongoConn
 from bson.objectid import ObjectId
-
 class getOESProjectMongoDB(mongoConn):
 
     def __init__(self):
@@ -25,7 +24,6 @@ class getOESProjectMongoDB(mongoConn):
         return result
 
     def updateOESProjectById(self, oesProjectId,oesProjectInfo):
-        oesProjectInfo["_id"] = ObjectId(oesProjectInfo["_id"])
         result = self.collection.update({"_id": ObjectId(oesProjectId)}, oesProjectInfo)
         return result
 

@@ -1,13 +1,8 @@
 import requests, json,os,sys
 
-curPath = os.path.abspath(os.path.realpath(__file__))
-prePath = os.path.split(curPath)[0]
-sys.path.append(prePath)
-
-
 # from login import Login
-from login import LoginWithMongo
-from entity.tools import jsonLoad,getTime
+from src.entity.tools import jsonLoad,getTime
+from src.entity.login import LoginWithMongo
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 
@@ -42,7 +37,6 @@ class requestsTemp(LoginWithMongo):
         elif returnType.lower() == "string" or returnType.lower() == "text":
             return res.text
 
-
     def supplyRequestsMongo(self,projectName,interName,returnType = "json", extraParams={},  extraPath=""):
         authorization = LoginWithMongo("supply").supplyLogin()
         projectsInterfaces = getProjectsMongoDB().getProjectsByProjectName(projectName)["interfaces"]
@@ -71,3 +65,8 @@ class requestsTemp(LoginWithMongo):
         elif returnType.lower() == "string" or returnType.lower() == "text":
             return res.text
 
+class oesProjectInter(object):
+
+    def oesProjectRun(self,path,header,params):
+        res = requests.post(path,headers=header,data=params,verify=False)
+        return res.json()

@@ -3,13 +3,15 @@ from flask import Flask, jsonify,request
 from flask_cors import CORS
 
 from src.controller.oesController import oesController
+from src.controller.runController import runController
 from src.controller.vaController import vaController
 from src.controller.envController import envController
+from src.controller.interProjectController import interProjectController
 from src.controller.interProjectController import interProjectController
 
 from src.dao.getProjectsMongoDB import getProjectsMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
-from src.requestsTemp import requestsTemp
+from src.entity.requestsTemp import requestsTemp
 
 app = Flask(__name__)
 CORS(app)
@@ -157,10 +159,11 @@ def deleteOESProjectInter():
     return "done"
 
 #运行oes接口
-@app.route('/runOESInter', methods=['POST'])
+@app.route('/runOESInter', methods=['GET'])
 def runOESInter():
+    oesProjectId = request.args.get('oesProjectId')
     oesInterId = request.args.get('oesInterId')
-    runRes = oesController().runOESInter(oesInterId)
+    runRes = runController().runOESInter(oesProjectId,oesInterId)
     return str(runRes)
 
 # -------------------------------VA相关API-------------
