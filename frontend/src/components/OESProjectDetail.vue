@@ -2,6 +2,9 @@
 <div id="OESProjectDetail">
     <div>{{projectName}}/{{projectAuthor}}/{{url}}/{{projectDescription}}</div>
     <el-button type="primary" @click="showDialog('','',oesProjectId)">新建VA</el-button>
+
+    {{response}}
+
     <el-card class="box-card" v-for="(inter,index) in OESInterList" :key="index">
         <div>
             <span>接口名称：</span>
@@ -14,8 +17,9 @@
         <hr style="border:1px double #e8e8e8" />
         <div>
             <span>返回结果：</span><br>
-            <span>{{inter.response}}</span>
+            <el-input placeholder="response" v-model="inter.response"></el-input>
         </div>
+        <el-button @click="runInProjectDetail(oesProjectId,inter._id,index)">运行</el-button>
         <el-button @click="showDialog(inter._id,inter.InterName,oesProjectId)">编辑</el-button>
         <el-button @click="deleteVA(inter._id,oesProjectId)">删除</el-button>
     </el-card>
@@ -35,7 +39,9 @@ export default {
             url: '',
             projectDescription: '',
             oesProjectId: this.$route.query.projectId,
-            OESInterList: []
+            OESInterList: [],
+            response:[123],
+            tesdew:'',
         }
     },
     methods: {
@@ -59,6 +65,21 @@ export default {
                 .catch(_ => {
 
                 });
+        },
+        runInProjectDetail: function (oesProjectId,Inter_ID,index) {
+            this.axios.get(global.backEndUrl + global.backEndPath["runOESInter"], {
+                    params: {
+                        oesInterId: Inter_ID,
+                        oesProjectId: oesProjectId
+                    }
+                })
+                .then((res) => {
+                    console.log(res)
+                    this.OESInterList[index]["response"] = res["data"];
+                    let m = [... this.OESInterList];
+                    this.OESInterList = [];
+                    this.OESInterList = m;
+                })
         },
     },
     created() {

@@ -1,14 +1,14 @@
 <template>
 <div id="OESInterWindow">
-    <el-form :model="interForm" ref="interForm" label-width="110px" class="interForm">
+    <el-form :model="interForm" :rules="rules" ref="interForm" label-width="110px" class="interForm">
         <el-row>
             <el-col :span="11">
-                <el-form-item label="接口名称">
+                <el-form-item label="接口名称" prop="interName">
                     <el-input placeholder="接口名称" v-model="interForm.interName"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="11">
-                <el-form-item label="path">
+                <el-form-item label="path" prop="path">
                     <el-input placeholder="path" v-model="interForm.path"></el-input>
                 </el-form-item>
             </el-col>
@@ -19,7 +19,7 @@
             </el-form-item>
         </el-row>
         <el-row>
-            <el-form-item label="raw">
+            <el-form-item label="raw" prop="raw">
                 <el-input type="textarea" :autosize="{ minRows: 8}" placeholder="raw" v-model="interForm.raw"></el-input>
             </el-form-item>
         </el-row>
@@ -29,7 +29,7 @@
             </el-form-item>
         </el-row>
         <el-form-item>
-            <el-button type="primary" @click="save('interForm')">保存</el-button>
+            <el-button type="primary" @click="submitForm('interForm')">保存</el-button>
             <el-button type="primary" @click="run(oesProjectId,Inter_ID)">运行</el-button>
             <el-button @click="resetForm('interForm')">重置</el-button>
             <el-button @click="closeDialog">取消</el-button>
@@ -80,7 +80,7 @@ export default {
         closeDialog: function () {
             this.$emit('closeDialog')
         },
-        save: function (formName) {
+        submitForm: function (formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.interInfo = {
@@ -91,7 +91,6 @@ export default {
                         "raw": JSON.parse(this.interForm.raw),
                         "oesProjectId": this.oesProjectId,
                     }
-                    console.log(this.interInfo)
                     this.axios.post(global.backEndUrl + global.backEndPath["saveOESInter"], this.interInfo)
                         .then((res) => {
                             this.closeDialog()

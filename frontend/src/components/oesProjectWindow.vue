@@ -1,6 +1,5 @@
 <template>
 <div id="OESProjectWindow">
-    {{projectId}}
     <el-form :model="projectInfoForm" :rules="rules" ref="projectInfoForm" label-width="110px" class="projectInfoForm">
         <el-row>
             <el-col :span="11">
