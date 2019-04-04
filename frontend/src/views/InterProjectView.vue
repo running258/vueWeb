@@ -1,53 +1,47 @@
 <template>
 <div class="ProjectView">
-    <ProjectList @showWin="changeWin" @interWindow="interShowFun"/>
-    <el-dialog :title="titleName" :visible.sync="projectShow" :before-close="reloadPage" width="50%">
-        <ProjectWindow :type="windowType" @closeProjectWin="projectWinHide"/>
+    <InterProjectList @showWin="showWin" @interWindow="interShowFun"/>
+    <el-dialog :visible.sync="projectShow" :before-close="reloadPage" width="50%">
+        <InterProjectWindow @closeProjectWin="closeProjectWin"/>
     </el-dialog>
-    <el-dialog :title="interType" :visible.sync="interShow" :before-close="reloadPage" width="50%">
+    <!-- <el-dialog :title="interType" :visible.sync="interShow" :before-close="reloadPage" width="50%">
         <InterDetailWindow :interId="interId" :projectName="projectName" :interType="interType"/>
-    </el-dialog>
+    </el-dialog> -->
 </div>
 </template>
 
 <script>
-import ProjectList from '@/components/ProjectList.vue';
-import ProjectWindow from '@/components/ProjectWindow.vue';
-import InterDetailWindow from '@/components/InterDetailWindow.vue';
+import InterProjectList from '@/components/InterProjectList.vue';
+import InterProjectWindow from '@/components/InterProjectWindow.vue';
+// import InterDetailWindow from '@/components/InterDetailWindow.vue';
 
 export default {
     name: 'ProjectView',
     inject: ['reload'],
     components: {
-        ProjectList,
-        ProjectWindow,
-        InterDetailWindow
+        InterProjectList,
+        InterProjectWindow,
+        // InterDetailWindow
     },
     data() {
         return {
             projectShow: false,
-            windowType: '',
-            titleName:'',
             interShow: false,
             interType:'',
             interId:'',
             projectName:'',
+            projectId:''
         }
     },
     methods: {
         reloadPage: function () {
             this.reload()
         },
-        changeWin: function (type) {
+        showWin: function (projectId) {
             this.projectShow = true
-            this.windowType = type
-            if(type == "new"){
-                this.titleName = "新建项目"
-            }else if(type == "edit"){
-                this.titleName = "编辑项目"
-            }
+            this.projectId = projectId
         },
-        projectWinHide:function(){
+        closeProjectWin:function(){
             this.projectShow = false
             this.reload()
         },

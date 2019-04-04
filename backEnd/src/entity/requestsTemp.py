@@ -3,7 +3,7 @@ import requests, json,os,sys
 # from login import Login
 from src.entity.tools import jsonLoad,getTime
 from src.entity.login import LoginWithMongo
-from src.dao.getProjectsMongoDB import getProjectsMongoDB
+from src.dao.getInterProjectMongoDB import getInterProjectMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 
 class requestsTemp(LoginWithMongo):

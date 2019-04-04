@@ -57,6 +57,7 @@ export default {
     methods: {
         formatVAProjectJson:function() {
             this.vaProjectJson = {
+                "collectionName": "vaProject",
                 "vaProjectName": this.vaProjectInfoForm.vaProjectName,
                 "author": this.vaProjectInfoForm.author,
                 "description": this.vaProjectInfoForm.description,

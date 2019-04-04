@@ -1,18 +1,13 @@
 <template>
-<div id="ProjectList">
-    <el-row>
-        <el-col :span="12"></el-col>
-        <el-col :span="12">
-            <div class="grid-content bg-purple-light"></div>
-        </el-col>
-    </el-row>
-    <el-button type="primary" @click="showProjectWindow('new')">新建项目</el-button>
-    <el-card class="box-card" v-for="(project,index) in allProjects" :key="index">
+<div id="InterProjectList">
+    <el-button type="primary" @click="showWin('')">新建项目</el-button>
+    <el-card class="box-card" v-for="(project,index) in interProjectList" :key="index">
         <div slot="header" class="clearfix">
             <router-link :to="{path:'/projectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link><span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
         </div>
         <div v-for="(inter,index) in project.interfaces" :key="index">
-            <span>{{inter.interName}}</span><el-button @click="interWindow(inter.interId,project.projectName)">查看</el-button>
+            <span>{{inter.interName}}</span>
+            <el-button @click="interWindow(inter.interId,project.projectName)">查看</el-button>
         </div>
     </el-card>
 </div>
@@ -25,18 +20,19 @@ import global from '@/config/global'
 export default {
     data() {
         return {
+            searchName:'',
             author: "",
             env: "",
             loginIndex: "",
             description: "",
-            allProjects: []
+            interProjectList: []
         }
     },
     methods: {
-        showProjectWindow: function (type) {
-            this.$emit('showWin', type)
+        showWin: function (projectId) {
+            this.$emit('showWin', projectId)
         },
-        projectDetail: function (projectName,env) {
+        projectDetail: function (projectName, env) {
             this.$router.push({
                 name: 'projectDetail',
                 query: {
@@ -45,23 +41,28 @@ export default {
                 }
             })
         },
-        interShowFun:function(interId,projectName){
+        interShowFun: function (interId, projectName) {
             this.interShow = true
-            if(interId!=""){
+            if (interId != "") {
                 this.interType = "编辑"
                 this.interId = interId
                 this.projectName = projectName
             }
         },
-        interWindow:function(interId,projectName) {
-            this.$emit("interWindow",interId,projectName)
+        interWindow: function (interId, projectName) {
+            this.$emit("interWindow", interId, projectName)
         }
     },
     created() {
         // 加载所有项目
-        this.axios.get(global.backEndUrl + global.backEndPath["getProject"])
+        this.axios.get(global.backEndUrl + global.backEndPath["getList"], {
+                params: {
+                    name: this.searchName,
+                    collectionName: "interProject"
+                }
+            })
             .then((response) => {
-                this.allProjects = response["data"]
+                this.interProjectList = response["data"]
             })
     }
 }

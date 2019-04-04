@@ -3,7 +3,7 @@ const menuBarList = [{
   id: 'interface',
   sub: [{
     name: '工程目录',
-    componentName: 'Project'
+    componentName: 'InterProjectView'
   },
   {
     name: '环境管理',
@@ -28,12 +28,19 @@ const menuBarList = [{
 const backEndUrl = "http://localhost:5000/"
 // const backEndUrl = "http://192.168.96.28:90/"
 const backEndPath = {
+
+  save:"save",
+  getList:"getList",
+  getById:"getById",
+  deleteById:"deleteById",
+  
   updateLoginEnv:"updateLoginEnv",  //环境保存/更新
   getAllLoginEnv:"getAllLoginEnv",  //获取所有环境
   deleteLoginEnv:"deleteLoginEnv",  //删除环境
 // ------------------接口相关
-  getInterProject:"getInterProject",   //获取所有项目
-  insertNewProject:"insertNewProject",  //新建项目
+  getProjectList:"getProjectList",   //获取所有项目
+  saveProject:"saveProject",  //保存项目
+
   getProjectAndIntersByProjectName:"getProjectAndIntersByProjectName",  //项目中添加新接口
   interInfoById:"interInfoById",  //根据id查看接口详情
   runSingleInter:"runSingleInter",  //单接口执行

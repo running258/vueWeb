@@ -14,19 +14,19 @@ export default new Router({
       component: () => import('./views/VAProjectView.vue')
     },
     {
-      path: '/project',
-      name: 'project',
-      component: () => import('./views/ProjectView.vue')
+      path: '/InterProjectView',
+      name: 'InterProjectView',
+      component: () => import('./views/InterProjectView.vue')
+    },
+    {
+      path: '/InterProjectDetail',
+      name: 'InterProjectDetail',
+      component: () => import('./views/InterProjectDetail.vue')
     },
     {
       path: '/loginEnv',
       name: 'loginEnv',
       component: () => import('./views/LoginEnvView.vue')
-    },
-    {
-      path: '/projectDetail',
-      name: 'projectDetail',
-      component: () => import('./views/ProjectDetailView.vue')
     },
     {
       path: '/OESProjectView',

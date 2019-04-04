@@ -1,5 +1,5 @@
 <template>
-<div id="ProjectWindow">
+<div id="InterProjectWindow">
     <el-form :model="projectInfoForm" :rules="rules" ref="projectInfoForm" label-width="110px" class="projectInfoForm">
         <el-row>
             <el-col :span="11">
@@ -86,7 +86,9 @@
 import global from '@/config/global'
 
 export default {
-    props: ["type"],
+    props: {
+        _id: String
+    },
     data() {
         return {
             loginEnvList: [],
@@ -128,6 +130,8 @@ export default {
     methods: {
         formatProjectJson() {
             this.projectJson = {
+                "collectionName": "interProject",
+                "_id": this._id,
                 "projectName": this.projectInfoForm.projectName,
                 "author": this.projectInfoForm.author,
                 "env": this.projectInfoForm.env,
@@ -150,19 +154,18 @@ export default {
         submitForm(formName, type) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    if (type == "new") {
-                        this.formatProjectJson()
-                        this.axios.post(global.backEndUrl + global.backEndPath["insertNewProject"], this.projectJson)
-                            .then((res) => {
-                                this.$emit('closeProjectWin')
-                            })
-                    }
+                    this.formatProjectJson()
+                    // this.axios.post(global.backEndUrl + global.backEndPath["saveInterProject"], this.projectJson)
+                    this.axios.post(global.backEndUrl + global.backEndPath["save"], this.projectJson)
+                        .then((res) => {
+                            this.$emit('closeProjectWin')
+                        })
                 } else {
                     console.log('oops! there something wrong while submit, try again later!');
                     return false;
                 }
             });
-            
+
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();

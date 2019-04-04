@@ -1,9 +1,5 @@
-import os,sys,configparser
-curPath = os.path.abspath(os.path.realpath(__file__))
-prePath = os.path.split(curPath)[0]
-sys.path.append(prePath)
+import configparser, os
 from pymongo import MongoClient
-from bson.objectid import ObjectId
 
 class getConfIni(object):
 
@@ -22,4 +18,9 @@ class mongoConn(getConfIni):
         client = MongoClient(host=host, port=int(port))
         db = client[dbName]
         return db
-
+    
+    def getCollection(self,collectionName):
+        db = self.getConnection()
+        collection = self.config.get("CollectionName",collectionName)
+        dbCollection = db[collection]
+        return dbCollection

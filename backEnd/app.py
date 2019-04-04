@@ -2,19 +2,57 @@ import json
 from flask import Flask, jsonify,request
 from flask_cors import CORS
 
+
+from src.controller.commonController import commonController
+
+
 from src.controller.oesController import oesController
 from src.controller.runController import runController
 from src.controller.vaController import vaController
 from src.controller.envController import envController
 from src.controller.interProjectController import interProjectController
-from src.controller.interProjectController import interProjectController
 
-from src.dao.getProjectsMongoDB import getProjectsMongoDB
+from src.dao.getInterProjectMongoDB import getInterProjectMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 from src.entity.requestsTemp import requestsTemp
 
 app = Flask(__name__)
 CORS(app)
+
+# ------通用Path-------------
+# 保存
+@app.route('/save', methods=['POST'])
+def save():
+    jsonInfo = json.loads(request.get_data(as_text=True))
+    collectionName = jsonInfo["collectionName"]
+    res = commonController(collectionName).save(jsonInfo)
+    return res
+
+# 获取List/名称查询
+@app.route('/getList', methods=['GET'])
+def getList():
+    name = request.args.get('name')
+    collectionName = request.args.get('collectionName')
+    res = commonController(collectionName).getList(name)
+    return res
+
+# 根据ID查看
+@app.route('/getById', methods=['GET'])
+def getById():
+    _id = request.args.get('_id')
+    collectionName = request.args.get('collectionName')
+    res = commonController(collectionName).getById(_id)
+    return res
+
+# 根据ID删除
+@app.route('/deleteById', methods=['GET'])
+def deleteById():
+    _id = request.args.get('_id')
+    collectionName = request.args.get('collectionName')
+    res = commonController(collectionName).deleteById(_id)
+    return res
+
+
 
 #获取所有环境地址
 @app.route('/getAllLoginEnv', methods=['GET'])
@@ -38,15 +76,16 @@ def deleteLoginEnv():
 
 #-----------接口相关API-----------------
 #查看所有接口项目
-@app.route('/getInterProject', methods=['GET'])
+@app.route('/getProjectList', methods=['GET'])
 def getInterProject():
-    projectList = interProjectController().getInterProject()
+    projectName = request.args.get('projectName')
+    projectList = interProjectController().getProjectList(projectName)
     return json.dumps(projectList)
 
-@app.route('/insertInterProject', methods=['POST'])
+@app.route('/saveProject', methods=['POST'])
 def insertNewProject():
-    newProjectJson = json.loads(request.get_data(as_text=True))
-    newProject = getProjectsMongoDB().insertNewProject(newProjectJson)
+    projectInfo = json.loads(request.get_data(as_text=True))
+    saveRes = interProjectController().saveProject(projectInfo)
     return "done"
 
 
