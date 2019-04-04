@@ -1,7 +1,7 @@
 <template>
 <div id="VAList">
     <div>{{vaProjectName}}/{{projectAuthor}}/{{projectDescription}}</div>
-    <el-button type="primary" @click="showVADialog('new','','',vaProjectName)">新建VA</el-button>
+    <el-button type="primary" @click="showVADialog('new','','')">新建VA</el-button>
     <span>使用说明：调用VA时请使用  “http://192.168.96.28:90/+项目名称+/getVAResponse/+VA名称 </span>
     <el-card class="box-card" v-for="(va,index) in VAList" :key="index">
         <div>
@@ -18,7 +18,7 @@
             <span>{{va.response}}</span>
         </div>
         <el-button @click="showVADialog('edit',va._id,va.VAName)">编辑</el-button>
-        <el-button @click="deleteVA(va._id,vaProjectName)">删除</el-button>
+        <el-button @click="deleteVA(va._id)">删除</el-button>
     </el-card>
 </div>
 </template>
@@ -38,16 +38,16 @@ export default {
         }
     },
     methods: {
-        showVADialog: function (type, VA_ID, VAName, vaProjectName) {
-            this.$emit('showVADialog', type, VA_ID, VAName, vaProjectName)
+        showVADialog: function (type, VA_ID, VAName) {
+            this.$emit('showVADialog', type, VA_ID, VAName, this.$route.query.vaProjectId)
         },
-        deleteVA: function (VA_ID, vaProjectName) {
+        deleteVA: function (VA_ID) {
             this.$confirm('删除为不可逆操作，确认删除吗')
                 .then(_ => {
                     this.axios.get(global.backEndUrl + global.backEndPath["deleteProjectVA"], {
                             params: {
                                 VA_ID: VA_ID,
-                                vaProjectName: vaProjectName,
+                                projectId: this.$route.query.vaProjectId,
                             }
                         })
                         .then((res) => {
@@ -69,6 +69,7 @@ export default {
             .then((response) => {
                 var projectInfo = response["data"]
                 this.vaProjectName = projectInfo["vaProjectName"]
+                this.projectId = projectInfo["projectId"]
                 this.projectAuthor = projectInfo["author"]
                 this.projectDescription = projectInfo["description"]
             })

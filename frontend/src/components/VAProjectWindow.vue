@@ -1,6 +1,5 @@
 <template>
 <div id="ProjectWindow">
-    {{projectId}}
     <el-form :model="vaProjectInfoForm" :rules="rules" ref="vaProjectInfoForm" label-width="110px" class="vaProjectInfoForm">
         <el-row>
             <el-col :span="11">

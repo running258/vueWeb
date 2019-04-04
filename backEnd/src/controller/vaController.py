@@ -28,15 +28,9 @@ class vaController(controllerIndex):
             self.va.deleteVA(VA_ID)
         return "done"
 
-    #获取项目下所有VA
+    #获取所有VA项目/查询
     def getVAProjectList(self,vaProjectName):
         res = self.vaProject.getVAProjectList(vaProjectName)
-        return  res
-
-    #查看项目信息
-    def getVAProjectsByProjectName(self,vaProjectName):
-        res = self.vaProject.getVAProjectsByProjectName(vaProjectName)
-        res["_id"] = str(res["_id"])
         return  res
 
     #根据id查看项目信息
@@ -47,16 +41,16 @@ class vaController(controllerIndex):
 
     #项目下新建VA
     def insertVAInProject(self,VAInfo):
-        vaProjectName = VAInfo["vaProjectName"]
+        projectId = VAInfo["projectId"]
         VAName = VAInfo["VAName"]
-        VAInfo.pop("vaProjectName")
+        VAInfo.pop("projectId")
         VA_ID = self.va.insertVA(VAInfo)
         vaJson = {'VA_ID': str(VA_ID), 'VAName': VAName}
-        projectRes = self.vaProject.getVAProjectsByProjectName(vaProjectName)
+        projectRes = self.vaProject.getVAProjectsByProjectId(projectId)
         vaList = projectRes["vaList"]
         vaList.append(vaJson)
         projectRes["vaList"] = vaList
-        result = self.vaProject.updateProjectVAList(vaProjectName,projectRes)
+        result = self.vaProject.updateProjectVAList(projectId,projectRes)
         return  result
 
     #查看项目下所有VA
@@ -83,13 +77,13 @@ class vaController(controllerIndex):
         return VAInfo
 
     #删除项目下va
-    def deleteProjectVA(self,vaProjectName,VA_ID):
-        projectInfo = self.vaProject.getVAProjectsByProjectName(vaProjectName)
+    def deleteProjectVA(self,projectId,VA_ID):
+        projectInfo = self.vaProject.getVAProjectsByProjectId(projectId)
         VAList = projectInfo["vaList"]
         indexI = (i for i in VAList if i["VA_ID"] == VA_ID).__next__()
         VAList.remove(indexI)
         projectInfo["vaList"] = VAList
-        updateProject = self.vaProject.updateProjectVAList(vaProjectName,projectInfo)
+        updateProject = self.vaProject.updateProjectVAList(projectId,projectInfo)
         VADelRes = self.va.deleteVA(VA_ID)
         return updateProject
 

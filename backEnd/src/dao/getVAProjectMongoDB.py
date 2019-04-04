@@ -20,8 +20,8 @@ class getVAProjectMongoDB(mongoConn):
             vaProjectsList.append(result)
         return vaProjectsList
 
-    def updateProjectVAList(self, vaProjectName,newRes):
-        result = self.collection.update({"vaProjectName": vaProjectName}, newRes)
+    def updateProjectVAList(self, projectId,newRes):
+        result = self.collection.update({"_id": ObjectId(projectId)}, newRes)
         return result
 
     #根据ID更新项目

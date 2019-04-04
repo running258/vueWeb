@@ -195,13 +195,6 @@ def getVAProjectList():
     res = vaController().getVAProjectList(vaProjectName)
     return json.dumps(res)
 
-#根据项目名查看项目
-@app.route('/getVAProjectsByProjectName', methods=['GET'])
-def getVAProjectsByProjectName():
-    vaProjectName = request.args.get('vaProjectName')
-    res = vaController().getVAProjectsByProjectName(vaProjectName)
-    return json.dumps(res)
-
 #根据项目ID查看项目
 @app.route('/getVAProjectsByProjectId', methods=['GET'])
 def getVAProjectsByProjectId():
