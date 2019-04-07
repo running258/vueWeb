@@ -34,7 +34,7 @@ def getList():
     name = request.args.get('name')
     collectionName = request.args.get('collectionName')
     res = commonController(collectionName).getList(name)
-    return res
+    return json.dumps(res)
 
 # 根据ID查看
 @app.route('/getById', methods=['GET'])

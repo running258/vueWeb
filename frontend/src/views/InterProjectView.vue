@@ -1,6 +1,6 @@
 <template>
 <div class="ProjectView">
-    <InterProjectList @showWin="showWin" @interWindow="interShowFun"/>
+    <InterProjectList @projectWin="projectWin" @interWindow="interShowFun" :collectionName="interProject"/>
     <el-dialog :visible.sync="projectShow" :before-close="reloadPage" width="50%">
         <InterProjectWindow @closeProjectWin="closeProjectWin"/>
     </el-dialog>
@@ -25,6 +25,7 @@ export default {
     },
     data() {
         return {
+            interProject:"interProject",
             projectShow: false,
             interShow: false,
             interType:'',
@@ -37,7 +38,7 @@ export default {
         reloadPage: function () {
             this.reload()
         },
-        showWin: function (projectId) {
+        projectWin: function (projectId) {
             this.projectShow = true
             this.projectId = projectId
         },

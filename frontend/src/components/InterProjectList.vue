@@ -1,6 +1,6 @@
 <template>
 <div id="InterProjectList">
-    <el-button type="primary" @click="showWin('')">新建项目</el-button>
+    <el-button type="primary" @click="projectWin('')">新建项目</el-button>
     <el-card class="box-card" v-for="(project,index) in interProjectList" :key="index">
         <div slot="header" class="clearfix">
             <router-link :to="{path:'/projectDetail',query:{projectName:project.projectName,env:project.env}}"><span>{{project.projectName}}</span></router-link><span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
@@ -15,9 +15,14 @@
 
 <script>
 import eventBus from '@/js/eventBus'
+import commonJs from '@/js/commonJs'
 import global from '@/config/global'
 
 export default {
+
+    props:{
+        collectionName: String
+    },
     data() {
         return {
             searchName:'',
@@ -29,8 +34,8 @@ export default {
         }
     },
     methods: {
-        showWin: function (projectId) {
-            this.$emit('showWin', projectId)
+        projectWin: function (projectId) {
+            this.$emit('projectWin', projectId)
         },
         projectDetail: function (projectName, env) {
             this.$router.push({
@@ -55,12 +60,7 @@ export default {
     },
     created() {
         // 加载所有项目
-        this.axios.get(global.backEndUrl + global.backEndPath["getList"], {
-                params: {
-                    name: this.searchName,
-                    collectionName: "interProject"
-                }
-            })
+        commonJs.getList(this.collectionName,this.searchName)
             .then((response) => {
                 this.interProjectList = response["data"]
             })

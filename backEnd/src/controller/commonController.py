@@ -9,8 +9,7 @@ class commonController():
     def getList(self,name):
         resultList = []
         res = self.commonDao.getList(name)
-        print("------"+str(res))
-        for result in res:
+        for result in list(res):
             result["_id"] = str(result["_id"])
             resultList.append(result)
         return  resultList

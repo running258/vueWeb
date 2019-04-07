@@ -1,6 +1,6 @@
 <template>
 <div class="ProjectDetailView">
-    <ProjectDetail @interWindow="interShowFun" />
+    <InterProjectDetail @interWindow="interShowFun" />
     <el-dialog :title="interType" :visible.sync="interShow" :before-close="reloadPage" width="50%">
         <InterDetailWindow :interId="interId" :projectName="projectName" @closeInterWindow="interHideFun"/>
     </el-dialog>
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ProjectDetail from '@/components/ProjectDetail.vue';
+import InterProjectDetail from '@/components/InterProjectDetail.vue';
 import InterDetailWindow from '@/components/InterDetailWindow.vue';
 
 export default {

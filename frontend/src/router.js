@@ -19,9 +19,9 @@ export default new Router({
       component: () => import('./views/InterProjectView.vue')
     },
     {
-      path: '/InterProjectDetail',
-      name: 'InterProjectDetail',
-      component: () => import('./views/InterProjectDetail.vue')
+      path: '/InterProjectDetailView',
+      name: 'InterProjectDetailView',
+      component: () => import('./views/InterProjectDetailView.vue')
     },
     {
       path: '/loginEnv',
