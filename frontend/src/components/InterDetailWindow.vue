@@ -163,6 +163,10 @@ export default {
                 }
             });
             paramStr = "{" + paramStr + "}"
+
+            console.log(headerStr)
+            console.log(paramStr)
+
             var headerJson = JSON.parse(headerStr)
             var paramJson = JSON.parse(paramStr)
             var runUsername = ''

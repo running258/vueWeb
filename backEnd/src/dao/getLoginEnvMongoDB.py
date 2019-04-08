@@ -6,7 +6,7 @@ class getLoginEnvMongoDB(mongoConn):
 
     def __init__(self):
         self.db = mongoConn().getConnection()
-        self.collection = self.db['loginEnv']
+        self.collection = self.db['LoginEnv']
 
     def getAllLoginEnv(self):
         loginList = []

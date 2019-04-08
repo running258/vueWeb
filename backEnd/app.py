@@ -9,8 +9,6 @@ from src.controller.oesController import oesController
 from src.controller.runController import runController
 from src.controller.vaController import vaController
 
-from src.dao.getInterProjectMongoDB import getInterProjectMongoDB
-from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
 from src.entity.requestsTemp import requestsTemp
 
 app = Flask(__name__)
@@ -67,6 +65,22 @@ def saveInterAndUpdateProject():
     interCollectionName = interJson["interCollectionName"]
     insertInfo = interProjectController(projectCollectionName).saveInterAndUpdateProject(interCollectionName,interJson)
     return "done"
+
+#call interface
+@app.route('/runInterProjectInter', methods=['GET'])
+def runInterProjectInter():
+    projectId = request.args.get('projectId')
+    interId = request.args.get('interId')
+    projectCollectionName = request.args.get('projectCollectionName')
+    interCollectionName = request.args.get('interCollectionName')
+
+    sys = singleInterJson["sys"]
+    env = singleInterJson["env"]
+    username = singleInterJson["runUsername"]
+    password = singleInterJson["runPassword"]
+    if sys == "supply":
+        res = requestsTemp(env,username,password).supplyRequests(singleInterJson)
+        return json.dumps(res)
 
 #call interface
 @app.route('/runSingleInter', methods=['POST'])
