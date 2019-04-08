@@ -3,7 +3,7 @@
     <el-form :model="interFrom" ref="interFrom" label-width="110px" class="interFrom">
         <el-row>
             <el-form-item label="接口名称">
-                <el-input placeholder="接口名称" class="interName" v-model="interFrom.interName"></el-input>
+                <el-input placeholder="接口名称" class="name" v-model="interFrom.name"></el-input>
             </el-form-item>
         </el-row>
         <el-row>
@@ -64,8 +64,8 @@
             <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="运行结果" v-model="runResult"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" icon="el-icon-caret-right" @click="run(projectName)">运行</el-button>
-            <el-button v-if="interType!='查看'" type="primary" @click="save(projectName)">保存</el-button>
+            <el-button type="primary" icon="el-icon-caret-right" @click="run">运行</el-button>
+            <el-button type="primary" @click="save">保存</el-button>
         </el-form-item>
     </el-form>
 
@@ -78,13 +78,14 @@ import global from '@/config/global'
 export default {
     props: {
         interId: String,
-        projectName: String,
-        interType: String,
+        projectId: String,
+        projectCollectionName:String,
+        interCollectionName:String
     },
     data() {
         return {
             interFrom: {
-                interName: '',
+                name: '',
                 sys: '',
                 method: '',
                 path: '',
@@ -116,16 +117,16 @@ export default {
         };
     },
     methods: {
-        run(projectName) {
-            this.getInterJson(projectName)
+        run() {
+            this.getInterJson()
             this.axios.post(global.backEndUrl + global.backEndPath["runSingleInter"], this.interJson)
                 .then(response => {
                     this.runResult = JSON.stringify(response["data"])
                 })
 
         },
-        save(projectName) {
-            this.getInterJson(projectName)
+        save:function() {
+            this.getInterJson()
             this.axios.post(global.backEndUrl + global.backEndPath["saveInterAndUpdateProject"], this.interJson)
                 .then(response => {
                     this.runResult = JSON.stringify(response["data"])
@@ -133,7 +134,7 @@ export default {
                 })
 
         },
-        getInterJson(projectName) {
+        getInterJson:function() {
             var headerList = this.interFrom.headerList
             var paramList = this.interFrom.payloadList
             var headerStr = ""
@@ -189,16 +190,19 @@ export default {
             }
             this.interJson = {
                 "sys": this.interFrom.sys,
-                "interName": this.interFrom.interName,
+                "name": this.interFrom.name,
                 "path": this.interFrom.path,
                 "method": this.interFrom.method,
                 "header": headerJson,
                 "params": paramJson,
-                "projectName": projectName,
                 "env": this.env,
                 "runUsername": runUsername,
                 "runPassword": runPassword,
-                "isNewUser":isNewUser
+                "isNewUser":isNewUser,
+                "_id":this.interId,
+                "projectId":this.projectId,
+                "interCollectionName":this.interCollectionName,
+                "projectCollectionName":this.projectCollectionName
             }
         },
         addHeader() {
@@ -222,15 +226,23 @@ export default {
         handleClick(tab, event) {}
     },
     created() {
+        this.commonJs.getById(this.projectCollectionName,this.projectId)
+            .then((res) => {
+                this.env = res["data"]["env"]
+                this.supplyUsername = res["data"]["supplyUsername"]
+                this.supplyPassword = res["data"]["supplyPassword"]
+                this.hospUsername = res["data"]["hospUsername"]
+                this.hospPassword = res["data"]["hospPassword"]
+            })
         var interId = this.interId
         if (interId != '' && interId != 'NULL') {
-            this.axios.get(global.backEndUrl + global.backEndPath["interInfoById"] + "/" + interId)
+            this.commonJs.getById(this.interCollectionName,interId)
                 .then((response) => {
                     this.interInfo = response["data"]
                     this.interFrom.method = this.interInfo["method"]
                     this.interFrom.sys = this.interInfo["sys"]
                     this.interFrom.path = this.interInfo["path"]
-                    this.interFrom.interName = this.interInfo["interName"]
+                    this.interFrom.name = this.interInfo["name"]
                     this.interFrom.runUsername = this.interInfo["username"]
                     this.interFrom.runPassword = this.interInfo["password"]
                     var header = this.interInfo["header"]
@@ -268,19 +280,8 @@ export default {
 
                 })
         }
-        this.axios.get(global.backEndUrl + global.backEndPath["getProjectAndIntersByProjectName"] + "/" + this.projectName)
-            .then((res) => {
-                this.projectName = res["data"]["projectName"]
-                this.author = res["data"]["author"]
-                this.env = res["data"]["env"]
-                this.supplyUsername = res["data"]["supplyUsername"]
-                this.supplyPassword = res["data"]["supplyPassword"]
-                this.hospUsername = res["data"]["hospUsername"]
-                this.hospPassword = res["data"]["hospPassword"]
-                this.description = res["data"]["description"]
-            })
-    },
-    mounted() {}
+        
+    }
 };
 </script>
 

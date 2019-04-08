@@ -1,12 +1,12 @@
 <template>
 <div id="projectDetail">
     <div>
-        <span>{{projectName}}/{{author}}/{{description}}/{{env}}</span>
+        <span>{{name}}/{{author}}/{{description}}/{{env}}</span>
     </div>
-    <el-button @click="interWindow('',projectName)">新添</el-button>
+    <el-button @click="interWindow('',projectId)">新添</el-button>
     <el-card class="box-card" v-for="(interInfo,index) in interList" :key="index">
         <div>
-            <el-button @click="interWindow(interInfo.interId,projectName)">编辑</el-button>
+            <el-button @click="interWindow(interInfo.interId,projectId)">编辑</el-button>
         </div>
         <div class="interName">{{interInfo.interName}}</div>
         <div>
@@ -23,9 +23,13 @@
 import global from '@/config/global'
 
 export default {
+    props:{
+        projectCollectionName:String,
+        interCollectionName:String
+    },
     data() {
         return {
-            projectName: '',
+            name: '',
             author: '',
             env: '',
             supplyUsername: '',
@@ -33,19 +37,20 @@ export default {
             hospUsername: '',
             hospPassword: '',
             description: '',
-            interList: []
+            interList: [],
+            projectId:'',
         }
 
     },
     methods: {
-        interWindow:function(interId,projectName) {
-            this.$emit("interWindow",interId,projectName)
+        interWindow:function(interId,name) {
+            this.$emit("interWindow",interId,name)
         }
     },
     created() {
-        this.axios.get(global.backEndUrl + global.backEndPath["getProjectAndIntersByProjectName"] + "/" + this.$route.query.projectName)
+        this.commonJs.getProjectAndIntersByProjectId(this.projectCollectionName,this.interCollectionName,this.$route.query.projectId)
             .then((res) => {
-                this.projectName = res["data"]["projectName"]
+                this.name = res["data"]["name"]
                 this.author = res["data"]["author"]
                 this.env = res["data"]["env"]
                 this.supplyUsername = res["data"]["supplyUsername"]
@@ -53,7 +58,8 @@ export default {
                 this.hospUsername = res["data"]["hospUsername"]
                 this.hospPassword = res["data"]["hospPassword"]
                 this.description = res["data"]["description"]
-                this.interList = res["data"]["interfaces"]
+                this.interList = res["data"]["list"]
+                this.projectId = res["data"]["_id"]
             })
     }
 }

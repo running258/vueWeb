@@ -1,11 +1,11 @@
 <template>
 <div class="ProjectView">
-    <InterProjectList @projectWin="projectWin" @interWindow="interShowFun" :collectionName="interProject"/>
+    <InterProjectList @projectWin="projectWin" @interWindow="interShowFun" :projectCollectionName="interProject"/>
     <el-dialog :visible.sync="projectShow" :before-close="reloadPage" width="50%">
-        <InterProjectWindow @closeProjectWin="closeProjectWin"/>
+        <InterProjectWindow @closeProjectWin="closeProjectWin" :loginCollectionName="interLoginEnv" :projectCollectionName="interProject" :projectId="projectId"/>
     </el-dialog>
-    <!-- <el-dialog :title="interType" :visible.sync="interShow" :before-close="reloadPage" width="50%">
-        <InterDetailWindow :interId="interId" :projectName="projectName" :interType="interType"/>
+    <!-- <el-dialog :visible.sync="interShow" :before-close="reloadPage" width="50%">
+        <InterDetailWindow :interId="interId" :name="name"/>
     </el-dialog> -->
 </div>
 </template>
@@ -26,12 +26,13 @@ export default {
     data() {
         return {
             interProject:"interProject",
+            interLoginEnv:"interLoginEnv",
             projectShow: false,
+            projectId:'',
+
             interShow: false,
-            interType:'',
             interId:'',
-            projectName:'',
-            projectId:''
+            name:'',
         }
     },
     methods: {
@@ -46,12 +47,11 @@ export default {
             this.projectShow = false
             this.reload()
         },
-        interShowFun:function(interId,projectName){
+        interShowFun:function(interId,name){
             this.interShow = true
             if(interId!=""){
-                this.interType = "查看"
                 this.interId = interId
-                this.projectName = projectName
+                this.name = name
             }
         },
         

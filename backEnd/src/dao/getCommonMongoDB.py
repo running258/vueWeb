@@ -18,12 +18,12 @@ class getCommonMongoDB(mongoConn):
     
     # 数据插入
     def insert(self, insertJson):
-        result = self.collection.insert_one(insertJson)
+        result = self.collection.insert(insertJson)
         return result
 
     # 根据ID更新
     def updateById(self, _id, updateJson):
-        result = self.collection.update_one({"_id": ObjectId(_id)}, updateJson)
+        result = self.collection.update({"_id": ObjectId(_id)}, updateJson)
         return result
 
     # 根据ID删除

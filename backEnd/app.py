@@ -2,15 +2,12 @@ import json
 from flask import Flask, jsonify,request
 from flask_cors import CORS
 
-
 from src.controller.commonController import commonController
-
+from src.controller.interProjectController import interProjectController
 
 from src.controller.oesController import oesController
 from src.controller.runController import runController
 from src.controller.vaController import vaController
-from src.controller.envController import envController
-from src.controller.interProjectController import interProjectController
 
 from src.dao.getInterProjectMongoDB import getInterProjectMongoDB
 from src.dao.getInterfacesMongoDB import getInterfacesMongoDB
@@ -42,7 +39,7 @@ def getById():
     _id = request.args.get('_id')
     collectionName = request.args.get('collectionName')
     res = commonController(collectionName).getById(_id)
-    return res
+    return json.dumps(res)
 
 # 根据ID删除
 @app.route('/deleteById', methods=['GET'])
@@ -52,62 +49,24 @@ def deleteById():
     res = commonController(collectionName).deleteById(_id)
     return res
 
-
-
-#获取所有环境地址
-@app.route('/getAllLoginEnv', methods=['GET'])
-def getAllLoginEnv():
-    loginEnv = envController().getAllLoginEnv()
-    return json.dumps(loginEnv)
-
-#保存/更新环境信息
-@app.route('/updateLoginEnv', methods=['POST'])
-def updateLoginEnv():
-    loginEnvJson = json.loads(request.get_data(as_text=True))
-    updateRes = envController().updateLoginEnv(loginEnvJson)
-    return "done"
-
-#保存/更新环境信息
-@app.route('/deleteLoginEnv', methods=['POST'])
-def deleteLoginEnv():
-    loginEnvId = request.get_data(as_text=True)
-    deleteRes = envController().deleteLoginEnv(loginEnvId)
-    return "done"
-
-#-----------接口相关API-----------------
-#查看所有接口项目
-@app.route('/getProjectList', methods=['GET'])
-def getInterProject():
-    projectName = request.args.get('projectName')
-    projectList = interProjectController().getProjectList(projectName)
-    return json.dumps(projectList)
-
-@app.route('/saveProject', methods=['POST'])
-def insertNewProject():
-    projectInfo = json.loads(request.get_data(as_text=True))
-    saveRes = interProjectController().saveProject(projectInfo)
-    return "done"
-
-
-@app.route('/getProjectAndIntersByProjectName/<projectName>', methods=['GET'])
-def getProjectAndIntersByProjectName(projectName):
-    projectInfo = getProjectsMongoDB().getProjectsByProjectName(projectName)
-    interList = projectInfo["interfaces"]
-    interQueryList = []    
-    for inter in interList:
-        interId = inter["interId"]
-        interName = inter["interName"]
-        interInfo = getInterfacesMongoDB().getInterfacesCollectionWithInterIDAndName(interId,interName)
-        interInfo["interId"] = interId
-        interQueryList.append(interInfo)
-    projectInfo["interfaces"] = interQueryList
+# 根据ID获取接口项目下所有接口
+@app.route('/getProjectAndIntersByProjectId', methods=['GET'])
+def getProjectAndIntersByProjectId():
+    _id = request.args.get('_id')
+    projectCollectionName = request.args.get('projectCollectionName')
+    interCollectionName = request.args.get('interCollectionName')
+    projectInfo = commonController(projectCollectionName).getProjectAndIntersByProjectId(_id,interCollectionName)
     return json.dumps(projectInfo)
 
-#get all interface by interName
-@app.route('/interInfoById/<interId>', methods=['GET'])
-def getInterInfoWithID(interId):
-    interInfo = getInterfacesMongoDB().getInterfacesCollectionWithInterID(interId)
-    return json.dumps(interInfo)
+#-----------接口相关API-----------------
+#save interface and update project
+@app.route('/saveInterAndUpdateProject', methods=['POST'])
+def saveInterAndUpdateProject():
+    interJson = json.loads(request.get_data(as_text=True))
+    projectCollectionName = interJson["projectCollectionName"]
+    interCollectionName = interJson["interCollectionName"]
+    insertInfo = interProjectController(projectCollectionName).saveInterAndUpdateProject(interCollectionName,interJson)
+    return "done"
 
 #call interface
 @app.route('/runSingleInter', methods=['POST'])
@@ -121,24 +80,6 @@ def runSingleInter():
         res = requestsTemp(env,username,password).supplyRequests(singleInterJson)
         return json.dumps(res)
 
-#save interface and update project
-@app.route('/saveInterAndUpdateProject', methods=['POST'])
-def saveInterAndUpdateProject():
-    interJson = json.loads(request.get_data(as_text=True))
-    projectName = interJson["projectName"]
-    interName = interJson["interName"]
-    if interJson["isNewUser"]:
-        interJson["username"] = interJson["runUsername"]
-        interJson["password"] = interJson["runPassword"]
-    else:
-        interJson["username"] = ""
-        interJson["password"] = ""
-    interJson.pop("isNewUser")
-    interJson.pop("runUsername")
-    interJson.pop("runPassword")
-    interId = getInterfacesMongoDB().insertInterfacesCollection(interJson)
-    getProjectsMongoDB().updateProjectInter(projectName,interId,interName)
-    return "done"
 # -------------------------------OES相关API-------------
 #新建OES项目
 @app.route('/saveOESProject', methods=['POST'])

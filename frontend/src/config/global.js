@@ -28,23 +28,15 @@ const menuBarList = [{
 const backEndUrl = "http://localhost:5000/"
 // const backEndUrl = "http://192.168.96.28:90/"
 const backEndPath = {
-
   save:"save",
   getList:"getList",
   getById:"getById",
   deleteById:"deleteById",
-  
-  updateLoginEnv:"updateLoginEnv",  //环境保存/更新
-  getAllLoginEnv:"getAllLoginEnv",  //获取所有环境
-  deleteLoginEnv:"deleteLoginEnv",  //删除环境
+  getProjectAndIntersByProjectId:"getProjectAndIntersByProjectId",  //根据项目获取项目及接口数据
 // ------------------接口相关
-  getProjectList:"getProjectList",   //获取所有项目
-  saveProject:"saveProject",  //保存项目
-
-  getProjectAndIntersByProjectName:"getProjectAndIntersByProjectName",  //项目中添加新接口
+  saveInterAndUpdateProject:"saveInterAndUpdateProject",  //项目内保存接口
   interInfoById:"interInfoById",  //根据id查看接口详情
   runSingleInter:"runSingleInter",  //单接口执行
-  saveInterAndUpdateProject:"saveInterAndUpdateProject",  //项目内保存接口
 // ----------------------OES相关
   saveOESProject:"saveOESProject",  //新建/保存OES项目
   getOESProjectList:"getOESProjectList",  //OES项目列表

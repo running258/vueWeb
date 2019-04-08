@@ -27,7 +27,7 @@ class commonController():
         jsonInfo.pop("collectionName")
         if _id != '':
             res = self.updateById(_id,jsonInfo)
-            return res
+            return str(res)
         else:
             res = self.insert(jsonInfo)
             return str(res)
@@ -40,9 +40,26 @@ class commonController():
     # 根据ID更新
     def updateById(self, _id, updateJson):
         res = self.commonDao.updateById(_id,updateJson)
-        return  res
+        return  str(res)
 
     # 根据ID删除
     def deleteById(self,_id):
         res = self.commonDao.deleteById(_id)
-        return res
+        return str(res)
+
+    # 根据项目ID获取所有项目
+    def getProjectAndIntersByProjectId(self,_id,interCollectionName):
+        projectInfo = self.commonDao.getById(_id)
+        interList = projectInfo["list"]
+        interQueryList = []    
+        for inter in interList:
+            interId = inter["interId"]
+            interInfo = getCommonMongoDB(interCollectionName).getById(interId)
+            interInfo["_id"] = str(interInfo["_id"])
+            interInfo["interId"] = interId
+            interQueryList.append(interInfo)
+        projectInfo["list"] = interQueryList
+        projectInfo["_id"] = str(projectInfo["_id"])
+        return  projectInfo
+
+

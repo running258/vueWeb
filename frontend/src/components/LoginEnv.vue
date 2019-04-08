@@ -2,7 +2,9 @@
 <div id="interfaceLoginEnv">
     <el-button @click="addEnvCard()">add</el-button>
     <el-card v-for="(loginEnv, index) in loginEnvList" :key="index">
-        <div><el-input class="urlInput" v-model="loginEnv.env"></el-input></div>
+        <div>
+            <el-input class="urlInput" v-model="loginEnv.env"></el-input>
+        </div>
         <div><span>供端:</span></div>
         <div>
             <el-input class="urlInput" v-model="loginEnv.supply.url"></el-input>
@@ -21,13 +23,16 @@
 </template>
 
 <script>
-import global from '@/config/global'
 
 export default {
     inject: ['reload'],
+    props: {
+        collectionName: String
+    },
     data() {
         return {
-            loginEnvList: []
+            loginEnvList: [],
+            searchName: "",
         }
     },
     methods: {
@@ -42,39 +47,42 @@ export default {
                     "url": "",
                     "path": ""
                 },
-                "_id":""
+                "_id": "",
+                "name": ""
             }
             this.loginEnvList.push(EmptyList)
         },
-        saveLoginEnv(index,_id) {
+        saveLoginEnv(index, _id) {
             var loginInfo = JSON.stringify(this.loginEnvList[index])
             loginInfo = JSON.parse(loginInfo)
-            this.axios.post(global.backEndUrl + global.backEndPath["updateLoginEnv"],this.loginEnvList[index])
-            .then((res)=>{
-                console.log(res)
-                this.reload()
-            })
-        },
-        removeLoginEnv(index,_id) {
-            if(_id !=''){
-                this.$confirm('当前环境已保存并可已被项目引用，如删除会造成接口项目无法运行，确认删除吗')
-                .then(_ => {
-                    this.axios.post(global.backEndUrl + global.backEndPath["deleteLoginEnv"], _id)
-                        .then((res) => {
-                            this.reload()
-                        })
-                    done();
+            loginInfo["_id"] = _id
+            loginInfo["collectionName"] = this.collectionName
+            console.log(loginInfo)
+            this.commonJs.save(loginInfo)
+                .then((res) => {
+                    this.reload()
                 })
-                .catch(_ => {
+        },
+        removeLoginEnv(index, _id) {
+            if (_id != '') {
+                this.$confirm('当前环境已保存并可已被项目引用，如删除会造成接口项目无法运行，确认删除吗')
+                    .then(_ => {
+                        this.commonJs.deleteById(this.collectionName,_id)
+                            .then((res) => {
+                                this.reload()
+                            })
+                        done();
+                    })
+                    .catch(_ => {
 
-                });
-            }else{
+                    });
+            } else {
                 this.loginEnvList.splice(index, 1)
             }
         },
     },
     created() {
-        this.axios.get(global.backEndUrl + global.backEndPath["getAllLoginEnv"])
+        this.commonJs.getList(this.collectionName, this.searchName)
             .then((res) => {
                 this.loginEnvList = res["data"]
             })

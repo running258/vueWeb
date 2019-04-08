@@ -3,8 +3,8 @@
     <el-form :model="projectInfoForm" :rules="rules" ref="projectInfoForm" label-width="110px" class="projectInfoForm">
         <el-row>
             <el-col :span="11">
-                <el-form-item label="项目名称" prop="projectName">
-                    <el-input v-model="projectInfoForm.projectName"></el-input>
+                <el-form-item label="项目名称" prop="name">
+                    <el-input v-model="projectInfoForm.name"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="11">
@@ -74,7 +74,7 @@
             <el-input type="textarea" v-model="projectInfoForm.description"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="submitForm('projectInfoForm',type)">确定</el-button>
+            <el-button type="primary" @click="submitForm('projectInfoForm')">确定</el-button>
             <el-button @click="resetForm('projectInfoForm')">重置</el-button>
         </el-form-item>
     </el-form>
@@ -87,14 +87,16 @@ import global from '@/config/global'
 
 export default {
     props: {
-        _id: String
+        projectId: String,
+        loginCollectionName:String,
+        projectCollectionName:String
     },
     data() {
         return {
             loginEnvList: [],
             projectJson: {},
             projectInfoForm: {
-                projectName: '',
+                name: '',
                 author: '',
                 loginIndex: '',
                 env: '',
@@ -109,7 +111,7 @@ export default {
                 description: "",
             },
             rules: {
-                projectName: [{
+                name: [{
                     required: true,
                     message: '请输入项目名称',
                     trigger: 'blur'
@@ -130,9 +132,9 @@ export default {
     methods: {
         formatProjectJson() {
             this.projectJson = {
-                "collectionName": "interProject",
-                "_id": this._id,
-                "projectName": this.projectInfoForm.projectName,
+                "collectionName": this.projectCollectionName,
+                "_id": this.projectId,
+                "name": this.projectInfoForm.name,
                 "author": this.projectInfoForm.author,
                 "env": this.projectInfoForm.env,
                 "supplyUsername": this.projectInfoForm.supplyUsername,
@@ -140,7 +142,7 @@ export default {
                 "hospUsername": this.projectInfoForm.hospUsername,
                 "hospPassword": this.projectInfoForm.hospPassword,
                 "description": this.projectInfoForm.description,
-                "interfaces": []
+                "list": []
             }
         },
         changeEnv() {
@@ -151,12 +153,12 @@ export default {
             this.projectInfoForm.hospUrl = loginInfo["hosp"]["url"]
             this.projectInfoForm.hospPath = loginInfo["hosp"]["path"]
         },
-        submitForm(formName, type) {
+        submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     this.formatProjectJson()
-                    // this.axios.post(global.backEndUrl + global.backEndPath["saveInterProject"], this.projectJson)
-                    this.axios.post(global.backEndUrl + global.backEndPath["save"], this.projectJson)
+                    console.log(this.projectJson)
+                    this.commonJs.save(this.projectJson)
                         .then((res) => {
                             this.$emit('closeProjectWin')
                         })
@@ -176,7 +178,7 @@ export default {
     },
     created() {
         // 加载所有系统环境
-        this.axios.get(global.backEndUrl + global.backEndPath["getAllLoginEnv"])
+        this.commonJs.getList(this.loginCollectionName,'')
             .then((res) => {
                 this.loginEnvList = res["data"]
             })
