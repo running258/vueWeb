@@ -4,6 +4,7 @@
     <el-card class="box-card" v-for="(project,index) in interProjectList" :key="index">
         <div slot="header" class="clearfix">
             <router-link :to="{path:'/InterProjectDetailView',query:{projectId:project._id,env:project.env}}"><span>{{project.name}}</span></router-link><span class="authorAndDes">{{project.author}}/{{project.description}}/{{project.env}}</span>
+            <el-button @click="projectWin(project._id)">编辑</el-button>
         </div>
         <div v-for="(inter,index) in project.interfaces" :key="index">
             <span>{{inter.interName}}</span>

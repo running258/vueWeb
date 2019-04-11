@@ -35,7 +35,8 @@ const backEndPath = {
   getProjectAndIntersByProjectId:"getProjectAndIntersByProjectId",  //根据项目获取项目及接口数据
 // ------------------接口相关
   saveInterAndUpdateProject:"saveInterAndUpdateProject",  //项目内保存接口
-  runSingleInter:"runSingleInter",  //单接口执行
+  runInterProjectInter:"runInterProjectInter",  //单接口运行
+  runInterBat:"runInterBat",  //批量运行
 // ----------------------OES相关
   saveOESProject:"saveOESProject",  //新建/保存OES项目
   getOESProjectList:"getOESProjectList",  //OES项目列表

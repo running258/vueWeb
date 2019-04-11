@@ -1,13 +1,15 @@
 import requests, json
 from src.entity.tools import jsonLoad,getTime
-from src.dao.getLoginEnvMongoDB import getLoginEnvMongoDB
+from src.controller.commonController import commonController
 
 class LoginWithMongo(object):
     
-    def __init__(self,env,username,password):
-        result = getLoginEnvMongoDB().getLoginEnvCollection(env)
+    def __init__(self,loginEnvId,loginEnvCollectionName,username,password):
+        result = commonController(loginEnvCollectionName).getById(loginEnvId)
         self.supplyUrl = result["supply"]["url"]
         self.supplyPath = result["supply"]["path"]
+        self.hospUrl = result["hosp"]["url"]
+        self.hospPath = result["hosp"]["path"]
         self.userName = username
         self.passWord = password
 

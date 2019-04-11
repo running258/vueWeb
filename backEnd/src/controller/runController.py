@@ -1,14 +1,18 @@
-from src.controller.controllerIndex import controllerIndex
+from src.dao.getOESProjectMongoDB import getOESProjectMongoDB
+from src.dao.getOESInterMongoDB import getOESInterMongoDB
+from src.controller.commonController import commonController
+
 from src.entity.tools import mask
 from src.entity.tools import getTime
 from src.entity.requestsTemp import oesProjectInter
+from src.entity.requestsTemp import requestsTemp
 import json
 
-class runController(controllerIndex):
+class runController(object):
 
     def __init__(self):
-        self.OESProject = controllerIndex().getOESProjectMongoDB()
-        self.OESInter = controllerIndex().getOESInterMongoDB()
+        self.OESProject = getOESProjectMongoDB()
+        self.OESInter = getOESInterMongoDB()
 
     def runOESInter(self,oesProjectId,oesInterId):
         projectInfo = self.OESProject.getOESProjectById(oesProjectId)
@@ -34,5 +38,63 @@ class runController(controllerIndex):
         path = url+path
         res = oesProjectInter().oesProjectRun(path,header,params)
         return res
+
+    def runInterProjectInter(self,projectId,interId,projectCollectionName,interCollectionName,loginEnvCollectionName):
+        projectInfo = commonController(projectCollectionName).getById(projectId)
+        interInfo = commonController(interCollectionName).getById(interId)
+        loginEnvId = projectInfo["loginEnvId"]
+        loginEnvInfo = commonController(loginEnvCollectionName).getById(loginEnvId)
+        supplyUsername = projectInfo["supplyUsername"]
+        supplyPassword = projectInfo["supplyPassword"]
+        hospUsername = projectInfo["hospUsername"]
+        hospPassword = projectInfo["hospPassword"]
+        env = loginEnvInfo["name"]
+        sys = interInfo["sys"]
+        supplyUrl = loginEnvInfo["supply"]["url"]
+        supplyPath = loginEnvInfo["supply"]["path"]
+        hospUrl = loginEnvInfo["hosp"]["url"]
+        hospPath = loginEnvInfo["hosp"]["path"]
+        runUsername = ''
+        runPassword = ''
+        if sys == "supply":
+            if interInfo["username"] != '':
+                runUsername = interInfo["username"]
+                runPassword = interInfo["password"]
+            else:
+                runUsername = supplyUsername
+                runPassword = supplyPassword
+        elif sys == "hosp":
+            if interInfo["username"] != '':
+                runUsername = interInfo["username"]
+                runPassword = interInfo["password"]
+            else:
+                runUsername = hospUsername
+                runUsername = hospPassword
+        runJson = {
+            "sys": sys,
+            "path": interInfo["path"],
+            "method": interInfo["method"],
+            "header": interInfo["header"],
+            "params": interInfo["params"],
+            "runUsername": runUsername,
+            "runPassword": runPassword
+        }
+        if sys == "supply":
+            res = requestsTemp(loginEnvId,loginEnvCollectionName,runUsername,runPassword).supplyRequests(runJson)
+        return res
+
+    def runInterBat(self,interBatJson):
+        projectId = interBatJson["projectId"]
+        interIdList = interBatJson["interIdList"]
+        projectCollectionName = interBatJson["projectCollectionName"]
+        interCollectionName = interBatJson["interCollectionName"]
+        loginEnvCollectionName = interBatJson["loginEnvCollectionName"]
+        resList = []
+        for index,interId in enumerate(interIdList):
+            resList.append('')
+            if interId != '':
+                res = self.runInterProjectInter(projectId,interId,projectCollectionName,interCollectionName,loginEnvCollectionName)
+                resList[index] = res
+        return resList
 
 

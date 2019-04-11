@@ -15,7 +15,7 @@
         </el-row>
         <el-form-item label="环境选择" prop="loginIndex">
             <el-select v-model="projectInfoForm.loginIndex" placeholder="请选择系统环境" @change="changeEnv">
-                <el-option v-for="(loginEnv, index) in loginEnvList" :key="index" :label="loginEnv.env" :value="index"></el-option>
+                <el-option v-for="(loginEnv, index) in loginEnvList" :key="index" :label="loginEnv.name" :value="index"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="供端地址">
@@ -88,8 +88,8 @@ import global from '@/config/global'
 export default {
     props: {
         projectId: String,
-        loginCollectionName:String,
-        projectCollectionName:String
+        loginCollectionName: String,
+        projectCollectionName: String
     },
     data() {
         return {
@@ -99,7 +99,7 @@ export default {
                 name: '',
                 author: '',
                 loginIndex: '',
-                env: '',
+                loginEnvId: '',
                 supplyUrl: '',
                 supplyPath: '',
                 hospUrl: '',
@@ -110,6 +110,7 @@ export default {
                 hospPassword: '',
                 description: "",
             },
+            list:[],
             rules: {
                 name: [{
                     required: true,
@@ -136,18 +137,18 @@ export default {
                 "_id": this.projectId,
                 "name": this.projectInfoForm.name,
                 "author": this.projectInfoForm.author,
-                "env": this.projectInfoForm.env,
+                "loginEnvId": this.projectInfoForm.loginEnvId,
                 "supplyUsername": this.projectInfoForm.supplyUsername,
                 "supplyPassword": this.projectInfoForm.supplyPassword,
                 "hospUsername": this.projectInfoForm.hospUsername,
                 "hospPassword": this.projectInfoForm.hospPassword,
                 "description": this.projectInfoForm.description,
-                "list": []
+                "list":this.list
             }
         },
         changeEnv() {
             var loginInfo = this.loginEnvList[this.projectInfoForm.loginIndex]
-            this.projectInfoForm.env = loginInfo["env"]
+            this.projectInfoForm.loginEnvId = loginInfo["_id"]
             this.projectInfoForm.supplyUrl = loginInfo["supply"]["url"]
             this.projectInfoForm.supplyPath = loginInfo["supply"]["path"]
             this.projectInfoForm.hospUrl = loginInfo["hosp"]["url"]
@@ -178,10 +179,41 @@ export default {
     },
     created() {
         // 加载所有系统环境
-        this.commonJs.getList(this.loginCollectionName,'')
+        this.commonJs.getList(this.loginCollectionName, '')
             .then((res) => {
                 this.loginEnvList = res["data"]
             })
+        if (this.projectId != '') {
+            this.commonJs.getById(this.projectCollectionName, this.projectId)
+                .then((res) => {
+                    var projectInfo = res["data"]
+                    this.projectInfoForm.name = projectInfo["name"]
+                    this.projectInfoForm.author = projectInfo["author"]
+                    this.projectInfoForm.loginEnvId = projectInfo["loginEnvId"]
+                    this.projectInfoForm.supplyUsername = projectInfo["supplyUsername"]
+                    this.projectInfoForm.supplyPassword = projectInfo["supplyPassword"]
+                    this.projectInfoForm.hospUsername = projectInfo["hospUsername"]
+                    this.projectInfoForm.hospPassword = projectInfo["hospPassword"]
+                    this.projectInfoForm.description = projectInfo["description"]
+                    this.list = projectInfo["list"]
+                    if (projectInfo["loginEnvId"] != '') {
+                        for (let index = 0; index < this.loginEnvList.length; index++) {
+                            if(this.loginEnvList[index]["_id"] == projectInfo["loginEnvId"]){
+                                this.projectInfoForm.loginIndex = index
+                                this.projectInfoForm.supplyUrl = this.loginEnvList[index]["supply"]["url"]
+                                this.projectInfoForm.supplyPath = this.loginEnvList[index]["supply"]["path"]
+                                this.projectInfoForm.hospUrl = this.loginEnvList[index]["hosp"]["url"]
+                                this.projectInfoForm.hospPath = this.loginEnvList[index]["hosp"]["path"]
+                            }
+                            
+                        }
+
+                    }
+                })
+        } else {
+
+        }
+
     }
 }
 </script>

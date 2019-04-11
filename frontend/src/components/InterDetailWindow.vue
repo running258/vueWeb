@@ -79,8 +79,8 @@ export default {
     props: {
         interId: String,
         projectId: String,
-        projectCollectionName:String,
-        interCollectionName:String
+        projectCollectionName: String,
+        interCollectionName: String
     },
     data() {
         return {
@@ -107,25 +107,32 @@ export default {
             activeName: 'payload',
             runResult: '',
             interJson: {},
-            env: '',
             author: '',
             supplyUsername: '',
             supplyPassword: '',
             hospUsername: '',
             hospPassword: '',
             description: '',
+            loginEnvCollectionName:'interLoginEnv'
         };
     },
     methods: {
         run() {
-            this.getInterJson()
-            this.axios.post(global.backEndUrl + global.backEndPath["runSingleInter"], this.interJson)
+            this.axios.get(global.backEndUrl + global.backEndPath["runInterProjectInter"], {
+                    params: {
+                        projectId: this.projectId,
+                        interId: this.interId,
+                        projectCollectionName:this.projectCollectionName,
+                        interCollectionName:this.interCollectionName,
+                        loginEnvCollectionName:this.loginEnvCollectionName
+                    }
+                })
                 .then(response => {
                     this.runResult = JSON.stringify(response["data"])
                 })
 
         },
-        save:function() {
+        save: function () {
             this.getInterJson()
             this.axios.post(global.backEndUrl + global.backEndPath["saveInterAndUpdateProject"], this.interJson)
                 .then(response => {
@@ -134,7 +141,7 @@ export default {
                 })
 
         },
-        getInterJson:function() {
+        getInterJson: function () {
             var headerList = this.interFrom.headerList
             var paramList = this.interFrom.payloadList
             var headerStr = ""
@@ -163,10 +170,6 @@ export default {
                 }
             });
             paramStr = "{" + paramStr + "}"
-
-            console.log(headerStr)
-            console.log(paramStr)
-
             var headerJson = JSON.parse(headerStr)
             var paramJson = JSON.parse(paramStr)
             var runUsername = ''
@@ -199,14 +202,13 @@ export default {
                 "method": this.interFrom.method,
                 "header": headerJson,
                 "params": paramJson,
-                "env": this.env,
                 "runUsername": runUsername,
                 "runPassword": runPassword,
-                "isNewUser":isNewUser,
-                "_id":this.interId,
-                "projectId":this.projectId,
-                "interCollectionName":this.interCollectionName,
-                "projectCollectionName":this.projectCollectionName
+                "isNewUser": isNewUser,
+                "_id": this.interId,
+                "projectId": this.projectId,
+                "interCollectionName": this.interCollectionName,
+                "projectCollectionName": this.projectCollectionName
             }
         },
         addHeader() {
@@ -230,9 +232,8 @@ export default {
         handleClick(tab, event) {}
     },
     created() {
-        this.commonJs.getById(this.projectCollectionName,this.projectId)
+        this.commonJs.getById(this.projectCollectionName, this.projectId)
             .then((res) => {
-                this.env = res["data"]["env"]
                 this.supplyUsername = res["data"]["supplyUsername"]
                 this.supplyPassword = res["data"]["supplyPassword"]
                 this.hospUsername = res["data"]["hospUsername"]
@@ -240,7 +241,7 @@ export default {
             })
         var interId = this.interId
         if (interId != '' && interId != 'NULL') {
-            this.commonJs.getById(this.interCollectionName,interId)
+            this.commonJs.getById(this.interCollectionName, interId)
                 .then((response) => {
                     this.interInfo = response["data"]
                     this.interFrom.method = this.interInfo["method"]
@@ -284,7 +285,7 @@ export default {
 
                 })
         }
-        
+
     }
 };
 </script>

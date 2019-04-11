@@ -1,6 +1,6 @@
 <template>
 <div class="ProjectDetailView">
-    <InterProjectDetail @interWindow="interShowFun" :projectCollectionName="projectCollectionName" :interCollectionName="interCollectionName"/>
+    <InterProjectDetail @interWindow="interShowFun" :projectCollectionName="projectCollectionName" :interCollectionName="interCollectionName" :loginEnvCollectionName="loginEnvCollectionName"/>
     <el-dialog :title="interType" :visible.sync="interShow" :before-close="reloadPage" width="50%">
         <InterDetailWindow :interId="interId" :projectId="projectId" @closeInterWindow="interHideFun" :projectCollectionName="projectCollectionName" :interCollectionName="interCollectionName"/>
     </el-dialog>
@@ -22,6 +22,7 @@ export default {
         return {
             projectCollectionName:"interProject",
             interCollectionName:"inter",
+            loginEnvCollectionName:"interLoginEnv",
             interShow: false,
             interType: '',
             interId: '',

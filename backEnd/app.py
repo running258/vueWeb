@@ -9,8 +9,6 @@ from src.controller.oesController import oesController
 from src.controller.runController import runController
 from src.controller.vaController import vaController
 
-from src.entity.requestsTemp import requestsTemp
-
 app = Flask(__name__)
 CORS(app)
 
@@ -66,34 +64,23 @@ def saveInterAndUpdateProject():
     insertInfo = interProjectController(projectCollectionName).saveInterAndUpdateProject(interCollectionName,interJson)
     return "done"
 
-#call interface
+#单接口运行
 @app.route('/runInterProjectInter', methods=['GET'])
 def runInterProjectInter():
     projectId = request.args.get('projectId')
     interId = request.args.get('interId')
     projectCollectionName = request.args.get('projectCollectionName')
     interCollectionName = request.args.get('interCollectionName')
+    loginEnvCollectionName = request.args.get('loginEnvCollectionName')
+    res = runController().runInterProjectInter(projectId,interId,projectCollectionName,interCollectionName,loginEnvCollectionName)
+    return json.dumps(res)
 
-    sys = singleInterJson["sys"]
-    env = singleInterJson["env"]
-    username = singleInterJson["runUsername"]
-    password = singleInterJson["runPassword"]
-    if sys == "supply":
-        res = requestsTemp(env,username,password).supplyRequests(singleInterJson)
-        return json.dumps(res)
-
-#call interface
-@app.route('/runSingleInter', methods=['POST'])
-def runSingleInter():
-    singleInterJson = json.loads(request.get_data(as_text=True))
-    sys = singleInterJson["sys"]
-    env = singleInterJson["env"]
-    username = singleInterJson["runUsername"]
-    password = singleInterJson["runPassword"]
-    if sys == "supply":
-        res = requestsTemp(env,username,password).supplyRequests(singleInterJson)
-        return json.dumps(res)
-
+#批量运行
+@app.route('/runInterBat', methods=['POST'])
+def runInterBat():
+    interBatJson = json.loads(request.get_data(as_text=True))
+    res = runController().runInterBat(interBatJson)
+    return json.dumps(res)
 # -------------------------------OES相关API-------------
 #新建OES项目
 @app.route('/saveOESProject', methods=['POST'])

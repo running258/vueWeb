@@ -40,7 +40,7 @@ export default {
             projectDescription: '',
             oesProjectId: this.$route.query.projectId,
             OESInterList: [],
-            response:[123],
+            response:[],
             tesdew:'',
         }
     },
@@ -74,7 +74,6 @@ export default {
                     }
                 })
                 .then((res) => {
-                    console.log(res)
                     this.OESInterList[index]["response"] = res["data"];
                     let m = [... this.OESInterList];
                     this.OESInterList = [];
