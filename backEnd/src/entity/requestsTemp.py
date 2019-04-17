@@ -7,6 +7,7 @@ from src.entity.login import LoginWithMongo
 class requestsTemp(LoginWithMongo):
 
     def supplyRequests(self, jsonData, returnType = "json", extraParams={},  extraPath=""):
+        res = ''
         data = jsonData
         authorization = self.supplyLogin()
         method = data["method"]
@@ -27,8 +28,6 @@ class requestsTemp(LoginWithMongo):
             res = requests.put(self.supplyUrl+path, data=params,headers=header)
         else:
             raise Exception("no requests named %s"% (method))
-
-        # return different type of response with returnType
         if returnType.lower() == "json":
             return res.json()
         elif returnType.lower() == "string" or returnType.lower() == "text":

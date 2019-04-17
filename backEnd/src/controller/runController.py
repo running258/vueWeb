@@ -70,6 +70,8 @@ class runController(object):
             else:
                 runUsername = hospUsername
                 runUsername = hospPassword
+        interInfo["expectedResult"] = str(interInfo["expectedResult"]).replace('\\"','"')
+        expectedResult = interInfo["expectedResult"]
         runJson = {
             "sys": sys,
             "path": interInfo["path"],
@@ -81,7 +83,18 @@ class runController(object):
         }
         if sys == "supply":
             res = requestsTemp(loginEnvId,loginEnvCollectionName,runUsername,runPassword).supplyRequests(runJson)
-        return res
+        resDict = {}
+        resDict["res"] = res
+        resStr = json.dumps(res,ensure_ascii=False)
+        if expectedResult!='':
+            if expectedResult in resStr:
+                isPass = True
+            else:
+                isPass = False
+        else:
+            isPass = ''
+        resDict["isPass"] = isPass
+        return resDict
 
     def runInterBat(self,interBatJson):
         projectId = interBatJson["projectId"]

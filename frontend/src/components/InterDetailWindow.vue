@@ -55,11 +55,14 @@
             <div v-if="activeName=='raw'">
                 <el-row>
                     <el-form-item label="rawData">
-                        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="interFrom.rawarea"></el-input>
+                        <el-input type="textarea" :autosize="{ minRows: 5}" placeholder="请输入内容" v-model="interFrom.rawarea"></el-input>
                     </el-form-item>
                 </el-row>
             </div>
         </div>
+         <el-form-item label="期望结果">
+            <el-input type="textarea" :autosize="{ minRows: 3}" placeholder="期望结果" v-model="interFrom.expectedResult"></el-input>
+        </el-form-item>
         <el-form-item>
             <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="运行结果" v-model="runResult"></el-input>
         </el-form-item>
@@ -100,12 +103,13 @@ export default {
                     'value': ''
                 }],
                 rawarea: '',
-
+                expectedResult:''
             },
             interInfo: [],
             description: '',
             activeName: 'payload',
             runResult: '',
+            isPass: '',
             interJson: {},
             author: '',
             supplyUsername: '',
@@ -127,8 +131,9 @@ export default {
                         loginEnvCollectionName:this.loginEnvCollectionName
                     }
                 })
-                .then(response => {
-                    this.runResult = JSON.stringify(response["data"])
+                .then(res => {
+                    this.runResult = JSON.stringify(res["data"]["res"])
+                    this.isPass = JSON.stringify(res["data"]["isPass"]);
                 })
 
         },
@@ -202,6 +207,7 @@ export default {
                 "method": this.interFrom.method,
                 "header": headerJson,
                 "params": paramJson,
+                "expectedResult": this.interFrom.expectedResult,
                 "runUsername": runUsername,
                 "runPassword": runPassword,
                 "isNewUser": isNewUser,
@@ -250,6 +256,7 @@ export default {
                     this.interFrom.name = this.interInfo["name"]
                     this.interFrom.runUsername = this.interInfo["username"]
                     this.interFrom.runPassword = this.interInfo["password"]
+                    this.interFrom.expectedResult = this.interInfo["expectedResult"].replace(/\\"/g,'"')
                     var header = this.interInfo["header"]
                     var headerInitFlag = true
                     var paramInitFlag = true

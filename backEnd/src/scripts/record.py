@@ -14,10 +14,10 @@ projectInfo = {
     "name": projectName, 
     "author": "系统录制", 
     "loginEnvId": "", 
-    "supplyUsername", 
-    "supplyPassword", 
-    "hospUsername", 
-    "hospPassword", 
+    "supplyUsername":"",
+    "supplyPassword":"", 
+    "hospUsername":"", 
+    "hospPassword":"", 
     "description": "该项目为系统录制自动生成的项目", 
     "list": []
 }
@@ -61,7 +61,7 @@ class Counter:
                     if "_t" in paramsList:
                         paramsList.pop("_t")
                 jsonInfo = {"sys": sys, "name": interName, "path": path, "method": method,
-                            "header": headerList, "params": paramsList, "projectName": '', "username": '', "password": ''}
+                            "header": headerList, "params": paramsList, "projectName": '', "username": '', "password": '',"expectedResult":''}
                 interId = commonController("inter").insert(jsonInfo)
                 projectInfo["list"].append({
                     "interId": str(interId),
