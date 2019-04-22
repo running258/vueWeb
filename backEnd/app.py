@@ -9,7 +9,7 @@ from src.controller.oesController import oesController
 from src.controller.runController import runController
 from src.controller.vaController import vaController
 
-from src.entity.scheduler import vaController
+from src.scripts.scheduler import jobController
 
 app = Flask(__name__)
 CORS(app)
@@ -231,11 +231,10 @@ def getVAResponse(vaProjectName,vaName):
 
 @app.route('/testPage')
 def testPage():
+    jobController().test()
+    jobController().addJob('5cb5634a8591d44ad083a73b',["5cb563568591d44ad083a73d", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""])
     return "test page"
 
 
-
-
 if __name__ == '__main__':
-    scheduler.start()
     app.run()

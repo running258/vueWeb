@@ -106,6 +106,7 @@ export default {
                 this.vaProjectInfoForm.vaProjectName = info["vaProjectName"]
                 this.vaProjectInfoForm.author = info["author"]
                 this.vaProjectInfoForm.description = info["description"]
+                this.vaList = info["vaList"]
             })
         }
     },
