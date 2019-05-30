@@ -29,6 +29,11 @@ export default new Router({
       component: () => import('./views/LoginEnvView.vue')
     },
     {
+      path: '/OESViewAbleProjectView',
+      name: 'OESViewAbleProjectView',
+      component: () => import('./views/OESViewAbleProjectView.vue')
+    },
+    {
       path: '/OESProjectView',
       name: 'OESProjectView',
       component: () => import('./views/OESProjectView.vue')

@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify,request
+from flask import Flask, jsonify,request,Response
 from flask_cors import CORS
 
 from src.controller.commonController import commonController
@@ -223,17 +223,18 @@ def updateProjectVA():
     return str(updateRes)
 
 #获取response
-@app.route('/<vaProjectName>/getVAResponse/<vaName>', methods=['GET'])
+@app.route('/<vaProjectName>/getVAResponse/<vaName>', methods=['GET','POST'])
 def getVAResponse(vaProjectName,vaName):
     vaRes = vaController().getVAResponse(vaProjectName,vaName)
-    return json.dumps(vaRes)
+    return Response(json.dumps(vaRes), mimetype='application/json')
+    # return json.dumps(vaRes)
 # ---------------------------------
 
-@app.route('/testPage')
-def testPage():
-    jobController().test()
-    jobController().addJob('5cb5634a8591d44ad083a73b',["5cb563568591d44ad083a73d", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""])
-    return "test page"
+# @app.route('/testPage')
+# def testPage():
+#     jobController().test()
+#     jobController().addJob('5cb5634a8591d44ad083a73b',["5cb563568591d44ad083a73d", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""])
+#     return "test page"
 
 
 if __name__ == '__main__':

@@ -3,8 +3,8 @@ from bson.objectid import ObjectId
 
 class getCommonMongoDB(mongoConn):
 
-    def __init__(self, collectionName):
-        self.collection = mongoConn().getCollection(collectionName)
+    def __init__(self, collectionName,dbName=None):
+        self.collection = mongoConn().getCollection(collectionName,dbName)
 
     # 获取全部list/根据名称查询
     def getList(self, name):

@@ -70,6 +70,22 @@
                 </el-col>
             </el-form-item>
         </el-row>
+
+        <el-row>
+            <el-form-item label="定时执行">
+                <el-col :span="11">
+                    <el-form-item>
+                        <el-checkbox v-model="projectInfoForm.isTime" @change="isTime">是否定时执行</el-checkbox>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="11">
+                    <el-form-item>
+                        <el-time-picker v-model="projectInfoForm.runTime"></el-time-picker>
+                    </el-form-item>
+                </el-col>
+            </el-form-item>
+        </el-row>
+
         <el-form-item label="描述" prop="description">
             <el-input type="textarea" v-model="projectInfoForm.description"></el-input>
         </el-form-item>
@@ -108,9 +124,11 @@ export default {
                 supplyPassword: '',
                 hospUsername: '',
                 hospPassword: '',
-                description: "",
+                isTime: '',
+                runTime: '',
+                description: '',
             },
-            list:[],
+            list: [],
             rules: {
                 name: [{
                     required: true,
@@ -142,8 +160,9 @@ export default {
                 "supplyPassword": this.projectInfoForm.supplyPassword,
                 "hospUsername": this.projectInfoForm.hospUsername,
                 "hospPassword": this.projectInfoForm.hospPassword,
+                "runTime": this.projectInfoForm.runTime,
                 "description": this.projectInfoForm.description,
-                "list":this.list
+                "list": this.list
             }
         },
         changeEnv() {
@@ -153,6 +172,9 @@ export default {
             this.projectInfoForm.supplyPath = loginInfo["supply"]["path"]
             this.projectInfoForm.hospUrl = loginInfo["hosp"]["url"]
             this.projectInfoForm.hospPath = loginInfo["hosp"]["path"]
+        },
+        isTime: function () {
+
         },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
@@ -194,18 +216,24 @@ export default {
                     this.projectInfoForm.supplyPassword = projectInfo["supplyPassword"]
                     this.projectInfoForm.hospUsername = projectInfo["hospUsername"]
                     this.projectInfoForm.hospPassword = projectInfo["hospPassword"]
+                    this.projectInfoForm.runTime = projectInfo["runTime"]
+                    if (this.projectInfoForm.runTime != '') {
+                        this.projectInfoForm.isTime = true
+                    } else {
+                        this.projectInfoForm.isTime = false
+                    }
                     this.projectInfoForm.description = projectInfo["description"]
                     this.list = projectInfo["list"]
                     if (projectInfo["loginEnvId"] != '') {
                         for (let index = 0; index < this.loginEnvList.length; index++) {
-                            if(this.loginEnvList[index]["_id"] == projectInfo["loginEnvId"]){
+                            if (this.loginEnvList[index]["_id"] == projectInfo["loginEnvId"]) {
                                 this.projectInfoForm.loginIndex = index
                                 this.projectInfoForm.supplyUrl = this.loginEnvList[index]["supply"]["url"]
                                 this.projectInfoForm.supplyPath = this.loginEnvList[index]["supply"]["path"]
                                 this.projectInfoForm.hospUrl = this.loginEnvList[index]["hosp"]["url"]
                                 this.projectInfoForm.hospPath = this.loginEnvList[index]["hosp"]["path"]
                             }
-                            
+
                         }
 
                     }

@@ -2,8 +2,8 @@ from src.dao.getCommonMongoDB import getCommonMongoDB
 
 class commonController():
 
-    def __init__(self,collectionName):
-        self.commonDao = getCommonMongoDB(collectionName)
+    def __init__(self,collectionName,dbName=None):
+        self.commonDao = getCommonMongoDB(collectionName,dbName)
         
     # 获取所有数据/查询
     def getList(self,name):

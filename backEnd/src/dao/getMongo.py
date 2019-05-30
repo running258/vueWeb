@@ -11,16 +11,19 @@ class getConfIni(object):
 
 class mongoConn(getConfIni):
 
-    def getConnection(self):
+    def getConnection(self,dbName=None):
         host = self.config.get("mongodb","host")
         port = self.config.get("mongodb","port")
-        dbName = self.config.get("mongodb","dbName")
+        if dbName == None:
+            dbName = self.config.get("mongodb","dbName")
+        else:
+            dbName = dbName
         client = MongoClient(host=host, port=int(port))
         db = client[dbName]
         return db
     
-    def getCollection(self,collectionName):
-        db = self.getConnection()
+    def getCollection(self,collectionName,dbName=None):
+        db = self.getConnection(dbName)
         collection = self.config.get("CollectionName",collectionName)
         dbCollection = db[collection]
         return dbCollection
