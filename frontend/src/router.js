@@ -53,5 +53,21 @@ export default new Router({
       name: 'VAProject',
       component: () => import('./views/VAProjectView.vue')
     },
+    // oes可视化页面
+    {
+      path: '/oesView/mainPageView',
+      name: 'mainPageView',
+      component: () => import('./views/oesView/mainPageView.vue')
+    },
+    {
+      path: '/oesView/supplyList',
+      name: 'supplyList',
+      component: () => import('./views/oesView/supplyListView.vue')
+    },
+    {
+      path: '/oesView/supplyApply',
+      name: 'supplyApply',
+      component: () => import('./views/oesView/supplyApplyView.vue')
+    },
   ]
 })

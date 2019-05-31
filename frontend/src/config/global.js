@@ -29,6 +29,37 @@ const menuBarList = [{
   }]
 }]
 
+const oesHeaderBarList = [{
+  name: '供应商管理',
+  id: 'supplyManage',
+  sub: [{
+    name: '供应商列表',
+    componentName: 'supplyList'
+  },
+  {
+    name: '供应商审核',
+    componentName: 'supplyApply'
+  }]
+}]
+// },{
+//   name: 'OES',
+//   id: 'OES',
+//   sub: [{
+//     name: 'OES项目',
+//     componentName: 'OESProjectView'
+//   },
+//   {
+//     name: 'OES可视化项目',
+//     componentName: 'OESViewAbleProjectView'
+//   }]
+// },{
+//   name: 'VirtualAsset',
+//   id: 'VA',
+//   sub: [{
+//     name: 'VA项目列表',
+//     componentName: 'VAProject'
+//   }]
+
 const backEndUrl = "http://localhost:5000/"
 // const backEndUrl = "http://192.168.96.28:90/"
 const backEndPath = {
@@ -68,6 +99,7 @@ const backEndPath = {
   export default
   {
     menuBarList,
+    oesHeaderBarList,
     backEndUrl,
     backEndPath
   }

@@ -1,5 +1,6 @@
 <template>
 <div id="OESViewAbleProjectList">
+
     <el-button @click="addEnvCard()">add</el-button>
     <el-card v-for="(oesViewAbleProject, index) in oesViewAbleProjectList" :key="index">
         <div>
@@ -23,13 +24,13 @@
         </div>
         <el-button class="primary" @click="saveLoginEnv(index,oesViewAbleProject._id)">保存</el-button>
         <el-button class="primary" v-if="oesViewAbleProject._id==''" @click="removeLoginEnv(index)">删除</el-button>
+        <el-button class="primary" v-if="oesViewAbleProject._id!=''" @click="gotoView(oesViewAbleProject._id,oesViewAbleProject.name)">跳转至可视化页面</el-button>
     </el-card>
 
 </div>
 </template>
 
 <script>
-
 export default {
     inject: ['reload'],
     props: {
@@ -50,7 +51,7 @@ export default {
                 "hospId": "",
                 "description": "",
                 "_id": "",
-                "collectionName":this.collectionName
+                "collectionName": this.collectionName
             }
             this.oesViewAbleProjectList.push(EmptyList)
         },
@@ -66,6 +67,13 @@ export default {
         },
         removeLoginEnv(index) {
             this.oesViewAbleProjectList.splice(index, 1)
+        },
+        gotoView(_id,name) {
+            this.$store.commit('setOESViewAbleProjectId',_id)
+            this.$store.commit('setOESViewAbleProjectName',name)
+
+            console.log(this.$store.state.oesViewAbleProjectId)
+            this.$router.push({path: '/oesView/mainPageView', query:{id: _id,name:name}})
         },
     },
     created() {

@@ -1,6 +1,6 @@
 from src.controller.commonController import commonController
 
-class interProjectController(commonController):
+class oesViewAbleController(commonController):
 
     def __init__(self,collectionName):
         self.projectController = commonController(collectionName)

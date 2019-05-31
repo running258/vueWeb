@@ -85,6 +85,11 @@ def runInterBat():
     interBatJson = json.loads(request.get_data(as_text=True))
     res = runController().runInterBat(interBatJson)
     return json.dumps(res)
+# -------------------------------OES可视化相关API-------------
+
+
+
+
 # -------------------------------OES相关API-------------
 #新建OES项目
 @app.route('/saveOESProject', methods=['POST'])

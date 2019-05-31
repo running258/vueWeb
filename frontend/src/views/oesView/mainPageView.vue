@@ -1,22 +1,25 @@
 <template>
-<div id="app">
-    <el-container>
-        <el-aside width="200px" height="100%">
-            <MenuBar></MenuBar>
-        </el-aside>
-        <el-main>
-            <router-view v-if="isRouterAlive"></router-view>
-        </el-main>
-    </el-container>
+<div id="oesMainPage">
+     {{this.$route.query}}
+    {{this.$store.state.oesViewAbleProjectId}}
+    {{this.$store.state.setOESViewAbleProjectName}}
+
+    <el-header>
+        <MenuBar/>
+    </el-header>
+    <el-main>
+        <router-view v-if="isRouterAlive"></router-view>
+    </el-main>
+
+
 </div>
 </template>
 
 <script>
-import MenuBar from '@/components/MenuBar.vue'
-import MenuBar from '@/components/oes/OESHeaderBar.vue'
+import MenuBar from '@/components/oes/OESMenuBar.vue'
 
 export default {
-    name: 'app',
+    name: 'oesMainPage',
     components: {
         MenuBar
     },
@@ -37,7 +40,10 @@ export default {
                 this.isRouterAlive = true
             })
         }
-    }
+    },
+    created() {
+
+    },
 }
 </script>
 
